@@ -1,0 +1,1 @@
+<h3 style="padding: 30px 0; text-align: center;">"_NAME_LOWERCASE_" module</h3>
