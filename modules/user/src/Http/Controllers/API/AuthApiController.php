@@ -3,19 +3,19 @@
 namespace APV\User\Http\Controllers\API;
 
 use APV\Base\Http\Controllers\API\ApiBaseController;
-use DB;
-use Exception;
-use Illuminate\Http\JsonResponse;
+// use DB;
+// use Exception;
+// use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Auth;
-use APV\User\Requests\Auth\LoginRequest;
-use APV\User\Requests\Auth\RegisterRequest;
-use APV\User\Requests\Auth\ResendEmailRegisterRequest;
-use APV\User\Services\UserService;
-use Illuminate\Support\Facades\Mail;
-use APV\User\Mail\NotificationEmailMailable;
+// use APV\User\Requests\Auth\LoginRequest;
+// use APV\User\Requests\Auth\RegisterRequest;
+// use APV\User\Requests\Auth\ResendEmailRegisterRequest;
+// use APV\User\Services\UserService;
+// use Illuminate\Support\Facades\Mail;
+// use APV\User\Mail\NotificationEmailMailable;
 use APV\User\Constants\UserDataConst;
 use APV\User\Constants\UserResponseCode;
-
+use Illuminate\Http\Request;
 /**
  * Class AuthApiController
  * @package APV\User\Http\Controllers\API
@@ -31,42 +31,42 @@ class AuthApiController extends ApiBaseController
      * AuthApiController constructor.
      * @param UserService $userService
      */
-    public function __construct(
-        UserService $userService
-    ) {
-        $this->userService = $userService;
-    }
+    // public function __construct(
+    //     UserService $userService
+    // ) {
+    //     $this->userService = $userService;
+    // }
 
     /**
      * @param LoginRequest $request
      * @return JsonResponse
      */
-    public function login(LoginRequest $request)
+    public function login(Request $request)
     {
         $input = $request->only([
             'username',
             'password',
         ]);
-        $user = $this->userService->getUserNoneTrashed($input['username']);
+        // $user = $this->userService->getUserNoneTrashed($input['username']);
 
-        if (!$user) {
-            $user = $this->userService->getUserWithTrashed($input['username']);
+        // if (!$user) {
+        //     $user = $this->userService->getUserWithTrashed($input['username']);
 
-            if ($user && $user->deleted_at !== null) {
-                return $this->sendError(UserResponseCode::ERROR_CODE_DELETED_ACCOUNT);
-            }
-        }
+        //     if ($user && $user->deleted_at !== null) {
+        //         return $this->sendError(UserResponseCode::ERROR_CODE_DELETED_ACCOUNT);
+        //     }
+        // }
 
 
-        $checkPassword = $this->userService->checkPassword($input['username'], $input['password']);
+        // $checkPassword = $this->userService->checkPassword($input['username'], $input['password']);
 
-        if (! $checkPassword) {
-            return $this->sendError(UserResponseCode::ERROR_CODE_PASSWORD_WRONG);
-        }
+        // if (! $checkPassword) {
+        //     return $this->sendError(UserResponseCode::ERROR_CODE_PASSWORD_WRONG);
+        // }
 
         if (Auth::attempt(['username' => $input['username'], 'password' => $input['password']])) {
             $user = Auth::user();
-
+            dd($user);
             if ($user->actived === UserDataConst::USER_STATUS['ACTIVATED']) {
                 $data['token'] = $user->createToken(config('app.name'))->accessToken;
                 $data['user'] = $user;

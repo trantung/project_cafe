@@ -10,12 +10,13 @@
 
 // Route::post('api/user/login', 'UserLoginController@login');
 // dd('user check route');
-
 Route::group([
     'prefix' => 'api/user',
     'namespace' => 'APV\User\Http\Controllers\API',
     'middleware' => ['api'],
 ], function () {
     Route::post('login', 'UserLoginController@login');
+    // Route::post('login', 'AuthApiController@login');
+
 
 });

@@ -1,6 +1,5 @@
 <?php
-
-use APV\User\Models\User;
+dd(455555);
 
 return [
     /*
@@ -68,7 +67,7 @@ return [
     'providers' => [
         'users' => [
             'driver' => 'eloquent',
-            'model' => User::class,
+            'model' => APV\User\Models\User::class,
         ],
 
         // 'users' => [

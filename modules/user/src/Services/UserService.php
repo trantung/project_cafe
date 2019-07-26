@@ -4,17 +4,17 @@ namespace APV\User\Services;
 
 use APV\User\Models\User;
 use APV\Base\Services\BaseService;
-use APV\User\Models\UserReasonToLeave;
-use APV\User\Models\UserTokenLeave;
-use APV\User\Models\UserPoint;
-use APV\User\Models\UserPointHistory;
-use APV\User\Transformers\UserTransformer;
-use League\Fractal\Manager;
-use League\Fractal\Resource\Item;
-use Illuminate\Support\Str;
-use Carbon\Carbon;
-use Illuminate\Support\Facades\Hash;
-use APV\User\Constants\UserDataConst;
+// use APV\User\Models\UserReasonToLeave;
+// use APV\User\Models\UserTokenLeave;
+// use APV\User\Models\UserPoint;
+// use APV\User\Models\UserPointHistory;
+// use APV\User\Transformers\UserTransformer;
+// // use League\Fractal\Manager;
+// use League\Fractal\Resource\Item;
+// use Illuminate\Support\Str;
+// use Carbon\Carbon;
+// use Illuminate\Support\Facades\Hash;
+// use APV\User\Constants\UserDataConst;
 
 /**
  * Class UserService
@@ -38,12 +38,12 @@ class UserService extends BaseService
      * @param Manager $fractal
      * @param UserTransformer $userTransformer
      */
-    public function __construct(User $model, Manager $fractal, UserTransformer $userTransformer)
-    {
-        parent::__construct($model);
-        $this->fractal = $fractal;
-        $this->userTransformer = $userTransformer;
-    }
+    // public function __construct(User $model, Manager $fractal, UserTransformer $userTransformer)
+    // {
+    //     parent::__construct($model);
+    //     $this->fractal = $fractal;
+    //     $this->userTransformer = $userTransformer;
+    // }
 
     /**
      * Store a newly created resource in storage

@@ -3,9 +3,12 @@
 namespace APV\User\Models;
 
 use APV\User\Models\Auth\OauthAccessToken;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Laravel\Passport\HasApiTokens;
+
 /**
  * Class User
  * @package APV\User\Models
@@ -14,6 +17,7 @@ class User extends Authenticatable
 {
     use HasApiTokens;
     use SoftDeletes;
+
     /**
      * @var string
      */
@@ -22,7 +26,7 @@ class User extends Authenticatable
     /**
      * @var array
      */
-    // protected $dates = ['deleted_at'];
+    protected $dates = ['deleted_at'];
 
     /**
      * The attributes that are mass assignable.
@@ -31,10 +35,16 @@ class User extends Authenticatable
      */
     protected $fillable = [
         'username',
+        'gender',
+        'birthday',
+        'first_name',
+        'last_name',
         'email',
         'password',
-        'username',
-        'role_id',
+        'receive_news',
+        'actived',
+        'activation_code',
+        'register_at',
     ];
 
     /**
@@ -43,7 +53,12 @@ class User extends Authenticatable
      * @var array
      */
     protected $hidden = ['password', 'remember_token'];
-    protected $dates = ['deleted_at'];
+
+    /**
+     * The attributes that should be cast to native types.
+     *
+     * @var array
+     */
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
