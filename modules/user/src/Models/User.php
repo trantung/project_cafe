@@ -40,6 +40,7 @@ class User extends Authenticatable
         'first_name',
         'last_name',
         'email',
+        'name',
         'password',
         'receive_news',
         'actived',
@@ -59,9 +60,6 @@ class User extends Authenticatable
      *
      * @var array
      */
-    protected $casts = [
-        'email_verified_at' => 'datetime',
-    ];
     public function oauthAccessTokens()
     {
         return $this->hasMany(OauthAccessToken::class);

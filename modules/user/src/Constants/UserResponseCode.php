@@ -99,4 +99,10 @@ class UserResponseCode extends BaseResponseCode
             'first_name' => ['Your first name or last name is different from what registered with us'],
         ],
     ];
+    const ERROR_CODE_USERNAME_EXIST = [
+        'code' => 918,
+        'message' => [
+            'first_name' => ['username is exist'],
+        ],
+    ];
 }

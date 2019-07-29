@@ -14,9 +14,9 @@ Route::group([
     'middleware' => ['api', 'auth:api'],
 ], function () {
     Route::post('logout', 'UserLoginController@logout');
-    // Route::group([
-    //     'prefix' => 'my-page',
-    // ], function () {
-    //     Route::get('/top', 'UserApiController@getMyPageTop');
-    // });
+    Route::group([
+        'prefix' => '/shop',
+    ], function () {
+        Route::post('/create_user', 'UserApiController@createUser');
+    });
 });

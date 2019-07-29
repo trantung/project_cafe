@@ -33,4 +33,18 @@ class ApiAuth
         }
         return false;
     }
+
+    public function checkPermission($input)
+    {
+        if (!Auth::check()) {
+            return false;
+        }
+        $user = Auth::user();
+        //kiem tra quyen 
+        if (!in_array($user->role_id, getRoleCreateNewUser())) {
+            return false;
+        }
+
+        return true;
+    }
 }
