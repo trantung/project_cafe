@@ -15,6 +15,9 @@ class UserService
         }
         $input['password'] = Hash::make($input['password']);
         $userId = User::create($input)->id;
+        if (!$userId) {
+            return false;
+        }
         return $userId;
     }
     public function checkUserExist($input)

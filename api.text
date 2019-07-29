@@ -55,3 +55,19 @@ Tất cả api đều phải có header được khai báo
     "message": "Create success"
 }
 trong do 2 là id của user vừa được tạo mới
+
+4. Api cho create categories
+- url: api/cate/create_category
+- method: POST
+- parameter:
+	+ name:cate 4
+	+ description:gioi thieu cate 4
+	+ parent_id:0
+	+ active:1
+	+ image: image
+- response: {
+    "success": true,
+    "response_code": 1000,
+    "data": 4,
+    "message": "Create success"
+}

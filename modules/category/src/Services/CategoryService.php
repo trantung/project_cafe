@@ -3,7 +3,6 @@ namespace APV\Category\Services;
 
 use APV\Category\Models\Category;
 use APV\Base\Services\BaseService;
-use APV\Category\Transformers\CategoryTransformer;
 use League\Fractal\Resource\Collection;
 
 /**
@@ -22,9 +21,8 @@ class CategoryService extends BaseService
      * @param Category $model
      * @param CategoryTransformer $transformer
      */
-    public function __construct(Category $model, CategoryTransformer $transformer)
+    public function __construct(Category $model)
     {
-        $this->transformer = $transformer;
         parent::__construct($model);
     }
 
@@ -32,10 +30,18 @@ class CategoryService extends BaseService
      * Get root category list
      * @return Collection
      */
-    public function getRootCategoryList()
-    {
-        $categories = $this->model->where('parent_id', 0)->get();
+    // public function getRootCategoryList()
+    // {
+    //     $categories = $this->model->where('parent_id', 0)->get();
 
-        return $this->transformer->transformCollect($categories);
+    //     return $this->transformer->transformCollect($categories);
+    // }
+    public function createCategory($input)
+    {
+        $categoryId = Category::create($input)->id;
+        if (!$categoryId) {
+            return false;
+        }
+        return $categoryId;
     }
 }
