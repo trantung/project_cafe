@@ -5,20 +5,7 @@ use APV\Base\Http\Controllers\API\ApiBaseController;
 use Illuminate\Http\Request;
 use APV\User\Constants\UserResponseCode;
 use APV\Base\Services\ApiAuth;
-
-// use APV\Base\Http\Controllers\API\ApiBaseController;
-// use DB;
-// use Exception;
-// use Illuminate\Http\JsonResponse;
-// use Illuminate\Support\Facades\Auth;
-// use APV\User\Requests\Auth\LoginRequest;
-// use APV\User\Requests\Auth\RegisterRequest;
-// use APV\User\Requests\Auth\ResendEmailRegisterRequest;
-// use APV\User\Services\UserService;
-// use Illuminate\Support\Facades\Mail;
-// use APV\User\Mail\NotificationEmailMailable;
-// use APV\User\Constants\UserDataConst;
-// use APV\User\Constants\UserResponseCode;
+use Illuminate\Support\Facades\Auth;
 
 class UserLoginController extends ApiBaseController
 {
@@ -38,5 +25,13 @@ class UserLoginController extends ApiBaseController
             return $this->sendError(UserResponseCode::ERROR_CODE_UNAUTHENTICATED);
         }
         return $this->sendSuccess($data);
+    }
+
+    public function logout()
+    {
+        if ($data = $this->apiAuth->logout()) {
+            return $this->sendSuccess($data->username, 'Logout success');
+        }
+        return $this->sendSuccess(null, 'Logout success');
     }
 }

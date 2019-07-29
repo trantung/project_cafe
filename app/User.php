@@ -1,6 +1,6 @@
 <?php
 
-namespace APV\User\Models;
+namespace APV;
 
 use APV\User\Models\Auth\OauthAccessToken;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -62,8 +62,4 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
-    public function oauthAccessTokens()
-    {
-        return $this->hasMany(OauthAccessToken::class);
-    }
 }

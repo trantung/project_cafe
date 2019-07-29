@@ -1,0 +1,42 @@
+Tất cả api đều phải có header được khai báo
+- Accept:application/json
+- Content-Type:application/json
+- Cache-Control:no-cache
+
+1. Api cho login
+- url: api/user/login
+- method: POST
+- parameter: username, password(admin/123456)
+- response: {
+    "success": true,
+    "response_code": 1000,
+    "data": {
+        "token": "eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImp0aSI6IjRmODI0MDFiYWNiMDU3MjIxZmQyNTk4ZjExOTk5NGI5ODZlZjZlNzdkZTM1NDJhNjFjYjZkZTE5ZDRkYjQ1ZGU2MTNlMjMxM2U0YWEyNTU1In0.eyJhdWQiOiI1IiwianRpIjoiNGY4MjQwMWJhY2IwNTcyMjFmZDI1OThmMTE5OTk0Yjk4NmVmNmU3N2RlMzU0MmE2MWNiNmRlMTlkNGRiNDVkZTYxM2UyMzEzZTRhYTI1NTUiLCJpYXQiOjE1NjQzNjgwNDksIm5iZiI6MTU2NDM2ODA0OSwiZXhwIjoxNTk1OTkwNDQ5LCJzdWIiOiIxIiwic2NvcGVzIjpbXX0.kTGiDqFpuIDnkwvUIpmgAEVW7mcgJpRC1l5BGue16OM-cwpDF0pAFGhf1tMxs_Xpf-BxW_S6nsIjGXkU1iPnS2d0ic5RT956GDBMvBe4ltBj6q2qjWM1egOgmdGZE8D5dXFOxsvcnr-Id9cqwA_ZHDTIKWEHt70u4tu2gl_qyqwLVymYt8rRUCT8UUGNUxHoBXoMMlyyFOE7ej-oM6pFnUl438Et_C6N6EsjKy3ZM9gRXebh4WPw5bXcYUeRGVrFTl4XADj8ezOxmJqAXItqNY8k51PojXLPFwwV_-r_SKzPTMp_cGx_rjB55zObrM1Dumx2pS0dtuY59PKwSMS2voXVzojbKiTqwoXdKTBChZpTRBpVpDA0dhGaLsoM_-dty6f8oHIu8JC9xN6nuFVQ6U63LWFobvP6rkGqymrRYwfSEEvmKBkox_7XCQlQue7OQKtNCOSbhc09NQji6NbMF_1JedyZVGv1imC2EVfNNxoOJWLt6Xl-ygdLRfUjooI35XTYvAGx-2p7SicvcUNkd3ARdre1gQUOMCqeG2-FWA1tZ5zQL-XuujRW197NgCzK8_q3hF63f8GrLgjrrKLDb1269ROqgOi17muzxVR9SjiUr2gSis0COLwpHGl0WZUiY2g6vQvF4i4MC-X7WgkFsAQUkiInCvXU9QrlnKiTKNE",
+        "detai1l": {
+            "id": 1,
+            "role_id": 1,
+            "status": 1,
+            "username": "admin",
+            "name": "Admin",
+            "email": "trantunghn196@gmail.com",
+            "email_verified_at": null,
+            "created_at": "2019-07-26 09:03:38",
+            "updated_at": "2019-07-26 09:03:38",
+            "deleted_at": null
+        }
+    },
+    "message": "Success"
+}
+
+2. Api cho logout
+- url: api/user/logout
+- method: POST
+- parameter:
+- response: {
+    "success": true,
+    "response_code": 1000,
+    "data": "admin",
+    "message": "Logout success"
+}
+
+3. Api cho create user

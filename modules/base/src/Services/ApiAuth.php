@@ -21,4 +21,16 @@ class ApiAuth
         $data['detail'] = $person;
         return $data;
     }
+
+    public function logout() {
+
+        if (Auth::check()) {
+            $data = Auth::user();
+            $data->oauthAccessTokens()->update([
+                'revoked' => true,
+            ]);
+            return $data;
+        }
+        return false;
+    }
 }
