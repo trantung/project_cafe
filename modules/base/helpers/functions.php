@@ -15,6 +15,10 @@ function listPermissionModules()
             'role_id' => [UserDataConst::ADMIN, UserDataConst::SHOP_MANAGER],
             'functions' => ['postEdit', 'postDelete', 'postCreate'],
         ],
+        'shop' => [
+            'role_id' => [UserDataConst::ADMIN],
+            'functions' => ['postEdit', 'postDelete', 'postCreate'],
+        ],
         
     ];
     return $array;

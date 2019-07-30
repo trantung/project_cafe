@@ -104,7 +104,7 @@ trong do 2 là id của user vừa được tạo mới
     "message": "success"
 }
 
-11. Api cho edit categories
+6. Api cho edit categories
 - url: api/cate/edit_category/{id}
 - method: POST
 - parameter:
@@ -120,7 +120,7 @@ trong do 2 là id của user vừa được tạo mới
     "message": "Edit success"
 }
 
-13. Api cho delete categories
+7. Api cho delete categories
 - url: api/cate/delete_category/{id}
 - method: POST
 - parameter:
@@ -131,7 +131,7 @@ trong do 2 là id của user vừa được tạo mới
     "message": "Delete success"
 }
 
-6. Api cho list role
+8. Api cho list role
 - url: api/user/list_role
 - method: GET
 - parameter:
@@ -182,6 +182,85 @@ trong do 2 là id của user vừa được tạo mới
     ],
     "message": "List role success"
 }
+9. Api cho create shop
+- url: api/shop/create_shop
+- method: POST
+- parameter:
+    + name:shop so 1
+    + phone:0912957368
+    + description:desc shop so 1
+    + city:Ha Noi
+    + owner:tung
+    + address:Hai ba trung
+    + lat:20,121212
+    + long:22,212121
+    + active:1
+    + require_customer_login:0
+- response:{
+    "success": true,
+    "response_code": 1000,
+    "data": 2,
+    "message": "Create shop success"
+}
+10. Api cho edit shop
+- url: api/shop/edit_shop/{id}
+- method: POST
+- parameter
+    + name:shop so 1
+    + phone:0912957368
+    + description:desc shop so 1
+    + city:Ha Noi
+    + owner:tung
+    + address:Hai ba trung
+    + lat:20,121212
+    + long:22,212121
+    + active:1
+    + require_customer_login:0
+- response:{
+    "success": true,
+    "response_code": 1000,
+    "data": true,
+    "message": "Edit shop success"
+}
+11. Api cho delete shop
+- url: api/shop/delete_shop/{id}
+- method: POST
+- parameter
+- response:{
+    "success": true,
+    "response_code": 1000,
+    "data": true,
+    "message": "Delete shop success"
+}
+
+12. Api cho list shop
+- url: api/shop/list_shop
+- method: GET
+- parameter
+- response:{
+    "success": true,
+    "response_code": 1000,
+    "data": [
+        {
+            "id": 1,
+            "name": "shop so 1",
+            "phone": "0912957368",
+            "city": "Ha Noi",
+            "owner": "tung",
+            "address": "Hai ba trung",
+            "lat": "20,121212",
+            "long": "22,212121",
+            "description": "desc shop so 1",
+            "active": null,
+            "require_customer_login": 0,
+            "created_at": "2019-07-30 09:37:41",
+            "updated_at": "2019-07-30 09:37:41",
+            "deleted_at": null
+        }
+    ],
+    "message": "List shop success"
+}
+
 
 7. Api cho change password
 
@@ -193,7 +272,7 @@ trong do 2 là id của user vừa được tạo mới
 
 
 
-14. Api cho edit shop
+
 
 15. Api cho create table in shop
 

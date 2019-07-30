@@ -180,6 +180,7 @@ return [
          */
         APV\Base\Providers\ModuleProvider::class,
         APV\User\Providers\UserProvider::class,
+        APV\Shop\Providers\ShopProvider::class,
         APV\Category\Providers\CategoryProvider::class,
         APV\Product\Providers\ProductProvider::class,
         APV\Frontend\Providers\FrontendProvider::class,
