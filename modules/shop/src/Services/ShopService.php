@@ -3,6 +3,7 @@
 namespace APV\Shop\Services;
 
 use APV\Shop\Models\Shop;
+use APV\User\Models\UserShop;
 
 class ShopService
 {
@@ -31,6 +32,7 @@ class ShopService
     	if (!$shop) {
     		return false;
     	}
+    	UserShop::where('shop_id', $shopId)->delete();
     	Shop::destroy($shopId);
     	return true;
     }
