@@ -4,6 +4,7 @@ namespace APV\Base\Services;
 
 // use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Support\Facades\Auth;
+use APV\User\Constants\UserDataConst;
 
 class ApiAuth
 {
@@ -64,6 +65,19 @@ class ApiAuth
         if (!in_array($methodName, $permissions[$moduleName]['functions'])) {
             return false;
         }
-        return true;
+        return $user;
+    }
+    public function checkPermissionUserShop($moduleName, $methodName, $input)
+    {
+        $user = $this->checkPermissionModule($moduleName, $methodName);
+        if (!$user) {
+            return false;
+        }
+        if ($user->role_id == UserDataConst::ADMIN) {
+            return true;
+        }
+        //kiem tra user dang o shop nao
+        //kiem tra input truyen vao xem co o shop day khong
+        //
     }
 }

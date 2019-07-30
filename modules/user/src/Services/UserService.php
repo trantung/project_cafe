@@ -3,6 +3,7 @@
 namespace APV\User\Services;
 
 use APV\User\Models\User;
+use APV\User\Models\Role;
 use Illuminate\Support\Facades\Hash;
 
 class UserService
@@ -27,5 +28,19 @@ class UserService
             return true;
         }
         return false;
+    }
+    public function getListRole()
+    {
+        $data = Role::all();
+        return $data->toArray();
+    }
+    public function postDeleteUser($userId)
+    {
+        $user = User::find($userId);
+        if (!$user) {
+            return false;
+        }
+        User::destroy($userId);
+        return true;
     }
 }

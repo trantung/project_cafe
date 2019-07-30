@@ -75,16 +75,6 @@ class CategoryService extends BaseService
     {
         $result = [];
         foreach ($data as $category) {
-            // $categoryPath = $category->path;
-            // $explodePath = explode('_', $categoryPath);
-            // $name = '';
-            // foreach ($explodePath as $key => $value) {
-            //     if (count($explodePath) - 1 > $key) {
-            //         $name .= Category::find($value)->name . '-->';
-            //     } else {
-            //         $name .= Category::find($value)->name;
-            //     }
-            // }
             $result[] = $this->getNameCategoryWithPath($category);
         }
         return $result;

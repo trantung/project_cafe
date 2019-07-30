@@ -23,11 +23,11 @@ class UserApiController extends ApiBaseController
         $this->apiAuth = $apiAuth;
         $this->userService = $userService;
     }
-
-    public function createUser(Request $request)
+    
+    public function postCreate(Request $request)
     {
         $input = $request->all();
-        if (!$this->apiAuth->checkPermission($input)) {
+        if (!$this->apiAuth->checkPermissionModule('user', 'postCreate')) {
             return $this->sendError(UserResponseCode::ERROR_CODE_NO_PERMISSION);
         }
         $data = $this->userService->createUser($input);
@@ -35,5 +35,26 @@ class UserApiController extends ApiBaseController
             return $this->sendError(UserResponseCode::ERROR_CODE_USERNAME_EXIST);
         }
         return $this->sendSuccess($data, 'Create success');
+    }
+
+    public function getListRole()
+    {
+        $data = $this->userService->getListRole();
+        if (!$data) {
+            return $this->sendError(UserResponseCode::ERROR_CODE_NO_PERMISSION);
+        }
+        return $this->sendSuccess($data, 'List role success');
+    }
+
+    public function postDelete($userId)
+    {
+        if (!$this->apiAuth->checkPermissionModule('user', 'postDelete')) {
+            return $this->sendError(UserResponseCode::ERROR_CODE_NO_PERMISSION);
+        }
+        $data = $this->userService->postDeleteUser($userId);
+        if (!$data) {
+            return $this->sendError(UserResponseCode::ERROR_CODE_USER_NOT_FOUND);
+        }
+        return $this->sendSuccess($data, 'Delete user success');
     }
 }

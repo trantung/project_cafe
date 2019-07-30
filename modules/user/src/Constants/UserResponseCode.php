@@ -105,4 +105,8 @@ class UserResponseCode extends BaseResponseCode
             'first_name' => ['username is exist'],
         ],
     ];
+    const ERROR_CODE_USER_NOT_FOUND = [
+        'code' => 919,
+        'message' => 'User not found to delete',
+    ];
 }
