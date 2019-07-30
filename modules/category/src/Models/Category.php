@@ -36,6 +36,8 @@ class Category extends Model
         'path',
         'name',
         'active',
+        'image',
+        'description',
         'created_admin_id',
         'updated_admin_id',
     ];

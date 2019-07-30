@@ -47,4 +47,23 @@ class ApiAuth
 
         return true;
     }
+
+    public function checkPermissionModule($moduleName, $methodName)
+    {
+        if (!Auth::check()) {
+            return false;
+        }
+        $user = Auth::user();
+        $permissions = listPermissionModules();
+        if (!$permissions[$moduleName]) {
+            return false;
+        }
+        if (!in_array($user->role_id, $permissions[$moduleName]['role_id'])) {
+            return false;
+        }
+        if (!in_array($methodName, $permissions[$moduleName]['functions'])) {
+            return false;
+        }
+        return true;
+    }
 }

@@ -2,7 +2,7 @@ Tất cả api đều phải có header được khai báo
 - Accept:application/json
 - Content-Type:application/json
 - Cache-Control:no-cache
-
+Đối với trường hợp post ảnh thì phải có thêm content-type:multi-data
 1. Api cho login
 - url: api/user/login
 - method: POST
@@ -59,10 +59,10 @@ trong do 2 là id của user vừa được tạo mới
 4. Api cho create categories
 - url: api/cate/create_category
 - method: POST
-- parameter:
+- parameter: path = 0 là category chính(nếu muốn tạo 1 category root)
 	+ name:cate 4
 	+ description:gioi thieu cate 4
-	+ parent_id:0
+	+ path:1_3
 	+ active:1
 	+ image: image
 - response: {
@@ -71,3 +71,102 @@ trong do 2 là id của user vừa được tạo mới
     "data": 4,
     "message": "Create success"
 }
+
+5. Api cho list categories
+- url: api/cate/list_category
+- method: GET
+- parameter
+- response:{
+    "success": true,
+    "response_code": 1000,
+    "data": [
+        {
+            "path": "1",
+            "name": "cate 1"
+        },
+        {
+            "path": "2",
+            "name": "cate 2"
+        },
+        {
+            "path": "1_3",
+            "name": "cate 1-->cate 1.1"
+        },
+        {
+            "path": "1_3_4",
+            "name": "cate 1-->cate 1.1-->cate 1.1.1"
+        },
+        {
+            "path": "1_3_5",
+            "name": "cate 1-->cate 1.1-->cate 45"
+        }
+    ],
+    "message": "success"
+}
+
+11. Api cho edit categories
+- url: api/cate/edit_category/{id}
+- method: POST
+- parameter:
+	+ name:cate 7 chinh sua
+	+ description:gioi thieu cate 7
+	+ path:2
+	+ active:1
+	+ image
+- response:{
+    "success": true,
+    "response_code": 1000,
+    "data": true,
+    "message": "Edit success"
+}
+
+13. Api cho delete categories
+- url: api/cate/delete_category/{id}
+- method: POST
+- parameter:
+- response:{
+    "success": true,
+    "response_code": 1000,
+    "data": true,
+    "message": "Delete success"
+}
+
+6. Api cho list role
+
+7. Api cho change password
+
+8. Api cho reset password
+
+9. Api cho edit user
+
+10. Api cho delete user
+
+14. Api cho edit shop
+
+15. Api cho create table in shop
+
+16. Api cho edit table in shop
+
+17. Api cho delete table in shop
+
+18. Api cho create product
+
+19. Api cho edit product
+
+20. Api cho list product
+
+21. Api create topping cho categories
+
+21. Api edit topping cho categories
+
+21. Api delete topping cho categories
+
+22. Api list topping cho categories
+
+22. Api create topping cho product
+
+23. Api edit topping cho product
+
+24. Api delete topping cho product
+
+25. Api list topping cho product

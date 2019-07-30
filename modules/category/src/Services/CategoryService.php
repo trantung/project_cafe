@@ -4,44 +4,127 @@ namespace APV\Category\Services;
 use APV\Category\Models\Category;
 use APV\Base\Services\BaseService;
 use League\Fractal\Resource\Collection;
+use Illuminate\Http\UploadedFile;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Http\Request;
 
-/**
- * Class CategoryService
- * @package APV\Category\Services
- */
 class CategoryService extends BaseService
 {
-    /**
-     * @var CategoryTransformer
-     */
-    protected $transformer;
-
-    /**
-     * CategoryService constructor.
-     * @param Category $model
-     * @param CategoryTransformer $transformer
-     */
     public function __construct(Category $model)
     {
         parent::__construct($model);
     }
 
-    /**
-     * Get root category list
-     * @return Collection
-     */
-    // public function getRootCategoryList()
-    // {
-    //     $categories = $this->model->where('parent_id', 0)->get();
-
-    //     return $this->transformer->transformCollect($categories);
-    // }
     public function createCategory($input)
     {
+        $file = request()->file('image');
+        if (!$file) {
+            return false;
+        }
+        $path = explode('_', $input['path']);
+        $input['parent_id'] = end($path);
         $categoryId = Category::create($input)->id;
         if (!$categoryId) {
             return false;
         }
+        $fileNameImage = $file->getClientOriginalName();
+        request()->file('image')->move(public_path("/uploads/categories/" . $categoryId . '/'), $fileNameImage);
+        $imageUrl = '/uploads/categories/' . $categoryId . '/' . $fileNameImage;
+        Category::where('id', $categoryId)->update(['path' => $input['path'] . '_' . $categoryId, 'image' => $imageUrl]);
         return $categoryId;
+    }
+
+    public function getList()
+    {
+        $cateRoot = $this->getRoot();
+        $cateChild = $this->getListChild();
+        $data = array_merge($cateRoot, $cateChild);
+        return $data;
+    }
+
+    public function getRoot()
+    {
+        $data = Category::where('parent_id', 0)->get();
+        $result = $this->getNameListCategoryWithPath($data);
+        return $result;
+    }
+
+    public function getListChild()
+    {
+        $data = Category::where('parent_id', '!=', 0)->get();
+        $result = $this->getNameListCategoryWithPath($data);
+        return $result;
+    }
+
+    public function getNameCategoryWithPath($category)
+    {
+        $categoryPath = $category->path;
+        $explodePath = explode('_', $categoryPath);
+        $name = '';
+        foreach ($explodePath as $key => $value) {
+            if (count($explodePath) - 1 > $key) {
+                $name .= Category::find($value)->name . '-->';
+            } else {
+                $name .= Category::find($value)->name;
+            }
+        }
+        $result = ['path' => $categoryPath, 'name' => $name];
+        return $result;
+    }
+    public function getNameListCategoryWithPath($data)
+    {
+        $result = [];
+        foreach ($data as $category) {
+            // $categoryPath = $category->path;
+            // $explodePath = explode('_', $categoryPath);
+            // $name = '';
+            // foreach ($explodePath as $key => $value) {
+            //     if (count($explodePath) - 1 > $key) {
+            //         $name .= Category::find($value)->name . '-->';
+            //     } else {
+            //         $name .= Category::find($value)->name;
+            //     }
+            // }
+            $result[] = $this->getNameCategoryWithPath($category);
+        }
+        return $result;
+    }
+
+    public function getDetail($categoryId)
+    {
+        $category = Category::find($categoryId);
+        $data['name'] = $category->name;
+        $data['image'] = $category->image;
+        $data['active'] = $category->active;
+        $data['description'] = $category->description;
+        $data['path'] = $this->getNameCategoryWithPath($category);
+        return $data;
+    }
+
+    public function postEdit($categoryId, $input)
+    {
+        // dd($categoryId);
+        $category = Category::find($categoryId);
+        $file = request()->file('image');
+        if (!$file) {
+            $input['image'] = $category->image;
+        } else {
+            $fileNameImage = $file->getClientOriginalName();
+            request()->file('image')->move(public_path("/uploads/categories/" . $categoryId . '/'), $fileNameImage);
+            $imageUrl = '/uploads/categories/' . $categoryId . '/' . $fileNameImage;
+            $input['image'] = $imageUrl;
+        }
+        $category->update($input);
+        return true;
+    }
+
+    public function postDelete($categoryId)
+    {
+        $category = Category::find($categoryId);
+        if (!$category) {
+            return false;
+        }
+        Category::destroy($categoryId);
+        return true;
     }
 }
