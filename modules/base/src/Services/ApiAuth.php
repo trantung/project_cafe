@@ -56,6 +56,9 @@ class ApiAuth
         }
         $user = Auth::user();
         $permissions = listPermissionModules();
+        if (!isset($permissions[$moduleName])) {
+            return false;
+        }
         if (!$permissions[$moduleName]) {
             return false;
         }

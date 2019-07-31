@@ -109,4 +109,17 @@ class UserResponseCode extends BaseResponseCode
         'code' => 919,
         'message' => 'User not found to delete',
     ];
+    const ERROR_CODE_EDIT = [
+        'code' => 920,
+        'message' => 'User cannot edit',
+    ];
+    const ERROR_CODE_CHANGE_PASSWORD = [
+        'code' => 921,
+        'message' => 'User cannot change password',
+    ];
+    const ERROR_CODE_RESET_PASSWORD = [
+        'code' => 922,
+        'message' => 'User cannot reset password',
+    ];
+    
 }

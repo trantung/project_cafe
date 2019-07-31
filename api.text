@@ -262,7 +262,6 @@ trong do 2 là id của user vừa được tạo mới
     "message": "List shop success"
 }
 
-
 7. Api cho change password
 
 8. Api cho reset password
@@ -271,21 +270,13 @@ trong do 2 là id của user vừa được tạo mới
 
 10. Api cho delete user
 
-
-
-
-
 15. Api cho create table in shop
 
 16. Api cho edit table in shop
 
 17. Api cho delete table in shop
 
-18. Api cho create product
-
-19. Api cho edit product
-
-20. Api cho list product
+26. Api cho level(tầng)
 
 21. Api create topping cho categories
 
@@ -295,6 +286,14 @@ trong do 2 là id của user vừa được tạo mới
 
 22. Api list topping cho categories
 
+
+
+18. Api cho create product
+
+19. Api cho edit product
+
+20. Api cho list product
+
 22. Api create topping cho product
 
 23. Api edit topping cho product
@@ -302,3 +301,4 @@ trong do 2 là id của user vừa được tạo mới
 24. Api delete topping cho product
 
 25. Api list topping cho product
+

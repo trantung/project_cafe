@@ -48,9 +48,11 @@ class UserDataConst extends BaseDataConst
         'MINUS' => 0,
         'ADD' => 1,
     ];
+    const PASSWORD_DEFAULT = '123456';
     const ADMIN = 1;
     const SHOP_MANAGER = 2;
     const CASHIER = 3;
     const SERVICER = 4;
     const KITCHEN_BAR = 5;
+
 }

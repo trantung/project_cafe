@@ -40,7 +40,10 @@
             "APV\\Product\\": "modules/product/src",
             "APV\\Frontend\\": "modules/frontend/src",
             "APV\\User\\": "modules/user/src",
-            "APV\\Shop\\": "modules/shop/src"
+            "APV\\Shop\\": "modules/shop/src",
+            "APV\\Level\\": "modules/level/src",
+            "APV\\Topping\\": "modules/topping/src",
+            "APV\\Table\\": "modules/table/src"
         },
         "classmap": [
             "database/seeds",

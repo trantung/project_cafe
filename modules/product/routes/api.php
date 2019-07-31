@@ -4,8 +4,11 @@ Route::group([
     'namespace' => 'APV\Product\Http\Controllers\API',
     'middleware' => ['api'],
 ], function () {
-	Route::post('login',function(){
-		dd('product');
-	});
     Route::get('/search', 'ProductApiController@search');
+    Route::get('list_product', 'ProductApiController@getList');
+    Route::post('create_product', 'ProductApiController@postCreate');
+    Route::get('detail_product/{id}', 'ProductApiController@getDetail');
+    Route::post('edit_product/{id}', 'ProductApiController@postEdit');
+    Route::post('delete_product/{id}', 'ProductApiController@postDelete');
+    Route::post('create_product_topping/{id}', 'ProductApiController@postCreateProductTopping');
 });

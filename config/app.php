@@ -182,6 +182,9 @@ return [
         APV\User\Providers\UserProvider::class,
         APV\Shop\Providers\ShopProvider::class,
         APV\Category\Providers\CategoryProvider::class,
+        APV\Level\Providers\LevelProvider::class,
+        APV\Topping\Providers\ToppingProvider::class,
+        APV\Table\Providers\TableProvider::class,
         APV\Product\Providers\ProductProvider::class,
         APV\Frontend\Providers\FrontendProvider::class,
 
