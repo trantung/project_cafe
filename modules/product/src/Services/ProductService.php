@@ -31,13 +31,12 @@ class ProductService extends BaseService
 
     public function create($input)
     {
-        // $categories = getCategoriesByString($input['categories']);
         $productId = Product::create($input)->id;
-        // $product = Product::find($productId);
-        // $product->categories()->attach($categories);
         if (!$productId) {
             return false;
         }
+        //upload avatar: todo
+        //upload nhieu anh: todo
         return $productId;
     }
 
@@ -50,14 +49,6 @@ class ProductService extends BaseService
     public function getCategoriesByProduct($productId)
     {
         $data = [];
-        // $list = ToppingCategory::where('topping_id', $productId)->get();
-        // foreach ($list as $key => $value) {
-        //     $category = Category::find($value->category_id);
-        //     if ($category) {
-        //         $data[$key]['category_id'] = $category->id;
-        //         $data[$key]['category_name'] = $category->name;
-        //     }
-        // }
         $product = Product::find($id);
         $categoryId = $product->category_id;
         $category = Category::find($categoryId);
@@ -79,6 +70,7 @@ class ProductService extends BaseService
         }
         $data = $product->toArray();
         $data['categories'] = $this->getCategoriesByProduct($productId);
+        $data['product_images'] = $this->getProductImages($productId);
         return $data;
     }
 
@@ -88,9 +80,9 @@ class ProductService extends BaseService
         if (!$product) {
             return false;
         }
+        //upload avatar: todo
+        //upload nhieu anh: todo
         $product->update($input);
-        // $categories = getCategoriesByString($input['categories']);
-        // $product->categories()->sync($categories);
         return true;
     }
 
@@ -100,8 +92,8 @@ class ProductService extends BaseService
         if (!$product) {
             return false;
         }
-        // $product->categories()->detach();
         Product::destroy($productId);
+        //xoa anh: todo
         return true;
     }
     public function createProductTopping($productId, $input)
@@ -109,6 +101,10 @@ class ProductService extends BaseService
         $toppingId = Topping::create($input)->id;
         ProductTopping::create(['product_id' => $productId, 'topping_id' => $toppingId]);
         return true;
+    }
+    public function getProductImages($productId)
+    {
+        //todo
     }
     
 }
