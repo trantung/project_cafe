@@ -2,7 +2,7 @@
 Route::group([
     'prefix' => 'api/product',
     'namespace' => 'APV\Product\Http\Controllers\API',
-    'middleware' => ['api'],
+    'middleware' => ['api', 'auth:api'],
 ], function () {
     Route::get('/search', 'ProductApiController@search');
     Route::get('list_product', 'ProductApiController@getList');

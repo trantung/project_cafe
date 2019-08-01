@@ -17,7 +17,7 @@ class CreateImagesTable extends Migration
             $table->increments('id');
             $table->string('image_url')->nullable();
             $table->integer('model_id')->nullable();
-            $table->integer('model_name')->nullable();
+            $table->string('model_name')->nullable();
             $table->integer('active')->nullable();
             $table->integer('weight_number')->nullable();
             $table->timestamps();
