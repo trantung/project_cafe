@@ -14,32 +14,32 @@ class CustomerService extends BaseService
     {
         parent::__construct($model);
     }
-
-    public function createCustomer($input)
+    /**
+     * [postCreate description]
+     * @param  'name', 'phone',
+     * @return customerId
+     */
+    public function postCreate($input)
     {
-        $file = request()->file('image');
-        if (!$file) {
+        $checkPhoneExist = $this->checkPhoneExist($input['phone']);
+        if ($checkPhoneExist) {
             return false;
         }
-        $path = explode('_', $input['path']);
-        $input['parent_id'] = end($path);
         $customerId = Customer::create($input)->id;
-        if (!$customerId) {
-            return false;
-        }
-        $fileNameImage = $file->getClientOriginalName();
-        request()->file('image')->move(public_path("/uploads/categories/" . $customerId . '/'), $fileNameImage);
-        $imageUrl = '/uploads/categories/' . $customerId . '/' . $fileNameImage;
-        Customer::where('id', $customerId)->update(['path' => $input['path'] . '_' . $customerId, 'image' => $imageUrl]);
         return $customerId;
     }
-
+    public function checkPhoneExist($phone)
+    {
+        $check = Customer::where('phone', $phone)->first();
+        if ($check) {
+            return true;
+        }
+        return false;
+    }
     public function getList()
     {
-        $cateRoot = $this->getRoot();
-        $cateChild = $this->getListChild();
-        $data = array_merge($cateRoot, $cateChild);
-        return $data;
+        $data = Customer::all();
+        return $data->toArray();
     }
 
     public function getRoot()

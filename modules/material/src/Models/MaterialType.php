@@ -1,5 +1,5 @@
 <?php
-namespace APV\Customer\Models;
+namespace APV\Material\Models;
 
 use APV\Product\Models\Product;
 use Illuminate\Database\Eloquent\Model;
@@ -8,35 +8,29 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 /**
- * Class Customer
- * @package APV\Customer\Models
+ * Class Material
+ * @package APV\Material\Models
  */
-class Customer extends Model
+class MaterialType extends Model
 {
     use SoftDeletes;
 
     /**
      * @var string
      */
-    protected $table = 'customers';
+    protected $table = 'material_types';
 
     /**
      * @var array
      */
     protected $dates = ['deleted_at'];
-
     /**
      * The attributes that are mass assignable.
      *
      * @var array
      */
     protected $fillable = [
-        'id',
-        'parent_id',
-        'name',
-        'phone',
-        'username',
-        'password',
+        'name', 'parent_id', 'active'
     ];
-    protected $hidden = ['password', 'remember_token'];
+
 }

@@ -28,10 +28,10 @@ class CustomerApiController extends ApiBaseController
     public function postCreate(Request $request)
     {
         $input = $request->all();
-        if (!$this->apiAuth->checkPermissionModule('customer', 'postCreate')) {
-            return $this->sendError(UserResponseCode::ERROR_CODE_NO_PERMISSION);
-        }
-        $data = $this->customerService->createCategory($input);
+        // if (!$this->apiAuth->checkPermissionModule('customer', 'postCreate')) {
+        //     return $this->sendError(UserResponseCode::ERROR_CODE_NO_PERMISSION);
+        // }
+        $data = $this->customerService->postCreate($input);
         if (!$data) {
             return $this->sendError(UserResponseCode::ERROR_CODE_UNCREATE_NEW);
         }

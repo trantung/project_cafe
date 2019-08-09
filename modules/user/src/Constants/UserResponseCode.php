@@ -121,5 +121,9 @@ class UserResponseCode extends BaseResponseCode
         'code' => 922,
         'message' => 'User cannot reset password',
     ];
+    const ERROR_CODE_UNCREATE_NEW = [
+        'code' => 925,
+        'message' => 'User cannot create',
+    ];
     
 }
