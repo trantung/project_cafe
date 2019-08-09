@@ -75,7 +75,7 @@ class SizeApiController extends ApiBaseController
     //config size_product
     
     //param: product_id
-    public function getListSizeProduct(Request $request, $sizeId)
+    public function getListSizeProduct(Request $request, $sizeId, $productId)
     {
         $input = $request->all();
         $data = $this->sizeService->getListSizeProduct($input, $sizeId);
@@ -87,7 +87,7 @@ class SizeApiController extends ApiBaseController
      * @param  [type]  $sizeId  [description]
      * @return [type]           [description]
      */
-    public function postCreateSizeProduct(Request $request, $sizeId)
+    public function postCreateSizeProduct(Request $request, $sizeId, $productId)
     {
         $input = $request->all();
         if (!$this->apiAuth->checkPermissionModule('size', 'postCreateSizeProduct')) {
@@ -109,7 +109,7 @@ class SizeApiController extends ApiBaseController
         return $this->sendSuccess($data, 'Detail success');
     }
     //param: product_id, price, status
-    public function postEditSizeProduct(Request $request, $sizeId)
+    public function postEditSizeProduct(Request $request, $sizeId, $productId)
     {
         $input = $request->all();
         if (!$this->apiAuth->checkPermissionModule('size', 'postEditSizeProduct')) {
@@ -122,7 +122,7 @@ class SizeApiController extends ApiBaseController
         return $this->sendSuccess($data, 'Edit success');
     }
 
-    public function postDeleteSizeProduct(Request $request, $sizeId)
+    public function postDeleteSizeProduct(Request $request, $sizeId, $productId)
     {
         $input = $request->all();
         if (!$this->apiAuth->checkPermissionModule('size', 'postDeleteSizeProduct')) {

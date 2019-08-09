@@ -28,7 +28,7 @@ class Product extends Model
     protected $dates = ['deleted_at'];
     protected $fillable = [
         'id', 'name', 'category_id', 'price_origin', 'price_pay',
-        'code', 'barcode', 'print_view', 'description', 'weight_number', 'avatar'
+        'code', 'barcode', 'print_view', 'description', 'weight_number', 'avatar', 'open_time', 'close_time', 'duration_time'
     ];
    
     public function category()

@@ -12,9 +12,9 @@ Route::group([
     Route::post('delete_size/{id}', 'SizeApiController@postDelete');
     //config size product: 1 product có nhiều size sẽ có giá tiền khác nhau với từng size và sẽ được default là giá niêm yết cho sản phẩm đấy(trong config size product có checkbox chọn default)
     //thông tin size product với 1 size_product
-    Route::get('list_size_product/{size_id}', 'SizeApiController@getListSizeProduct');
-    Route::post('create_size_product/{size_id}', 'SizeApiController@postCreateSizeProduct');
+    Route::get('list_size_product/{size_id}/{product_id}', 'SizeApiController@getListSizeProduct');
+    Route::post('create_size_product/{size_id}/{product_id}', 'SizeApiController@postCreateSizeProduct');
     Route::get('detail_size_product/{size_id}/{product_id}', 'SizeApiController@getDetailSizeProduct');
-    Route::post('edit_size_product/{size_id}', 'SizeApiController@postEditSizeProduct');
-    Route::post('delete_size_product/{size_id}', 'SizeApiController@postDeleteSizeProduct');
+    Route::post('edit_size_product/{size_id}/{product_id}', 'SizeApiController@postEditSizeProduct');
+    Route::post('delete_size_product/{size_id}/{product_id}', 'SizeApiController@postDeleteSizeProduct');
 });

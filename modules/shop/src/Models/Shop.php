@@ -23,6 +23,6 @@ class Shop extends Model
      * @var array
      */
     protected $fillable = [
-        'name', 'phone', 'description', 'city', 'owner', 'address', 'lat', 'long', 'acive', 'require_customer_login'
+        'name', 'phone', 'description', 'city', 'owner', 'address', 'lat', 'long', 'acive', 'require_customer_login', 'open_time', 'close_time'
     ];
 }

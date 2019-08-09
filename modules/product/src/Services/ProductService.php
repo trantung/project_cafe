@@ -2,6 +2,7 @@
 
 namespace APV\Product\Services;
 
+use APV\Shop\Models\Shop;
 use APV\Category\Models\Category;
 use APV\Topping\Models\Topping;
 use APV\Product\Models\Product;
@@ -25,11 +26,6 @@ class ProductService extends BaseService
    public function __construct(Product $model)
     {
         parent::__construct($model);
-    }
-
-    public function createToppingCategories($productId, $categories)
-    {
-        dd($categories);
     }
 
     public function create($input)
@@ -56,8 +52,20 @@ class ProductService extends BaseService
 
     public function getList()
     {
-        $product = Product::all();
-        return $product->toArray();
+        // $myTime = '19:30';
+        // if (date('H:i') == date('H:i', strtotime($myTime))) {
+        //     // do something
+        // }
+        // $shop = Shop::find(1);
+        // $openTime = $shop->open_time;
+        // $closeTime = $shop->close_time;
+        $products = Product::all();
+        // foreach ($products as $key => $product) {
+        //     if ($product->open_time) {
+        //         # code...
+        //     }
+        // }
+        return $products->toArray();
     }
 
     public function getCategoriesByProduct($productId)
