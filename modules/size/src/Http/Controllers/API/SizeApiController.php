@@ -93,7 +93,7 @@ class SizeApiController extends ApiBaseController
         if (!$this->apiAuth->checkPermissionModule('size', 'postCreateSizeProduct')) {
             return $this->sendError(SizeResponseCode::ERROR_CODE_NO_PERMISSION);
         }
-        $data = $this->sizeService->createSizeProduct($input, $sizeId);
+        $data = $this->sizeService->createSizeProduct($input, $sizeId, $productId);
         if (!$data) {
             return $this->sendError(SizeResponseCode::ERROR_CODE_UNCREATE_NEW);
         }
@@ -115,20 +115,20 @@ class SizeApiController extends ApiBaseController
         if (!$this->apiAuth->checkPermissionModule('size', 'postEditSizeProduct')) {
             return $this->sendError(SizeResponseCode::ERROR_CODE_NO_PERMISSION);
         }
-        $data = $this->sizeService->postEditSizeProduct($sizeId, $input);
+        $data = $this->sizeService->postEditSizeProduct($input, $sizeId, $productId);
         if (!$data) {
             return $this->sendError(SizeResponseCode::ERROR_CODE_EDIT);
         }
         return $this->sendSuccess($data, 'Edit success');
     }
 
-    public function postDeleteSizeProduct(Request $request, $sizeId, $productId)
+    public function postDeleteSizeProduct($sizeId, $productId)
     {
-        $input = $request->all();
+        // $input = $request->all();
         if (!$this->apiAuth->checkPermissionModule('size', 'postDeleteSizeProduct')) {
             return $this->sendError(SizeResponseCode::ERROR_CODE_NO_PERMISSION);
         }
-        $data = $this->sizeService->postDeleteSizeProduct($sizeId);
+        $data = $this->sizeService->postDeleteSizeProduct($sizeId, $productId);
         if (!$data) {
             return $this->sendError(SizeResponseCode::ERROR_CODE_DELETE);
         }

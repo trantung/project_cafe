@@ -31,7 +31,7 @@ class SizeProduct extends Model
      * @var array
      */
     protected $fillable = [
-        'id', 'level_id', 'name','qr_code', 'size', 'type', 'max_number_person', 'active', 'code'
+        'size_id', 'product_id'
     ];
 
 }

@@ -14,8 +14,8 @@ class AddOpenCloseTimeShop extends Migration
     public function up()
     {
         Schema::table('shops', function (Blueprint $table) {
-            $table->string('open_time')->nullable()->after('id');
-            $table->string('close_time')->nullable()->after('id');
+            $table->time('open_time')->nullable()->after('id');
+            $table->time('close_time')->nullable()->after('id');
         });
     }
 

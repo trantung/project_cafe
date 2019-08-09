@@ -18,7 +18,7 @@ class SizeResource extends Model
     /**
      * @var string
      */
-    protected $table = 'size_resource';
+    protected $table = 'size_product_material';
 
     /**
      * @var array
@@ -31,7 +31,7 @@ class SizeResource extends Model
      * @var array
      */
     protected $fillable = [
-        'id', 'level_id', 'name','qr_code', 'size', 'type', 'max_number_person', 'active', 'code'
+        'size_product_id', 'product_id', 'size_id', 'material_id', 'quantity'
     ];
 
 }
