@@ -35,6 +35,10 @@ function listPermissionModules()
             'role_id' => [UserDataConst::ADMIN, UserDataConst::SHOP_MANAGER],
             'functions' => ['postEdit', 'postDelete', 'postCreate', 'postCreateProductTopping'],
         ],
+        'size' => [
+            'role_id' => [UserDataConst::ADMIN, UserDataConst::SHOP_MANAGER],
+            'functions' => ['postEdit', 'postDelete', 'postCreate', 'getListSizeProduct', 'postCreateSizeProduct', 'getDetailSizeProduct', 'postEditSizeProduct', 'postDeleteSizeProduct'],
+        ],
         
         
         

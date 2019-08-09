@@ -186,7 +186,8 @@ return [
         APV\Topping\Providers\ToppingProvider::class,
         APV\Table\Providers\TableProvider::class,
         APV\Product\Providers\ProductProvider::class,
-        APV\Frontend\Providers\FrontendProvider::class,
+        APV\Size\Providers\SizeProvider::class,
+        // APV\Frontend\Providers\FrontendProvider::class,
 
     ],
 
