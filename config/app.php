@@ -187,6 +187,7 @@ return [
         APV\Table\Providers\TableProvider::class,
         APV\Product\Providers\ProductProvider::class,
         APV\Size\Providers\SizeProvider::class,
+        APV\Customer\Providers\CustomerProvider::class,
         // APV\Frontend\Providers\FrontendProvider::class,
 
     ],

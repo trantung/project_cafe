@@ -44,7 +44,8 @@
             "APV\\Level\\": "modules/level/src",
             "APV\\Topping\\": "modules/topping/src",
             "APV\\Table\\": "modules/table/src",
-            "APV\\Size\\": "modules/size/src"
+            "APV\\Size\\": "modules/size/src",
+            "APV\\Customer\\": "modules/customer/src"
         },
         "classmap": [
             "database/seeds",
