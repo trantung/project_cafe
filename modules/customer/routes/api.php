@@ -10,4 +10,5 @@ Route::group([
     Route::get('detail_customer/{id}', 'CustomerApiController@getDetail');
     Route::post('edit_customer/{id}', 'CustomerApiController@postEdit');
     Route::post('delete_customer/{id}', 'CustomerApiController@postDelete');
+    Route::post('check_phone_customer', 'CustomerApiController@postCheckPhoneCustomer');
 });
