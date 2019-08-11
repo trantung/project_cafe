@@ -6,6 +6,7 @@ use Illuminate\Support\Facades\Auth;
 use APV\Base\Http\Controllers\API\ApiBaseController;
 use APV\Base\Services\ApiAuth;
 use APV\User\Services\UserService;
+use APV\User\Constants\UserResponseCode;
 use Illuminate\Http\Request;
 
 /**
