@@ -100,7 +100,8 @@ class CategoryService extends BaseService
         $data['image'] = $category->image;
         $data['active'] = $category->active;
         $data['description'] = $category->description;
-        $data['path'] = $this->getNameCategoryWithPath($category);
+        $data['list_products'] = $this->getListProductByCategory($categoryId);
+        // $data['path'] = $this->getNameCategoryWithPath($category);
         return $data;
     }
 
@@ -132,5 +133,24 @@ class CategoryService extends BaseService
         }
         Category::destroy($categoryId);
         return true;
+    }
+    public function getListCategoryByRoot($categoryId)
+    {
+        $list = Category::all();
+        $array = [];
+        foreach ($list as $key => $value) {
+            $explodePath = explode('_', $value->path);
+            if (in_array($categoryId, $explodePath)) {
+                $array[$value->id] = $value->id;
+            }
+        }
+        return array_merge($array, [$categoryId=>$categoryId]);
+
+    }
+    public function getListProductByCategory($categoryId)
+    {
+        $listCategory = $this->getListCategoryByRoot($categoryId);
+        $data = Product::whereIn('category_id', $listCategory)->get();
+        return $data->toArray();
     }
 }
