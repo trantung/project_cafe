@@ -58,7 +58,7 @@ class CategoryService extends BaseService
 
     public function getNameCategoryWithPath($category)
     {
-        if (!sset($category)) {
+        if (!isset($category)) {
             return null;
         }
         $categoryPath = $category->path;
