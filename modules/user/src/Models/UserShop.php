@@ -9,7 +9,7 @@ use Illuminate\Database\Eloquent\Model;
  */
 class UserShop extends Model
 {
-    protected $table = 'user_shops';
+    protected $table = 'user_shop';
     
     protected $fillable = [
         'user_id',
