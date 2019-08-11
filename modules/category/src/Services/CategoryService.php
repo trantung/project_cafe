@@ -31,7 +31,7 @@ class CategoryService extends BaseService
         request()->file('image')->move(public_path("/uploads/categories/" . $categoryId . '/'), $fileNameImage);
         $imageUrl = '/uploads/categories/' . $categoryId . '/' . $fileNameImage;
         if ($input['parent_id'] == 0) {
-            Category::where('id', $categoryId)->update(['path' => $categoryId . '_', 'image' => $imageUrl]);
+            Category::where('id', $categoryId)->update(['path' => $categoryId, 'image' => $imageUrl]);
         } else {
             Category::where('id', $categoryId)->update(['path' => $input['path'] . '_' . $categoryId, 'image' => $imageUrl]);
         }
