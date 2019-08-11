@@ -61,6 +61,10 @@ class CategoryService extends BaseService
         if (!isset($category)) {
             return null;
         }
+        if ($category->parent_id == 0) {
+            $name = $category->name;
+            return $result = ['path' => $category->path, 'name' => $name];
+        }
         $categoryPath = $category->path;
         $explodePath = explode('_', $categoryPath);
         $name = '';
