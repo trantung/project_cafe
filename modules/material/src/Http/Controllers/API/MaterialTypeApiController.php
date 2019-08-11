@@ -31,7 +31,7 @@ class MaterialTypeApiController extends ApiBaseController
         if (!$this->apiAuth->checkPermissionModule('material', 'postCreate')) {
             return $this->sendError(MaterialResponseCode::ERROR_CODE_NO_PERMISSION);
         }
-        $data = $this->materialService->postCreate($input);
+        $data = $this->materialService->postCreateMaterialType($input);
         if (!$data) {
             return $this->sendError(MaterialResponseCode::ERROR_CODE_UNCREATE_NEW);
         }
@@ -40,7 +40,7 @@ class MaterialTypeApiController extends ApiBaseController
 
     public function getDetail($materialTypeId)
     {
-        $data = $this->materialService->getDetail($materialTypeId);
+        $data = $this->materialService->getDetailMaterialType($materialTypeId);
         if (!$data) {
             return $this->sendError(MaterialResponseCode::ERROR_CODE_DETAIL);
         }
@@ -53,7 +53,7 @@ class MaterialTypeApiController extends ApiBaseController
         if (!$this->apiAuth->checkPermissionModule('material', 'postEdit')) {
             return $this->sendError(MaterialResponseCode::ERROR_CODE_NO_PERMISSION);
         }
-        $data = $this->materialService->postEdit($materialTypeId, $input);
+        $data = $this->materialService->postEditMaterialType($materialTypeId, $input);
         if (!$data) {
             return $this->sendError(MaterialResponseCode::ERROR_CODE_EDIT);
         }
@@ -66,7 +66,7 @@ class MaterialTypeApiController extends ApiBaseController
         if (!$this->apiAuth->checkPermissionModule('material', 'postDelete')) {
             return $this->sendError(MaterialResponseCode::ERROR_CODE_NO_PERMISSION);
         }
-        $data = $this->materialService->postDelete($materialTypeId);
+        $data = $this->materialService->postDeleteMaterialType($materialTypeId);
         if (!$data) {
             return $this->sendError(MaterialResponseCode::ERROR_CODE_DELETE);
         }

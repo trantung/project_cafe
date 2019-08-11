@@ -96,15 +96,15 @@ class CustomerService extends BaseService
     {
         // dd($customerId);
         $customer = Customer::find($customerId);
-        $file = request()->file('image');
-        if (!$file) {
-            $input['image'] = $customer->image;
-        } else {
-            $fileNameImage = $file->getClientOriginalName();
-            request()->file('image')->move(public_path("/uploads/categories/" . $customerId . '/'), $fileNameImage);
-            $imageUrl = '/uploads/categories/' . $customerId . '/' . $fileNameImage;
-            $input['image'] = $imageUrl;
-        }
+        // $file = request()->file('image');
+        // if (!$file) {
+        //     $input['image'] = $customer->image;
+        // } else {
+        //     $fileNameImage = $file->getClientOriginalName();
+        //     request()->file('image')->move(public_path("/uploads/categories/" . $customerId . '/'), $fileNameImage);
+        //     $imageUrl = '/uploads/categories/' . $customerId . '/' . $fileNameImage;
+        //     $input['image'] = $imageUrl;
+        // }
         $customer->update($input);
         return true;
     }

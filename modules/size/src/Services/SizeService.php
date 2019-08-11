@@ -17,7 +17,7 @@ class SizeService extends BaseService
 
     public function create($input)
     {
-        //param: name, statuss
+        //param: name, status
         $sizeId = Size::create($input)->id;
         if (!$sizeId) {
             return false;

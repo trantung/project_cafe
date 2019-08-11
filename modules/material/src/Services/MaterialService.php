@@ -23,10 +23,24 @@ class MaterialService extends BaseService
         }
         return $materialId;
     }
+    public function postCreateMaterialType($input)
+    {
+        //param: name, statuss
+        $materialTypeId = MaterialType::create($input)->id;
+        if (!$materialTypeId) {
+            return false;
+        }
+        return $materialTypeId;
+    }
 
     public function getList()
     {
         $data = Material::all();
+        return $data->toArray();
+    }
+    public function getListMaterialType()
+    {
+        $data = MaterialType::all();
         return $data->toArray();
     }
 
@@ -38,6 +52,14 @@ class MaterialService extends BaseService
         }
         return $material->toArray();
     }
+    public function getDetailMaterialType($materialTypeId)
+    {
+        $materialType = MaterialType::find($materialId);
+        if (!$materialType) {
+            return false;
+        }
+        return $materialType->toArray();
+    }
 
     public function postEdit($materialId, $input)
     {
@@ -46,6 +68,15 @@ class MaterialService extends BaseService
             return false;
         }
         $material->update($input);
+        return true;
+    }
+    public function postEditMaterialType($materialTypeId, $input)
+    {
+        $materialType = MaterialType::find($materialTypeIdId);
+        if (!$materialType) {
+            return false;
+        }
+        $materialType->update($input);
         return true;
     }
 
@@ -58,26 +89,35 @@ class MaterialService extends BaseService
         Material::destroy($materialId);
         return true;
     }
-
-    public function getListMaterialProduct()
+    public function postDeleteMaterialType($materialTypeId)
     {
+        $materialType = MaterialType::find($materialTypeId);
+        if (!$materialType) {
+            return false;
+        }
+        MaterialType::destroy($materialTypeId);
+        return true;
+    }
+
+    // public function getListMaterialProduct()
+    // {
         
-    }
-    public function createMaterialProduct()
-    {
+    // }
+    // public function createMaterialProduct()
+    // {
         
-    }
-    public function getDetailMaterialProduct()
-    {
+    // }
+    // public function getDetailMaterialProduct()
+    // {
 
-    }
-    public function postEditMaterialProduct()
-    {
+    // }
+    // public function postEditMaterialProduct()
+    // {
 
-    }
-    public function postDeleteMaterialProduct()
-    {
+    // }
+    // public function postDeleteMaterialProduct()
+    // {
 
-    }
+    // }
     
 }
