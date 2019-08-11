@@ -54,7 +54,7 @@ class MaterialService extends BaseService
     }
     public function getDetailMaterialType($materialTypeId)
     {
-        $materialType = MaterialType::find($materialId);
+        $materialType = MaterialType::find($materialTypeId);
         if (!$materialType) {
             return false;
         }
@@ -72,7 +72,7 @@ class MaterialService extends BaseService
     }
     public function postEditMaterialType($materialTypeId, $input)
     {
-        $materialType = MaterialType::find($materialTypeIdId);
+        $materialType = MaterialType::find($materialTypeId);
         if (!$materialType) {
             return false;
         }
