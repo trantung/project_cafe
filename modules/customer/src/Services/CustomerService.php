@@ -127,6 +127,6 @@ class CustomerService extends BaseService
         if ($customer) {
             return $customer->toArray();
         }
-        return true;
+        return null;
     }
 }
