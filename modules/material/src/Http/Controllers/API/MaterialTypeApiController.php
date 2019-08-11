@@ -21,7 +21,7 @@ class MaterialTypeApiController extends ApiBaseController
 
     public function getList()
     {
-        $data = $this->materialService->getList();
+        $data = $this->materialService->getListMaterialType();
         return $this->sendSuccess($data, 'success');
     }
 
