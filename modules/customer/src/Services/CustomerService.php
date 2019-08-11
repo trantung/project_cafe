@@ -26,7 +26,8 @@ class CustomerService extends BaseService
         //     return false;
         // }
         $customerId = Customer::create($input)->id;
-        return $customerId;
+        $customer = Customer::find($customerId);
+        return $customer->toArray();
     }
     public function checkPhoneExist($phone)
     {
@@ -124,7 +125,7 @@ class CustomerService extends BaseService
         }
         $customer = Customer::where('phone', $input['phone'])->first();
         if ($customer) {
-            return false;
+            return $customer->toArray();
         }
         return true;
     }
