@@ -18,5 +18,9 @@ class CustomerDataConst extends BaseDataConst
         'code' => 1100,
         'message' => 'Create categories error',
     ];
+    const ERROR_CODE_PHONE_EXIST = [
+        'code' => 1101,
+        'message' => 'Phone is existed',
+    ];
     
 }

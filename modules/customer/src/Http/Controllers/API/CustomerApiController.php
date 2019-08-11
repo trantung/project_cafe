@@ -6,6 +6,7 @@ use APV\Customer\Services\CustomerService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use APV\User\Constants\UserResponseCode;
+use APV\Customer\Constants\CustomerDataConst;
 use APV\Base\Services\ApiAuth;
 /**
  * Class CustomerApiController
@@ -64,5 +65,14 @@ class CustomerApiController extends ApiBaseController
         return $this->sendSuccess($data, 'Delete success');
     }
 
+    public function postCheckPhoneCustomer(Request $request)
+    {
+        $input = $request->all();
+        $data = $this->customerService->postCheckPhoneCustomer($input);
+        if ($data) {
+            return $this->sendSuccess($data, 'Phone not exist');
+        }
+        return $this->sendError(CustomerDataConst::ERROR_CODE_PHONE_EXIST);
+    }
     
 }
