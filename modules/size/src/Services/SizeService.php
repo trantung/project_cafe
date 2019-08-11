@@ -108,11 +108,13 @@ class SizeService extends BaseService
         if (!isset($input['material'])) {
             return false;
         }
+        $data1 = explode('[', $input['material']);
+        dd($data1);
         $sizeProduct = SizeProduct::find($sizeProductId);
         foreach ($input['material'] as $key => $material) {
             $dataId = SizeResource::create([
                 'size_product_id' => $sizeProductId,
-                'productId' => $sizeProduct->product_id,
+                'product_id' => $sizeProduct->product_id,
                 'size_id' => $sizeProduct->size_id,
                 'material_id' => $material->material_id,
                 'quantity' => $material->quantity,
