@@ -116,6 +116,11 @@ class CategoryService extends BaseService
             $imageUrl = '/uploads/categories/' . $categoryId . '/' . $fileNameImage;
             $input['image'] = $imageUrl;
         }
+        if ($input['path'] == 0) {
+            $input['path'] = $categoryId;
+        } else {
+            $input['path'] = $input['path'] . '_' .$categoryId;
+        }
         $category->update($input);
         return true;
     }
