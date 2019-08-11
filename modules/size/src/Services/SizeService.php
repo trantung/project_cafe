@@ -108,7 +108,7 @@ class SizeService extends BaseService
         if (!isset($input['material'])) {
             return false;
         }
-        $test = (array)($input['material']);
+        $test = (array)$input['material'];
         dd($test);
         $data1 = explode('[', $input['material']);
         dd($data1);
