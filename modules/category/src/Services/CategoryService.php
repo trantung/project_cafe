@@ -41,10 +41,11 @@ class CategoryService extends BaseService
 
     public function getList()
     {
-        $cateRoot = $this->getRoot();
-        $cateChild = $this->getListChild();
-        $data = array_merge($cateRoot, $cateChild);
-        return $data;
+        // $cateRoot = $this->getRoot();
+        // $cateChild = $this->getListChild();
+        // $data = array_merge($cateRoot, $cateChild);
+        $data = Category::all();
+        return $data->toArray();
     }
 
     public function getRoot()
@@ -117,9 +118,7 @@ class CategoryService extends BaseService
             $input['image'] = $imageUrl;
         }
         if ($input['path'] == 0) {
-            $input['path'] = $categoryId;
-        } else {
-            $input['path'] = $input['path'] . '_' .$categoryId;
+            # code...
         }
         $category->update($input);
         return true;
