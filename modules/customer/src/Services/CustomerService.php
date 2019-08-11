@@ -21,10 +21,10 @@ class CustomerService extends BaseService
      */
     public function postCreate($input)
     {
-        $checkPhoneExist = $this->checkPhoneExist($input['phone']);
-        if ($checkPhoneExist) {
-            return false;
-        }
+        // $checkPhoneExist = $this->checkPhoneExist($input['phone']);
+        // if ($checkPhoneExist) {
+        //     return false;
+        // }
         $customerId = Customer::create($input)->id;
         return $customerId;
     }
