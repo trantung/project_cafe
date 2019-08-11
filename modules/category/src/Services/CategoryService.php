@@ -151,7 +151,7 @@ class CategoryService extends BaseService
     public function getListProductByCategory($categoryId)
     {
         $listCategory = $this->getListCategoryByRoot($categoryId);
-        $data = Product::whereIn('category_id', $listCategory)->get();
+        $data = Product::whereIn('category_id', $listCategory)->paginate(2);
         return $data->toArray();
     }
 }
