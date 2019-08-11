@@ -22,8 +22,12 @@ class CategoryService extends BaseService
         if (!$file) {
             return false;
         }
-        $path = explode('_', $input['path']);
-        $input['parent_id'] = end($path);
+        if ($input['path'] == 0) {
+            $input['parent_id'] = 0;
+        } else {
+            $path = explode('_', $input['path']);
+            $input['parent_id'] = end($path);
+        }
         $categoryId = Category::create($input)->id;
         if (!$categoryId) {
             return false;
@@ -120,7 +124,8 @@ class CategoryService extends BaseService
             $input['image'] = $imageUrl;
         }
         if ($input['path'] == 0) {
-            # code...
+            $input['path'] = $categoryId;
+            $input['parent_id'] = 0;
         }
         $category->update($input);
         return true;
