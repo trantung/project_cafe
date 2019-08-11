@@ -58,6 +58,9 @@ class CategoryService extends BaseService
 
     public function getNameCategoryWithPath($category)
     {
+        if (!sset($category)) {
+            return null;
+        }
         $categoryPath = $category->path;
         $explodePath = explode('_', $categoryPath);
         $name = '';
