@@ -20,7 +20,7 @@ class TableService extends BaseService
         if (!$tableId) {
             return false;
         }
-        Table::find($tableId)->update(['qr_code' => $$input['qr_code']]);
+        Table::find($tableId)->update(['qr_code' => $input['qr_code']]);
         return $input['qr_code'];
     }
 
