@@ -117,4 +117,15 @@ class CustomerService extends BaseService
         Customer::destroy($customerId);
         return true;
     }
+    public function postCheckPhoneCustomer($input)
+    {
+        if (!$input['phone']) {
+            return false;
+        }
+        $customer = Customer::where('phone', $input['phone'])->first();
+        if ($customer) {
+            return false;
+        }
+        return true;
+    }
 }
