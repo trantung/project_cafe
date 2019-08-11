@@ -28,7 +28,7 @@ class MaterialTypeApiController extends ApiBaseController
     public function postCreate(Request $request)
     {
         $input = $request->all();
-        if (!$this->apiAuth->checkPermissionModule('material', 'postCreate')) {
+        if (!$this->apiAuth->checkPermissionModule('material_type', 'postCreate')) {
             return $this->sendError(MaterialResponseCode::ERROR_CODE_NO_PERMISSION);
         }
         $data = $this->materialService->postCreateMaterialType($input);
@@ -50,7 +50,7 @@ class MaterialTypeApiController extends ApiBaseController
     public function postEdit(Request $request, $materialTypeId)
     {
         $input = $request->all();
-        if (!$this->apiAuth->checkPermissionModule('material', 'postEdit')) {
+        if (!$this->apiAuth->checkPermissionModule('material_type', 'postEdit')) {
             return $this->sendError(MaterialResponseCode::ERROR_CODE_NO_PERMISSION);
         }
         $data = $this->materialService->postEditMaterialType($materialTypeId, $input);
@@ -63,7 +63,7 @@ class MaterialTypeApiController extends ApiBaseController
     public function postDelete(Request $request, $materialTypeId)
     {
         $input = $request->all();
-        if (!$this->apiAuth->checkPermissionModule('material', 'postDelete')) {
+        if (!$this->apiAuth->checkPermissionModule('material_type', 'postDelete')) {
             return $this->sendError(MaterialResponseCode::ERROR_CODE_NO_PERMISSION);
         }
         $data = $this->materialService->postDeleteMaterialType($materialTypeId);
