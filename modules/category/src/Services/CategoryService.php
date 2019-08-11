@@ -2,6 +2,7 @@
 namespace APV\Category\Services;
 
 use APV\Category\Models\Category;
+use APV\Product\Models\Product;
 use APV\Base\Services\BaseService;
 use League\Fractal\Resource\Collection;
 use Illuminate\Http\UploadedFile;
