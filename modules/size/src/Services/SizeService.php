@@ -79,6 +79,10 @@ class SizeService extends BaseService
         if (!$sizeProductId) {
             return false;
         }
+        // $test = str_replace('[', '', $input['key']);
+        // $test = str_replace(']', '', $test);
+        // $explode = explode(',', $test);
+        // dd($input['order']);
         $sizeProductMaterialId = $this->createSizeProductMaterial($input, $sizeProductId);
         if (!$sizeProductMaterialId) {
             return false;
@@ -108,16 +112,15 @@ class SizeService extends BaseService
         if (!isset($input['material'])) {
             return false;
         }
-        $test = (array) $input['material'];
-        dd($test);
+        // $test = (array) $input['material'];
         $sizeProduct = SizeProduct::find($sizeProductId);
         foreach ($input['material'] as $key => $material) {
             $dataId = SizeResource::create([
                 'size_product_id' => $sizeProductId,
                 'product_id' => $sizeProduct->product_id,
                 'size_id' => $sizeProduct->size_id,
-                'material_id' => $material->material_id,
-                'quantity' => $material->quantity,
+                'material_id' => $material['material_id'],
+                'quantity' => $material['quantity'],
             ]);
             if (!$dataId) {
                 return false;
