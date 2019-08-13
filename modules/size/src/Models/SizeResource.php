@@ -18,13 +18,6 @@ class SizeResource extends Model
     /**
      * @var array
      */
-    protected $dates = ['deleted_at'];
-
-    /**
-     * The attributes that are mass assignable.
-     *
-     * @var array
-     */
     protected $fillable = [
         'size_product_id', 'product_id', 'size_id', 'material_id', 'quantity'
     ];

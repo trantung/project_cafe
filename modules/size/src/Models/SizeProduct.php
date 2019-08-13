@@ -31,7 +31,7 @@ class SizeProduct extends Model
      * @var array
      */
     protected $fillable = [
-        'size_id', 'product_id', 'price'
+        'size_id', 'product_id', 'price','active'
     ];
 
 }

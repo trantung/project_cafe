@@ -4,6 +4,7 @@ namespace APV\Size\Services;
 use APV\Size\Models\Size;
 use APV\Size\Models\SizeProduct;
 use APV\Size\Models\SizeResource;
+use APV\Material\Models\Material;
 use APV\Base\Services\BaseService;
 use League\Fractal\Resource\Collection;
 use Illuminate\Http\Request;
@@ -92,7 +93,29 @@ class SizeService extends BaseService
 
     public function getDetailSizeProduct($sizeId, $productId)
     {
-
+        $product = Product::find($productId);
+        $size = Size::find($sizeId);
+        $sizeProduct = SizeProduct::where('product_id', $productId)
+            ->where('size_id', $sizeId)->first();
+        if (!$product|| !$size || !$sizeProduct) {
+            return false;
+        }
+        $materialId = $sizeProduct->material_id;
+        $material = Material::find($materialId);
+        if (!$material) {
+            return false;
+        }
+        $data = [
+            'product_id' => $productId, 
+            'size_id' => $sizeId, 
+            'product_name' => $product->name, 
+            'size_name' => $size->name, 
+            'material_id' => $material->id, 
+            'material_name' => $material->name, 
+            'price' => $sizeProduct->price, 
+            'active' => $sizeProduct->active, 
+        ];
+        return $data;
     }
     public function postEditSizeProduct($input, $sizeId, $productId)
     {
