@@ -72,4 +72,13 @@ class OrderApiController extends ApiBaseController
         }
         return $this->sendSuccess($data, 'Delete success');
     }
+    public function postGetValueByQrCodeTable(Request $request, $field)
+    {
+        $input = $request->all();
+        $data = $this->orderService->getTableByQrCode($input['table_qr_code']);
+        if (!$data) {
+            return $this->sendError(MaterialResponseCode::ERROR_CODE_DELETE);
+        }
+        return $this->sendSuccess($data->$field, 'Get success');
+    }
 }

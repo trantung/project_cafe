@@ -29,8 +29,9 @@ class OrderProduct extends Model
      *
      * @var array
      */
+
     protected $fillable = [
-        'product_code', 'product_id', 'status', 'order_id', 'size_id', 'quantity', 'price', 'total_price', 'promotion_price', 'customer_id'
+        'product_code', 'product_id', 'status', 'order_id', 'size_id', 'quantity', 'price', 'total_price', 'promotion_price', 'customer_id', 'table_id', 'table_qr_code', 'level_id', 'ship_id', 'total_price_topping'
     ];
 
 }

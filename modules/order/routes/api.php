@@ -12,4 +12,6 @@ Route::group([
     Route::get('detail_order/{id}', 'OrderApiController@getDetail');
     Route::post('edit_order/{id}', 'OrderApiController@postEdit');
     Route::post('delete_order/{id}', 'OrderApiController@postDelete');
+    //param: table_qr_code. URL: field_wanted: file can lay vi du: name
+    Route::post('table/qr_code/{field_wanted}', 'OrderApiController@postGetValueByQrCodeTable');
 });

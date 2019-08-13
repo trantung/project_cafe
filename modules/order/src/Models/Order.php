@@ -30,7 +30,8 @@ class Order extends Model
      * @var array
      */
     protected $fillable = [
-        'code', 'amount', 'status', 'customer_id', 'comment'
+        'code', 'amount', 'status', 'customer_id', 'comment',
+        'created_by', 'updated_by','order_type_id', 'ship_price', 'ship_id', 'total_product_price', 'total_topping_price', 'table_qr_code', 'level_id'
     ];
 
 }
