@@ -18,6 +18,7 @@ class OrderDataConst extends BaseDataConst
         'code' => 1100,
         'message' => 'Create categories error',
     ];
+    const PAGINATE = 1;
     //status order
     const ORDER_STATUS_CANCEL = 0;
     const ORDER_STATUS_CREATED = 1;
@@ -27,4 +28,5 @@ class OrderDataConst extends BaseDataConst
     const ORDER_TYPE_AT_SHOP = 1;
     const ORDER_TYPE_TAKE_AWAY = 2;
     const ORDER_TYPE_SHIP = 3;
+    const NO_ORDER = 'Have no order';
 }

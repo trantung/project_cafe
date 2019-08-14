@@ -65,6 +65,7 @@ class OrderService extends BaseService
         $order = [];
         $order['table_qr_code'] = $input['table_qr_code'];
         $order['table_id'] = $this->getTableByQrCode($input['table_qr_code'], 'id');
+        $order['level_id'] = $this->getTableByQrCode($input['table_qr_code'], 'level_id');
         $order['status'] = $input['status'];
         $order['customer_id'] = $input['customer_id'];
         $order['comment'] = $input['comment'];
@@ -90,7 +91,7 @@ class OrderService extends BaseService
         $orderProduct['customer_id'] = $input['customer_id'];
         $orderProduct['table_id'] = $this->getTableByQrCode($input['table_qr_code'], 'id');
         $orderProduct['table_qr_code'] = $input['table_qr_code'];
-        $orderProduct['level_id'] = $this->getTableByQrCode($input['table_qr_code'], 'level_id');;
+        $orderProduct['level_id'] = $this->getTableByQrCode($input['table_qr_code'], 'level_id');
         $orderProduct['ship_id'] = $input['ship_id'];
         $listProduct = $input['list_product'];
         foreach ($listProduct as $key => $product) {
@@ -130,7 +131,7 @@ class OrderService extends BaseService
 
     public function getOrderByCondition($condition = null)
     {
-        if ($condition['date'] == 'now') {
+        if(isset($condition['date']) && ($condition['date'] == 'now')) {
             $data = Order::whereDate('created_at', '=', date('Y-m-d'))->get();
             return $data;
         }
@@ -152,21 +153,24 @@ class OrderService extends BaseService
         return $data;
     }
 
-    public function getList()
+    public function getList($input)
     {
         $data = $this->getOrderList($input);
         return $data;
     }
 
-    public function getListSearch($conditions)
+    public function getListSearch($condition)
     {
         $ruleConditionOrder = OrderDataDefault::ruleConditionOrder();
-        foreach ($conditions as $key => $value) {
+        foreach ($condition as $key => $value) {
             if (!in_array($key, $ruleConditionOrder)) {
                 return false;
             }
         }
-        $data = $this->getOrderList($conditions);
+        $data = $this->getOrderList($condition);
+        if (!$data) {
+            return [OrderDataConst::NO_ORDER];
+        }
         return $data;
     }
 
