@@ -16,5 +16,8 @@ Route::group([
     Route::post('delete_order/{id}', 'OrderApiController@postDelete');
     //param: table_qr_code. URL: field_wanted: file can lay vi du: name
     Route::post('table/qr_code/{field_wanted}', 'OrderApiController@postGetValueByQrCodeTable');
-    //bếp confirm là làm order thì ko được edit
+    //bếp confirm
+    Route::post('change_status_order/{order_id}', 'OrderApiController@postChangeStatusOrder');
+    //Lọc theo: tầng(level_id)...
+    Route::get('list_order/search', 'OrderApiController@getListSearch');
 });

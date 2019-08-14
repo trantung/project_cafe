@@ -32,7 +32,17 @@ class OrderApiController extends ApiBaseController
         return $this->sendSuccess($data, 'Cancel success');
     }
 
-    public function getList()
+    public function getListSearch(Request $request)
+    {
+        $input = $request->all();
+        $data = $this->orderService->getListSearch($input);
+        if (!$data) {
+            return $this->sendError(OrderResponseCode::ERROR_CODE_SEARCH_ORDER);
+        }
+        return $this->sendSuccess($data, 'success');
+    }
+
+    public function getList(Request $request)
     {
         $data = $this->orderService->getList();
         return $this->sendSuccess($data, 'success');
@@ -93,5 +103,17 @@ class OrderApiController extends ApiBaseController
             return $this->sendError(OrderResponseCode::ERROR_CODE_NOT_TABLE_EXIST);
         }
         return $this->sendSuccess($data->$field, 'Get success');
+    }
+
+    public function postChangeStatusOrder($orderId)
+    {
+        if (!$this->apiAuth->checkPermissionModule('order_change_status', 'postChangeStatusOrder')) {
+            return $this->sendError(OrderResponseCode::ERROR_CODE_NO_PERMISSION);
+        }
+        $data = $this->orderService->postChangeStatusOrder($orderId);
+        if (!$data) {
+            return $this->sendError(OrderResponseCode::ERROR_CODE_DELETE);
+        }
+        return $this->sendSuccess($data, 'Confirm success');
     }
 }

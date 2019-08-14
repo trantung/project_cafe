@@ -38,6 +38,10 @@ class OrderResponseCode extends BaseResponseCode
         'code' => 206,
         'message' => 'Cannot cancel Order',
     ];
+    const ERROR_CODE_SEARCH_ORDER = [
+        'code' => 207,
+        'message' => 'Error field send',
+    ];
     
     
 

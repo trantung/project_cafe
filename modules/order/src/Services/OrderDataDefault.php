@@ -188,4 +188,11 @@ class OrderDataDefault extends BaseService
         }
         return $data[$status];
     }
+
+    public static function ruleConditionOrder()
+    {
+        $data = ['level_id'];
+        return $data;
+    }
+
 }

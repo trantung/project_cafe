@@ -90,7 +90,7 @@ class OrderService extends BaseService
         $orderProduct['customer_id'] = $input['customer_id'];
         $orderProduct['table_id'] = $this->getTableByQrCode($input['table_qr_code'], 'id');
         $orderProduct['table_qr_code'] = $input['table_qr_code'];
-        $orderProduct['level_id'] = $this->getTableByQrCode($input['table_qr_code'], 'id');;
+        $orderProduct['level_id'] = $this->getTableByQrCode($input['table_qr_code'], 'level_id');;
         $orderProduct['ship_id'] = $input['ship_id'];
         $listProduct = $input['list_product'];
         foreach ($listProduct as $key => $product) {
@@ -128,10 +128,42 @@ class OrderService extends BaseService
         return $data;
     }
 
+    public function getOrderByCondition($condition = null)
+    {
+        if (!$condition) {
+            $data = Order::all();
+            return $data;
+        }
+        $data = Order::where($condition)->get();
+        return $data;
+    }
+
+    public function getOrderList($condition = null)
+    {
+        $data = [];
+        $orders = $this->getOrderByCondition($condition);
+        foreach ($orders as $key => $order) {
+            $data[] = $this->getDetail($order->id);
+        }
+        return $data;
+    }
+
     public function getList()
     {
-        $data = Order::all();
-        return $data->toArray();
+        $data = $this->getOrderList();
+        return $data;
+    }
+
+    public function getListSearch($conditions)
+    {
+        $ruleConditionOrder = OrderDataDefault::ruleConditionOrder();
+        foreach ($conditions as $key => $value) {
+            if (!in_array($key, $ruleConditionOrder)) {
+                return false;
+            }
+        }
+        $data = $this->getOrderList($conditions);
+        return $data;
     }
 
     public function getDetail($orderId)
@@ -286,8 +318,20 @@ class OrderService extends BaseService
         return $data;
     }
 
+    //Hủy đơn: chưa có luồng business
     public function postCancel($orderId)
     {
-
+        return true;
     }
+
+    public function postChangeStatusOrder($orderId)
+    {
+        $order = Order::find($orderId);
+        if (!$order) {
+            return false;
+        }
+        $order->update(['status' => OrderDataConst::ORDER_STATUS_CONFIRM_KITCHENT]);
+        return true;
+    }
+
 }
