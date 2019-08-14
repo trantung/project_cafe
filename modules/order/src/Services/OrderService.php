@@ -4,17 +4,29 @@ namespace APV\Order\Services;
 use APV\Order\Models\Order;
 use APV\Order\Models\OrderProduct;
 use APV\Order\Models\OrderProductTopping;
+use APV\Order\Models\OrderLog;
 use APV\Table\Models\Table;
+use APV\Customer\Models\Customer;
+use APV\Topping\Models\Topping;
+use APV\User\Models\User;
+use APV\Order\Models\OrderBill;
 use APV\Order\Constants\OrderDataConst;
 use APV\Base\Services\BaseService;
+use APV\Product\Services\ProductService;
+use APV\Size\Services\SizeService;
+use APV\Topping\Services\ToppingService;
+use APV\Order\Services\OrderDataDefault;
 use League\Fractal\Resource\Collection;
 use Illuminate\Http\Request;
 
 class OrderService extends BaseService
 {
-    public function __construct(Order $model)
+    public function __construct(Order $model, ProductService $productService, SizeService $sizeService, ToppingService $toppingService)
     {
         parent::__construct($model);
+        $this->productService = $productService;
+        $this->sizeService = $sizeService;
+        $this->toppingService = $toppingService;
     }
 
     public function getTableByQrCode($tableQrCode, $field = null)
@@ -52,6 +64,7 @@ class OrderService extends BaseService
     {
         $order = [];
         $order['table_qr_code'] = $input['table_qr_code'];
+        $order['table_id'] = $this->getTableByQrCode($input['table_qr_code'], 'id');
         $order['status'] = $input['status'];
         $order['customer_id'] = $input['customer_id'];
         $order['comment'] = $input['comment'];
@@ -96,10 +109,10 @@ class OrderService extends BaseService
 
     public function postCreate($input)
     {
+        //tham khao tai: OrderDataDefault::dataPostCreate()
         if (count($input['list_product']) == 0) {
             return false;
         }
-        // dd($input['list_product']);
         //tao order
         $orderId = $this->postCreateOrder($input);
         if (!$orderId) {
@@ -107,12 +120,11 @@ class OrderService extends BaseService
         }
         //tao order_product
         $orderProducts = $this->postCreateOrderProduct($orderId, $input);
-        // dd($input);
-        // if (!$data) {
-        //     return false;
-        // }
         //tao ra mã phiếu cho đơn hàng: orderBill
-        $data = renderCodeOrderTmp($orderId);
+        $numberWaitting = renderCodeOrderTmp($orderId);
+        // $data = $this->getDetail($orderId);
+        $data['order_id'] = $orderId;
+        $data['number_waitting'] = $numberWaitting;
         return $data;
     }
 
@@ -124,31 +136,158 @@ class OrderService extends BaseService
 
     public function getDetail($orderId)
     {
+        //tham khao tai: OrderDataDefault::dataPostDetail()
         $order = Order::find($orderId);
-        if (!$order) {
-            return false;
-        }
-        return $order->toArray();
+        $data = [];
+        $data['customer'] = $this->getCustomerByOrder($order);
+        $data['table'] = $this->getTableByOrder($order);
+        $data['order_detail']['order_common'] = $this->getOrderCommon($order);
+        $data['order_detail']['list_product'] = $this->getListProductByOrder($order);
+        $data['number_waitting'] = OrderBill::getCode($order->id);
+        return $data;
     }
 
+    public function confirmByKitchent($order)
+    {
+        $status = $order->status;
+        if ($status == OrderDataConst::ORDER_STATUS_CONFIRM_KITCHENT) {
+            return true;
+        }
+        return false;
+    }
     public function postEdit($orderId, $input)
     {
-        $order = Order::find($orderId);
-        if (!$order) {
+
+        $orderOld = Order::find($orderId);
+        if (!$orderOld) {
             return false;
         }
-        $order->update($input);
-        return true;
+        //check bếp đã confirm là làm order đấy chưa. nếu confirm làm rồi thì ko cho edit
+        $kitchentConfirm = $this->confirmByKitchent($order);
+        if ($kitchentConfirm) {
+            return false;
+        }
+        //Create new order
+        $data = $this->postCreate($input);
+        $orderNewId = $data['order_id'];
+        //Save log
+        $orderOldData = $this->getDetail($orderId);
+        OrderLog::create([
+            'order_new_id' => $orderNewId, 
+            'order_new_created_by' => getIdOrderCreatedBy(),
+            'order_old_id' => $orderOld->id, 
+            'order_old_data' => $orderOldData,
+            'order_old_created_by' => $orderOld->created_by,
+        ]);
+        //Destroy
+        $this->postDelete($orderId);
+        return $data;
     }
 
     public function postDelete($orderId)
     {
-        $order = Order::find($orderId);
-        if (!$order) {
-            return false;
-        }
+        OrderProductTopping::where('order_id', $orderId)->delete();
+        OrderProduct::where('order_id', $orderId)->delete();
         Order::destroy($orderId);
-        return true;
     }
 
+    public function getCustomerByOrder($order)
+    {
+        $data = [];
+        $customerId = $order->customer_id;
+        $customer = Customer::find($customerId);
+        if (!$customer) {
+            return $data;
+        }
+        $data['customer_name'] = $customer->name;
+        $data['customer_id'] = $customer->id;
+        return $data;
+    }
+
+    public function getTableByOrder($order)
+    {
+        $data = [];
+        $tableId = $order->table_id;
+        $table = Table::find($tableId);
+        if (!$table) {
+            return $data;
+        }
+        $data['table_name'] = $table->name;
+        $data['table_qr_code'] = $table->qr_code;
+        return $data;
+    }
+
+    public function commonGetPersonActionOrder($order, $field = null)
+    {
+        $data = [];
+        if (!$field) {
+            return $data;
+        }
+        $user = User::find($order->$field);
+        if (!$user) {
+            return $data;
+        }
+        $data[$field. '_id'] = $user->id;
+        $data[$field. '_name'] = $user->name;
+        return $data;
+    }
+
+    public function getShipNameByOrder($order)
+    {
+        return '';
+    }
+
+    public function getOrderCommon($order)
+    {
+        $data['comment'] = $order->comment;
+        $data['created_by'] = $this->commonGetPersonActionOrder($order, 'created_by');
+        $data['updated_by'] = $this->commonGetPersonActionOrder($order, 'updated_by');
+        $data['status'] = $order->status;
+        $data['status_name'] = OrderDataDefault::dataDefaultOrderStatus($order->status);
+        $data['total_topping_price'] = $order->total_topping_price;
+        $data['total_product_price'] = $order->total_product_price;
+        $data['order_type_id'] = $order->order_type_id;
+        $data['order_type_name'] = OrderDataDefault::dataDefaultOrderType($order->order_type_id);
+        $data['ship_price'] = $order->ship_price;
+        $data['ship_id'] = $order->ship_id;
+        $data['ship_name'] = $this->getShipNameByOrder($order);
+        $data['amount'] = $order->amount;
+        return $data;
+    }
+
+    public function getToppingByOrderProduct($orderProduct)
+    {
+        $data = [];
+        $listToppingId = OrderProductTopping::where('order_product_id', $orderProduct->id)->pluck('topping_id');
+        $toppings = Topping::whereIn('id', $listToppingId)->get();
+        foreach ($toppings as $key => $topping) {
+            $data[$key]['topping_id'] = $topping->id;
+            $data[$key]['topping_price'] = $topping->price;
+        }
+        return $data;
+    }
+
+    public function getListProductByOrder($order)
+    {
+        $data = [];
+        $orderProducts = OrderProduct::where('order_id', $order->id)->get();
+        foreach ($orderProducts as $key => $orderProduct) {
+            $data[$key]['product_id'] = $orderProduct->product_id;
+            $data[$key]['product_name'] = $this->productService->getDetail($orderProduct->product_id, 'name');
+            $data[$key]['quantity'] = $orderProduct->quantity;
+            $data[$key]['size_id'] = $orderProduct->size_id;
+            $data[$key]['size_name'] = $this->sizeService->getDetail($orderProduct->size_id, 'name');
+            $data[$key]['topping'] = $this->getToppingByOrderProduct($orderProduct);
+            $data[$key]['price'] = $orderProduct->price;
+            $data[$key]['product_price'] = $orderProduct->product_price;
+            $data[$key]['total_price_topping'] = $orderProduct->total_price_topping;
+            $data[$key]['total_price'] = $orderProduct->total_price;
+        }
+        return $data;
+    }
+
+    public function postCancel($orderId)
+    {
+
+    }
 }

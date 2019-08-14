@@ -84,11 +84,14 @@ class ProductService extends BaseService
         return $data;
     }
 
-    public function getDetail($productId)
+    public function getDetail($productId, $field = null)
     {
         $product = Product::find($productId);
         if (!$product) {
             return false;
+        }
+        if ($field) {
+            return $product->$field;
         }
         $data = $product->toArray();
         $data['categories'] = $this->getCategoriesByProduct($productId);

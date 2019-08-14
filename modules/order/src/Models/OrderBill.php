@@ -29,5 +29,12 @@ class OrderBill extends Model
     protected $fillable = [
         'code', 'order_id'
     ];
-
+    public static function getCode($orderId)
+    {
+        $data = self::where('order_id', $orderId)->first();
+        if (!$data) {
+            return null;
+        }
+        return $data->code;
+    }
 }

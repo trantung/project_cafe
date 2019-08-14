@@ -19,6 +19,19 @@ class OrderApiController extends ApiBaseController
         $this->apiAuth = $apiAuth;
     }
 
+    public function postCancel(Request $request, $orderId)
+    {
+        $input = $request->all();
+        if (!$this->apiAuth->checkPermissionModule('order', 'postCancel')) {
+            return $this->sendError(OrderResponseCode::ERROR_CODE_NO_PERMISSION);
+        }
+        $data = $this->orderService->postCancel($orderId);
+        if (!$data) {
+            return $this->sendError(OrderResponseCode::ERROR_CODE_CANCEL);
+        }
+        return $this->sendSuccess($data, 'Cancel success');
+    }
+
     public function getList()
     {
         $data = $this->orderService->getList();
@@ -28,47 +41,47 @@ class OrderApiController extends ApiBaseController
     public function postCreate(Request $request)
     {
         $input = $request->all();
-        if (!$this->apiAuth->checkPermissionModule('material', 'postCreate')) {
-            return $this->sendError(MaterialResponseCode::ERROR_CODE_NO_PERMISSION);
+        if (!$this->apiAuth->checkPermissionModule('order', 'postCreate')) {
+            return $this->sendError(OrderResponseCode::ERROR_CODE_NO_PERMISSION);
         }
         $data = $this->orderService->postCreate($input);
         if (!$data) {
-            return $this->sendError(MaterialResponseCode::ERROR_CODE_UNCREATE_NEW);
+            return $this->sendError(OrderResponseCode::ERROR_CODE_UNCREATE_NEW);
         }
         return $this->sendSuccess($data, 'Create success');
     }
 
-    public function getDetail($materialId)
+    public function getDetail($orderId)
     {
-        $data = $this->orderService->getDetail($materialId);
+        $data = $this->orderService->getDetail($orderId);
         if (!$data) {
-            return $this->sendError(MaterialResponseCode::ERROR_CODE_DETAIL);
+            return $this->sendError(OrderResponseCode::ERROR_CODE_DETAIL);
         }
         return $this->sendSuccess($data, 'Detail success');
     }
 
-    public function postEdit(Request $request, $materialId)
+    public function postEdit(Request $request, $orderId)
     {
         $input = $request->all();
-        if (!$this->apiAuth->checkPermissionModule('material', 'postEdit')) {
-            return $this->sendError(MaterialResponseCode::ERROR_CODE_NO_PERMISSION);
+        if (!$this->apiAuth->checkPermissionModule('order', 'postEdit')) {
+            return $this->sendError(OrderResponseCode::ERROR_CODE_NO_PERMISSION);
         }
-        $data = $this->orderService->postEdit($materialId, $input);
+        $data = $this->orderService->postEdit($orderId, $input);
         if (!$data) {
-            return $this->sendError(MaterialResponseCode::ERROR_CODE_EDIT);
+            return $this->sendError(OrderResponseCode::ERROR_CODE_EDIT);
         }
         return $this->sendSuccess($data, 'Edit success');
     }
 
-    public function postDelete(Request $request, $materialId)
+    public function postDelete(Request $request, $orderId)
     {
         $input = $request->all();
-        if (!$this->apiAuth->checkPermissionModule('material', 'postDelete')) {
-            return $this->sendError(MaterialResponseCode::ERROR_CODE_NO_PERMISSION);
+        if (!$this->apiAuth->checkPermissionModule('order', 'postDelete')) {
+            return $this->sendError(OrderResponseCode::ERROR_CODE_NO_PERMISSION);
         }
-        $data = $this->orderService->postDelete($materialId);
+        $data = $this->orderService->postDelete($orderId);
         if (!$data) {
-            return $this->sendError(MaterialResponseCode::ERROR_CODE_DELETE);
+            return $this->sendError(OrderResponseCode::ERROR_CODE_DELETE);
         }
         return $this->sendSuccess($data, 'Delete success');
     }
@@ -77,7 +90,7 @@ class OrderApiController extends ApiBaseController
         $input = $request->all();
         $data = $this->orderService->getTableByQrCode($input['table_qr_code']);
         if (!$data) {
-            return $this->sendError(MaterialResponseCode::ERROR_CODE_DELETE);
+            return $this->sendError(OrderResponseCode::ERROR_CODE_NOT_TABLE_EXIST);
         }
         return $this->sendSuccess($data->$field, 'Get success');
     }

@@ -32,11 +32,14 @@ class SizeService extends BaseService
         return $data->toArray();
     }
 
-    public function getDetail($sizeId)
+    public function getDetail($sizeId, $field = null)
     {
         $size = Size::find($sizeId);
         if (!$size) {
             return false;
+        }
+        if ($field) {
+            return $size->$field;
         }
         return $size->toArray();
     }

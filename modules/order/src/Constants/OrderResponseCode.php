@@ -15,21 +15,30 @@ class OrderResponseCode extends BaseResponseCode
         'message' => 'You have no permission to access to this entity',
     ];
     const ERROR_CODE_UNCREATE_NEW = [
-        'code' => 601,
+        'code' => 201,
         'message' => 'Cannot create Order',
     ];
     const ERROR_CODE_DETAIL = [
-        'code' => 602,
+        'code' => 202,
         'message' => 'Cannot get detail Order',
     ];
     const ERROR_CODE_EDIT = [
-        'code' => 603,
+        'code' => 203,
         'message' => 'Cannot edit Order',
     ];
     const ERROR_CODE_DELETE = [
-        'code' => 604,
+        'code' => 204,
         'message' => 'Cannot delete Order',
     ];
-       
+    const ERROR_CODE_NOT_TABLE_EXIST = [
+        'code' => 205,
+        'message' => 'Cannot find table',
+    ];
+    const ERROR_CODE_CANCEL = [
+        'code' => 206,
+        'message' => 'Cannot cancel Order',
+    ];
+    
+    
 
 }
