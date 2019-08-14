@@ -42,6 +42,10 @@ class OrderResponseCode extends BaseResponseCode
         'code' => 207,
         'message' => 'Error field send',
     ];
+    const ERROR_CODE_CHANGE_STATUS_ORDER = [
+        'code' => 208,
+        'message' => 'Cannot change status',
+    ];
     
     
 

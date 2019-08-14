@@ -112,7 +112,7 @@ class OrderApiController extends ApiBaseController
         }
         $data = $this->orderService->postChangeStatusOrder($orderId);
         if (!$data) {
-            return $this->sendError(OrderResponseCode::ERROR_CODE_DELETE);
+            return $this->sendError(OrderResponseCode::ERROR_CODE_CHANGE_STATUS_ORDER);
         }
         return $this->sendSuccess($data, 'Confirm success');
     }
