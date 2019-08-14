@@ -130,6 +130,10 @@ class OrderService extends BaseService
 
     public function getOrderByCondition($condition = null)
     {
+        if ($condition['date'] == 'now') {
+            $data = Order::whereDate('created_at', '=', date('Y-m-d'))->get();
+            return $data;
+        }
         if (!$condition) {
             $data = Order::all();
             return $data;
@@ -150,7 +154,7 @@ class OrderService extends BaseService
 
     public function getList()
     {
-        $data = $this->getOrderList();
+        $data = $this->getOrderList($input);
         return $data;
     }
 

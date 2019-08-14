@@ -44,7 +44,8 @@ class OrderApiController extends ApiBaseController
 
     public function getList(Request $request)
     {
-        $data = $this->orderService->getList();
+        $input = $request->all();
+        $data = $this->orderService->getList($input);
         return $this->sendSuccess($data, 'success');
     }
 
