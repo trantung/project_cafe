@@ -63,11 +63,17 @@ class OrderService extends BaseService
     public function postCreateOrder($input)
     {
         $order = [];
+        $customer = Customer::find($input['customer_id']);
+        if (!$customer) {
+            return false;
+        }
         $order['table_qr_code'] = $input['table_qr_code'];
         $order['table_id'] = $this->getTableByQrCode($input['table_qr_code'], 'id');
         $order['level_id'] = $this->getTableByQrCode($input['table_qr_code'], 'level_id');
         $order['status'] = $input['status'];
         $order['customer_id'] = $input['customer_id'];
+        $order['customer_name'] = $customer->customer_name;
+        $order['customer_phone'] = $customer->customer_phone;
         $order['comment'] = $input['comment'];
         $order['created_by'] = getIdOrderCreatedBy();
         $order['order_type_id'] = $input['order_type_id'];

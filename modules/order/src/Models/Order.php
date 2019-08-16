@@ -31,7 +31,8 @@ class Order extends Model
      */
     protected $fillable = [
         'code', 'amount', 'status', 'customer_id', 'comment',
-        'created_by', 'updated_by','order_type_id', 'ship_price', 'ship_id', 'total_product_price', 'total_topping_price', 'table_qr_code', 'level_id', 'table_id'
+        'created_by', 'updated_by','order_type_id', 'ship_price', 'ship_id', 'total_product_price', 'total_topping_price', 'table_qr_code', 'level_id', 'table_id',
+        'customer_name', 'customer_phone'
     ];
 
 }
