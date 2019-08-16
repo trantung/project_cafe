@@ -56,6 +56,8 @@ class SizeService extends BaseService
 
     public function postDelete($sizeId)
     {
+        SizeResource::where('size_id', $sizeId)->delete();
+        SizeProduct::where('size_id', $sizeId)->delete();
         $size = Size::find($sizeId);
         if (!$size) {
             return false;

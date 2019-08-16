@@ -10,6 +10,10 @@ use APV\Topping\Models\ToppingCategory;
 use APV\Product\Models\ProductTopping;
 use APV\Product\Constants\ProductDataConst;
 use APV\Product\Models\CommonImage;
+use APV\Tag\Models\TagProduct;
+use APV\Tag\Models\Tag;
+use APV\Size\Models\SizeProduct;
+use APV\Size\Models\SizeResource;
 use APV\Base\Services\BaseService;
 use League\Fractal\Resource\Collection;
 use Illuminate\Database\Eloquent\Collection as Collect;
@@ -84,6 +88,18 @@ class ProductService extends BaseService
         return $data;
     }
 
+    public function getTagByProduct($productId)
+    {
+        $listTagId = TagProduct::where('product_id')->pluck('tag_id');
+        $data = [];
+        foreach ($listTagId as $key => $tagId) {
+            $tag = Tag::find($tagId);
+            $data[$key]['id'] = $tagId;
+            $data[$key]['name'] = $tag->name;
+        }
+        return $data;
+    }
+
     public function getDetail($productId, $field = null)
     {
         $product = Product::find($productId);
@@ -98,6 +114,7 @@ class ProductService extends BaseService
         $data['product_images'] = $this->getProductImages($productId);
         $data['product_topping_own'] = $this->getToppingOwn($product);
         $data['product_topping_by_category'] = $this->getToppingByCategory($product);
+        $data['product_tags'] = $this->getTagByProduct($productId);
         return $data;
     }
     public function getToppingOwn($product)
@@ -152,6 +169,12 @@ class ProductService extends BaseService
 
     public function delete($productId)
     {
+        //xoa SizeResource, SizeProduct, TagProduct, ProductTopping
+        SizeResource::where('product_id')->delete();
+        SizeProduct::where('product_id')->delete();
+        TagProduct::where('product_id')->delete();
+        ProductTopping::where('product_id')->delete();
+
         $product = Product::find($productId);
         if (!$product) {
             return false;

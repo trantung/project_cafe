@@ -47,7 +47,8 @@
             "APV\\Size\\": "modules/size/src",
             "APV\\Customer\\": "modules/customer/src",
             "APV\\Material\\": "modules/material/src",
-            "APV\\Order\\": "modules/order/src"
+            "APV\\Order\\": "modules/order/src",
+            "APV\\Tag\\": "modules/tag/src"
         },
         "classmap": [
             "database/seeds",

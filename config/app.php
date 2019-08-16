@@ -190,7 +190,7 @@ return [
         APV\Customer\Providers\CustomerProvider::class,
         APV\Material\Providers\MaterialProvider::class,
         APV\Order\Providers\OrderProvider::class,
-        // APV\Frontend\Providers\FrontendProvider::class,
+        APV\Tag\Providers\TagProvider::class,
 
     ],
 
