@@ -17,3 +17,12 @@ Route::group([
     Route::post('edit_tag_product/{tag_id}/{product_id}', 'TagApiController@postEditTagProduct');
     Route::post('delete_tag_product/{tag_id}/{product_id}', 'TagApiController@postDeleteTagProduct');
 });
+
+Route::group([
+    'prefix' => 'api/common',
+    'namespace' => 'APV\Tag\Http\Controllers\API',
+    'middleware' => ['api', 'auth:api'],
+], function () {
+    //lấy thông tin của các bảng cần thiết bằng cách truyền tham số: model:$model, method:$method(find), field:$field(field can lay), value:$value(gia tri can lay), $query:$query(câu sql để lấy thông tin)
+    Route::post('infor', 'InforApiController@postInfor');
+});

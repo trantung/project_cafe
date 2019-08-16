@@ -60,6 +60,11 @@ function listPermissionModules()
             'role_id' => [UserDataConst::ADMIN, UserDataConst::SHOP_MANAGER],
             'functions' => ['postEdit', 'postDelete', 'postCreate', 'getListTagProduct', 'postCreateTagProduct', 'getDetailTagProduct', 'postEditTagProduct', 'postDeleteTagProduct'],
         ],
+        'common_infor' => [
+            'role_id' => [UserDataConst::ADMIN],
+            'functions' => ['postInfor'],
+        ],
+        
         
     ];
     
