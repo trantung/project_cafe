@@ -18,7 +18,7 @@ Route::group([
     Route::get('list_user', 'UserApiController@getListUser');
     Route::post('create_user', 'UserApiController@postCreate');
     Route::post('edit_user/{id}', 'UserApiController@postEdit');
-    Route::post('delete_user/{id}', 'UserApiController@postDeleteUser');
+    Route::post('delete_user/{id}', 'UserApiController@postDelete');
     Route::post('change_password_user/{id}', 'UserApiController@postChangePassword');
     Route::post('reset_password_user/{id}', 'UserApiController@postResetPassword');
 });
