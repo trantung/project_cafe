@@ -138,6 +138,7 @@ class ProductService extends BaseService
         foreach ($data as $key => $value) {
             $result[$key]['topping_name'] = $result[$key]['topping_price'] = '';
             if ($topping = Topping::find($value->topping_id)) {
+                $result[$key]['topping_id'] = $topping->id;
                 $result[$key]['topping_name'] = $topping->name;
                 $result[$key]['topping_price'] = $topping->price;
             }
@@ -152,6 +153,7 @@ class ProductService extends BaseService
         foreach ($toppingCategories as $key => $value) {
             $result[$key]['topping_name'] = $result[$key]['topping_price'] = '';
             if ($topping = Topping::find($value->topping_id)) {
+                $result[$key]['topping_id'] = $topping->id;
                 $result[$key]['topping_name'] = $topping->name;
                 $result[$key]['topping_price'] = $topping->price;
             }
