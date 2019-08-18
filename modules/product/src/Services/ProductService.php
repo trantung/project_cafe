@@ -121,6 +121,7 @@ class ProductService extends BaseService
 
     public function getStep($productId, $sizeId, $materialId)
     {
+        $data = [];
         // $listStep = Step::where('product_id', $productId)->where('size_id', $sizeId)
         //     ->where('material_id', $materialI)->get();
         // $data = new CommonStep();
