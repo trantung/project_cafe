@@ -13,6 +13,7 @@ use APV\Product\Models\CommonImage;
 use APV\Tag\Models\TagProduct;
 use APV\Tag\Models\Tag;
 use APV\Size\Models\SizeProduct;
+use APV\Size\Models\Size;
 use APV\Size\Models\SizeResource;
 use APV\Base\Services\BaseService;
 use League\Fractal\Resource\Collection;
@@ -100,6 +101,18 @@ class ProductService extends BaseService
         return $data;
     }
 
+    public function getSizeProduct($productId)
+    {
+        $listSizeId = SizeProduct::where('product_id', $productId)->pluck('id');
+        $listSize = Size::whereIn('id', $listSizeId)->get();
+        $data = [];
+        foreach ($listSize as $key => $value) {
+            $data[$key]['size_id'] = $value->id;
+            $data[$key]['size_name'] = $value->name;
+        }
+        return $data;
+    }
+
     public function getDetail($productId, $field = null)
     {
         $product = Product::find($productId);
@@ -115,6 +128,7 @@ class ProductService extends BaseService
         $data['product_topping_own'] = $this->getToppingOwn($product);
         $data['product_topping_by_category'] = $this->getToppingByCategory($product);
         $data['product_tags'] = $this->getTagByProduct($productId);
+        $data['product_size'] = $this->getSizeProduct($productId);
         return $data;
     }
     public function getToppingOwn($product)
