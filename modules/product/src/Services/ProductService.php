@@ -108,7 +108,7 @@ class ProductService extends BaseService
 
     public function getSizeProduct($productId)
     {
-        $listSizeId = SizeProduct::where('product_id', $productId)->pluck('id');
+        $listSizeId = SizeProduct::where('product_id', $productId)->pluck('size_id');
         $listSize = Size::whereIn('id', $listSizeId)->get();
         $data = [];
         foreach ($listSize as $key => $value) {
