@@ -1,7 +1,6 @@
 <?php
 namespace APV\Size\Models;
 
-use APV\Product\Models\Product;
 use Illuminate\Database\Eloquent\Model;
 /**
  * Class Size
