@@ -7,20 +7,18 @@ use Illuminate\Database\Eloquent\Model;
  * Class Size
  * @package APV\Size\Models
  */
-class SizeResource extends Model
+class Step extends Model
 {
 
     /**
      * @var string
      */
-    protected $table = 'size_product_material';
-
+    protected $table = 'steps';
     /**
      * @var array
      */
     protected $fillable = [
-        'size_product_id', 'product_id', 'size_id', 'material_id', 'quantity',
-        'step_distance', 'mix', 'max', 'status'
+        'name', 'product_id', 'size_id', 'material_id', 'quantity', 'status'
     ];
 
 }
