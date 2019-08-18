@@ -114,14 +114,14 @@ class ProductService extends BaseService
         foreach ($listSize as $key => $value) {
             $data[$key]['size_id'] = $value->id;
             $data[$key]['size_name'] = $value->name;
-            $data['material'] = $this->getMaterialProduct($productId, $value->id);
+            $data[$key]['material'] = $this->getMaterialProduct($productId, $value->id);
         }
         return $data;
     }
 
     public function getStep($productId, $sizeId, $materialId)
     {
-        $data = [];
+        // $data = [];
         $listStep = Step::where('product_id', $productId)->where('size_id', $sizeId)
             ->where('material_id', $materialId)->get();
         $data = new CommonStep();
