@@ -43,11 +43,13 @@ class ProductService extends BaseService
         if (!$productId) {
             return false;
         }
+        //update barcode
+        $productBarcode = getBarCodeProduct($productId);
         //upload avatar: todo
         $fileNameImage = $file->getClientOriginalName();
         $file->move(public_path("/uploads/products/" . $productId . '/avatar/'), $fileNameImage);
         $imageUrl = '/uploads/products/' . $productId . '/avatar/' . $fileNameImage;
-        Product::where('id', $productId)->update(['avatar' => $imageUrl]);
+        Product::where('id', $productId)->update(['avatar' => $imageUrl, 'barcode' => $productBarcode]);
         //upload nhieu anh: todo
         if (count($input['images']) > 0) {
             $this->postCreateImages($productId, $input['images']);
