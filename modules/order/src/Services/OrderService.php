@@ -168,6 +168,9 @@ class OrderService extends BaseService
     public function getListSearch($condition)
     {
         $ruleConditionOrder = OrderDataDefault::ruleConditionOrder();
+        if (!isset($condition)) {
+            return $this->getOrderList();
+        }
         foreach ($condition as $key => $value) {
             if (!in_array($key, $ruleConditionOrder)) {
                 return false;
