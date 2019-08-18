@@ -17,7 +17,7 @@ use APV\Size\Models\SizeProduct;
 use APV\Size\Models\Size;
 use APV\Size\Models\SizeResource;
 // use APV\Size\Models\Step;
-use APV\Material\Models\Material;
+// use APV\Material\Models\Material;
 use APV\Base\Services\BaseService;
 use League\Fractal\Resource\Collection;
 use Illuminate\Database\Eloquent\Collection as Collect;
