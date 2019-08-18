@@ -353,6 +353,7 @@ class OrderService extends BaseService
             $data[$key]['size_name'] = $this->sizeService->getDetail($orderProduct->size_id, 'name');
             $data[$key]['topping'] = $this->getToppingByOrderProduct($orderProduct);
             $data[$key]['price'] = $orderProduct->price;
+            $data[$key]['order_product_comment'] = $orderProduct->order_product_comment;
             $data[$key]['product_price'] = $orderProduct->product_price;
             $data[$key]['total_price_topping'] = $orderProduct->total_price_topping;
             $data[$key]['total_price'] = $orderProduct->total_price;
