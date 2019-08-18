@@ -14,9 +14,12 @@ class CategoryDataConst extends BaseDataConst
         'code' => 914,
         'message' => 'You have no permission to access to this entity',
     ];
+
     const ERROR_CODE_UNCREATE_NEW = [
         'code' => 1100,
         'message' => 'Create categories error',
     ];
+
+    const CATEGORY_ROOT = 0;
     
 }

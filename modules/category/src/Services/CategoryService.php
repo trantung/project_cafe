@@ -2,6 +2,7 @@
 namespace APV\Category\Services;
 
 use APV\Category\Models\Category;
+use APV\Category\Constants\CategoryDataConst;
 use APV\Product\Models\Product;
 use APV\Base\Services\BaseService;
 use League\Fractal\Resource\Collection;
@@ -22,8 +23,8 @@ class CategoryService extends BaseService
         if (!$file) {
             return false;
         }
-        if ($input['path'] == 0) {
-            $input['parent_id'] = 0;
+        if ($input['path'] == CategoryDataConst::CATEGORY_ROOT) {
+            $input['parent_id'] = CategoryDataConst::CATEGORY_ROOT;
         } else {
             $path = explode('_', $input['path']);
             $input['parent_id'] = end($path);
@@ -35,7 +36,7 @@ class CategoryService extends BaseService
         $fileNameImage = $file->getClientOriginalName();
         request()->file('image')->move(public_path("/uploads/categories/" . $categoryId . '/'), $fileNameImage);
         $imageUrl = '/uploads/categories/' . $categoryId . '/' . $fileNameImage;
-        if ($input['parent_id'] == 0) {
+        if ($input['parent_id'] == CategoryDataConst::CATEGORY_ROOT) {
             Category::where('id', $categoryId)->update(['path' => $categoryId, 'image' => $imageUrl]);
         } else {
             Category::where('id', $categoryId)->update(['path' => $input['path'] . '_' . $categoryId, 'image' => $imageUrl]);
@@ -72,7 +73,7 @@ class CategoryService extends BaseService
         if (!isset($category)) {
             return null;
         }
-        if ($category->parent_id == 0) {
+        if ($category->parent_id == CategoryDataConst::CATEGORY_ROOT) {
             $name = $category->name;
             return $result = ['path' => $category->path, 'name' => $name];
         }
@@ -123,9 +124,9 @@ class CategoryService extends BaseService
             $imageUrl = '/uploads/categories/' . $categoryId . '/' . $fileNameImage;
             $input['image'] = $imageUrl;
         }
-        if ($input['path'] == 0) {
+        if ($input['path'] == CategoryDataConst::CATEGORY_ROOT) {
             $input['path'] = $categoryId;
-            $input['parent_id'] = 0;
+            $input['parent_id'] = CategoryDataConst::CATEGORY_ROOT;
         }
         $category->update($input);
         return true;
