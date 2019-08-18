@@ -6,7 +6,7 @@ use APV\Shop\Models\Shop;
 use APV\Category\Models\Category;
 use APV\Topping\Models\Topping;
 use APV\Product\Models\Product;
-use APV\Product\Models\CommonStep;
+// use APV\Product\Models\CommonStep;
 use APV\Topping\Models\ToppingCategory;
 use APV\Product\Models\ProductTopping;
 use APV\Product\Constants\ProductDataConst;
@@ -17,7 +17,7 @@ use APV\Size\Models\SizeProduct;
 use APV\Size\Models\Size;
 use APV\Size\Models\SizeResource;
 use APV\Size\Models\Step;
-use APV\Material\Models\Material;
+// use APV\Material\Models\Material;
 use APV\Base\Services\BaseService;
 use League\Fractal\Resource\Collection;
 use Illuminate\Database\Eloquent\Collection as Collect;
@@ -121,29 +121,29 @@ class ProductService extends BaseService
 
     public function getStep($productId, $sizeId, $materialId)
     {
-        $listStep = Step::where('product_id', $productId)->where('size_id', $sizeId)
-            ->where('material_id', $materialI)->get();
-        $data = new CommonStep();
-        foreach ($listStep as $key => $step) {
-            $stepQuantity = $step->quantity;
-            $data->$stepQuantity = [
-                'step_name' = $step->name, 
-                'step_id' = $step->id, 
-                'step_quantity' = $step->quantity, 
-            ];
-        }
+        // $listStep = Step::where('product_id', $productId)->where('size_id', $sizeId)
+        //     ->where('material_id', $materialI)->get();
+        // // $data = new CommonStep();
+        // // foreach ($listStep as $key => $step) {
+        // //     $stepQuantity = $step->quantity;
+        // //     $data->$stepQuantity = [
+        // //         'step_name' = $step->name, 
+        // //         'step_id' = $step->id, 
+        // //         'step_quantity' = $step->quantity, 
+        // //     ];
+        // // }
         return $data;
     }
     public function getMaterialProduct($productId, $sizeId)
     {
         $data = [];
-        $materialIds = SizeProduct::where('product_id', $productId)->where('size_id', $sizeId)->pluck('material_id');
-        $materialList = Material::whereIn('id', $materialIds)->get();
-        foreach ($materialList as $key => $value) {
-            $data[$key]['material_name'] = $value->name;
-            $data[$key]['material_id'] = $value->id;
-            $data[$key]['size_product_material_detail'] = $this->getStep($productId, $sizeId, $value->id);
-        }
+        // $materialIds = SizeProduct::where('product_id', $productId)->where('size_id', $sizeId)->pluck('material_id');
+        // $materialList = Material::whereIn('id', $materialIds)->get();
+        // foreach ($materialList as $key => $value) {
+        //     $data[$key]['material_name'] = $value->name;
+        //     $data[$key]['material_id'] = $value->id;
+        //     $data[$key]['size_product_material_detail'] = $this->getStep($productId, $sizeId, $value->id);
+        // }
         return $data;
     }
 
