@@ -46,6 +46,10 @@ class OrderResponseCode extends BaseResponseCode
         'code' => 208,
         'message' => 'Cannot change status order',
     ];
+    const ERROR_CODE_UPDATE_QR_CODE_TABLE = [
+        'code' => 209,
+        'message' => 'error field number_waitting or table_qr_code',
+    ];
     
     
 

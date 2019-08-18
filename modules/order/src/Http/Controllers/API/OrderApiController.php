@@ -18,6 +18,15 @@ class OrderApiController extends ApiBaseController
         $this->orderService = $orderService;
         $this->apiAuth = $apiAuth;
     }
+    public function postUpdateQrTable(Request $request)
+    {
+        $input = $request->all();
+        if (!$data) {
+            return $this->sendError(OrderResponseCode::ERROR_CODE_UPDATE_QR_CODE_TABLE);
+        }
+        $data = $this->orderService->postUpdateQrTable($orderId);
+        return $this->sendSuccess($data, 'update order number waitting success');
+    }
 
     public function postCancel(Request $request, $orderId)
     {

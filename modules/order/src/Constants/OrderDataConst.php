@@ -29,4 +29,6 @@ class OrderDataConst extends BaseDataConst
     const ORDER_TYPE_TAKE_AWAY = 2;
     const ORDER_TYPE_SHIP = 3;
     const NO_ORDER = 'Have no order';
+    const ORDER_NUMBER_WAITTING = 'number_waitting';
+
 }

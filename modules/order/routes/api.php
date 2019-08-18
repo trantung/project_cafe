@@ -20,4 +20,6 @@ Route::group([
     Route::post('change_status_order/{order_id}', 'OrderApiController@postChangeStatusOrder');
     //Lọc theo: tầng(level_id)...
     Route::get('list_order/search', 'OrderApiController@getListSearch');
+    //update order by qr_code and number_waitting
+    Route::post('table/number_waitting/qr_code', 'OrderApiController@postUpdateQrTable');
 });

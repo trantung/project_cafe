@@ -28,9 +28,33 @@ class OrderService extends BaseService
         $this->sizeService = $sizeService;
         $this->toppingService = $toppingService;
     }
+    public function postUpdateQrTable($input)
+    {
+        if (!$input[OrderDataConst::ORDER_NUMBER_WAITTING] || !$input['table_qr_code']) {
+            return false;
+        }
+        $orderBill = OrderBill::where('code', $input[OrderDataConst::ORDER_NUMBER_WAITTING])->first();
+        if (!$orderBill) {
+            return false;
+        }
+        $orderId = $orderBill->order_id;
+        $order = Order::find($orderId);
+        if (!$order) {
+            return false;
+        }
+        $order->update([
+            'table_qr_code' => $input['table_qr_code'],
+            'table_id' => $this->getTableByQrCode($input['table_qr_code'], 'id'),
+            'level_id' => $this->getTableByQrCode($input['table_qr_code'], 'level_id'),
+        ]);
+        return $order;
+    }
 
     public function getTableByQrCode($tableQrCode, $field = null)
     {
+        if (!$tableQrCode) {
+            return null;
+        }
         $table = Table::where('qr_code', $tableQrCode)->first();
         if (!$table) {
             return null;
@@ -131,7 +155,7 @@ class OrderService extends BaseService
         $numberWaitting = renderCodeOrderTmp($orderId);
         // $data = $this->getDetail($orderId);
         $data['order_id'] = $orderId;
-        $data['number_waitting'] = $numberWaitting;
+        $data[OrderDataConst::ORDER_NUMBER_WAITTING] = $numberWaitting;
         return $data;
     }
 
@@ -192,7 +216,7 @@ class OrderService extends BaseService
         $data['table'] = $this->getTableByOrder($order);
         $data['order_detail']['order_common'] = $this->getOrderCommon($order);
         $data['order_detail']['list_product'] = $this->getListProductByOrder($order);
-        $data['number_waitting'] = OrderBill::getCode($order->id);
+        $data[OrderDataConst::ORDER_NUMBER_WAITTING] = OrderBill::getCode($order->id);
         return $data;
     }
 
