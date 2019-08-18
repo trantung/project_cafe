@@ -36,9 +36,6 @@ class OrderApiController extends ApiBaseController
     {
         $input = $request->all();
         $data = $this->orderService->getListSearch($input);
-        if (!$data) {
-            return $this->sendError(OrderResponseCode::ERROR_CODE_SEARCH_ORDER);
-        }
         return $this->sendSuccess($data, 'success');
     }
 
