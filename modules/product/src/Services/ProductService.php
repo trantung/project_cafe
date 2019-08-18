@@ -16,7 +16,7 @@ use APV\Tag\Models\Tag;
 use APV\Size\Models\SizeProduct;
 use APV\Size\Models\Size;
 use APV\Size\Models\SizeResource;
-use APV\Size\Models\Step;
+// use APV\Size\Models\Step;
 use APV\Material\Models\Material;
 use APV\Base\Services\BaseService;
 use League\Fractal\Resource\Collection;
