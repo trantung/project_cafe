@@ -4,6 +4,8 @@ namespace APV\Category\Services;
 use APV\Category\Models\Category;
 use APV\Category\Constants\CategoryDataConst;
 use APV\Product\Models\Product;
+use APV\Topping\Models\ToppingCategory;
+use APV\Topping\Models\Topping;
 use APV\Base\Services\BaseService;
 use League\Fractal\Resource\Collection;
 use Illuminate\Http\UploadedFile;
@@ -99,6 +101,19 @@ class CategoryService extends BaseService
         return $result;
     }
 
+    public function getListToppingByCategory($categoryId)
+    {
+        $listToppingId = ToppingCategory::where('category_id', $categoryId)->pluck('topping_id');
+        $toppings = Topping::whereIn('id', $listToppingId)->get();
+        $data = [];
+        foreach ($toppings as $key => $value) {
+            $data[$key]['topping_id'] = $value->id;
+            $data[$key]['topping_name'] = $value->name;
+            $data[$key]['topping_price'] = $value->price;
+        }
+        return $data;
+    }
+
     public function getDetail($categoryId)
     {
         $category = Category::find($categoryId);
@@ -107,6 +122,7 @@ class CategoryService extends BaseService
         $data['active'] = $category->active;
         $data['description'] = $category->description;
         $data['list_products'] = $this->getListProductByCategory($categoryId);
+        $data['list_topping'] = $this->getListToppingByCategory($categoryId);
         // $data['path'] = $this->getNameCategoryWithPath($category);
         return $data;
     }

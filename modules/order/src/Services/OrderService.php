@@ -130,6 +130,7 @@ class OrderService extends BaseService
             $orderProduct['size_id'] = $product['size_id'];
             $orderProduct['product_price'] = $product['product_price'];
             $orderProduct['price'] = $product['price'];
+            $orderProduct['order_product_comment'] = $product['order_product_comment'];
             $orderProduct['total_price'] = $product['total_price'];
             $orderProduct['total_price_topping'] = $product['total_price_topping'];
             $result['order_product'][] = $orderProductId = OrderProduct::create($orderProduct)->id;
