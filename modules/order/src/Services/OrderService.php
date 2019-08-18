@@ -178,7 +178,7 @@ class OrderService extends BaseService
         }
         $data = $this->getOrderList($condition);
         if (!$data) {
-            return [OrderDataConst::NO_ORDER];
+            return [];
         }
         return $data;
     }
