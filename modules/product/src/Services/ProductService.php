@@ -123,7 +123,7 @@ class ProductService extends BaseService
     {
         $data = [];
         $listStep = Step::where('product_id', $productId)->where('size_id', $sizeId)
-            ->where('material_id', $materialI)->get();
+            ->where('material_id', $materialId)->get();
         $data = new CommonStep();
         foreach ($listStep as $key => $step) {
             $stepQuantity = $step->quantity;
