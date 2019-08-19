@@ -98,26 +98,5 @@ class MaterialService extends BaseService
         MaterialType::destroy($materialTypeId);
         return true;
     }
-
-    // public function getListMaterialProduct()
-    // {
-        
-    // }
-    // public function createMaterialProduct()
-    // {
-        
-    // }
-    // public function getDetailMaterialProduct()
-    // {
-
-    // }
-    // public function postEditMaterialProduct()
-    // {
-
-    // }
-    // public function postDeleteMaterialProduct()
-    // {
-
-    // }
     
 }

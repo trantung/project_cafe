@@ -55,10 +55,17 @@ class SizeService extends BaseService
         return true;
     }
 
-    public function postDelete($sizeId)
+    public function deleteRelation($sizeId)
     {
+        Step::where('size_id', $sizeId)->delete();
         SizeResource::where('size_id', $sizeId)->delete();
         SizeProduct::where('size_id', $sizeId)->delete();
+        return true;
+    }
+
+    public function postDelete($sizeId)
+    {
+        $this->deleteRelation($sizeId);
         $size = Size::find($sizeId);
         if (!$size) {
             return false;

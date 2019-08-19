@@ -220,18 +220,20 @@ class ProductService extends BaseService
 
     public function delete($productId)
     {
-        //xoa SizeResource, SizeProduct, TagProduct, ProductTopping
-        SizeResource::where('product_id')->delete();
-        SizeProduct::where('product_id')->delete();
-        TagProduct::where('product_id')->delete();
-        ProductTopping::where('product_id')->delete();
+        
 
         $product = Product::find($productId);
         if (!$product) {
             return false;
         }
-        CommonImage::where('model_name', 'Product')->where('model_id', $productId)->delete();
+        //xoa SizeResource, SizeProduct, TagProduct, ProductTopping, Step, CommonImage
+        Step::where('product_id', $productId)->delete();
+        SizeResource::where('product_id', $productId)->delete();
+        SizeProduct::where('product_id', $productId)->delete();
+        TagProduct::where('product_id', $productId)->delete();
         ProductTopping::where('product_id', $productId)->delete();
+        CommonImage::where('model_name', 'Product')->where('model_id', $productId)->delete();
+
         Product::destroy($productId);
         return true;
     }
