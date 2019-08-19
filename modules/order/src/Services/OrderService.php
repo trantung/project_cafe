@@ -367,14 +367,44 @@ class OrderService extends BaseService
         return true;
     }
 
-    public function postChangeStatusOrder($orderId)
+    public function postChangeStatusPaymentOrder($orderId, $user)
     {
         $order = Order::find($orderId);
         if (!$order) {
             return false;
         }
-        $order->update(['status' => OrderDataConst::ORDER_STATUS_CONFIRM_KITCHENT]);
+        $order->update([
+            'status' => OrderDataConst::ORDER_STATUS_CONFIRM_CASHIER,
+            'confirm_payment_by' => $user->id,
+        ]);
+        // money increase 
+        $this->calMoney();
         return true;
+    }
+
+    public function postChangeStatusOrder($orderId, $user)
+    {
+        $order = Order::find($orderId);
+        if (!$order) {
+            return false;
+        }
+        $order->update([
+            'status' => OrderDataConst::ORDER_STATUS_CONFIRM_KITCHENT,
+            'updated_by' => $user->id,
+        ]);
+        // tru nguyen lieu trong kho
+        $this->calMaterial();
+        return true;
+    }
+
+    public function calMaterial()
+    {
+
+    }
+
+    public function calMoney()
+    {
+
     }
 
 }

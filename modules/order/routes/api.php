@@ -18,6 +18,8 @@ Route::group([
     Route::post('table/qr_code/{field_wanted}', 'OrderApiController@postGetValueByQrCodeTable');
     //bếp confirm
     Route::post('change_status_order/{order_id}', 'OrderApiController@postChangeStatusOrder');
+    //thu ngan confirm
+    Route::post('change_status_payment_order/{order_id}', 'OrderApiController@postChangeStatusPaymentOrder');
     //Lọc theo: tầng(level_id)...
     Route::get('list_order/search', 'OrderApiController@getListSearch');
     //update order by qr_code and number_waitting

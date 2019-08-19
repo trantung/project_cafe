@@ -114,13 +114,28 @@ class OrderApiController extends ApiBaseController
 
     public function postChangeStatusOrder($orderId)
     {
-        if (!$this->apiAuth->checkPermissionModule('order_change_status', 'postChangeStatusOrder')) {
+        $user = $this->apiAuth->checkPermissionModule('order_change_status', 'postChangeStatusOrder');
+        if (!$user) {
             return $this->sendError(OrderResponseCode::ERROR_CODE_NO_PERMISSION);
         }
-        $data = $this->orderService->postChangeStatusOrder($orderId);
+        $data = $this->orderService->postChangeStatusOrder($orderId, $user);
         if (!$data) {
             return $this->sendError(OrderResponseCode::ERROR_CODE_CHANGE_STATUS_ORDER);
         }
         return $this->sendSuccess($data, 'Confirm success');
     }
+    
+    public function postChangeStatusPaymentOrder($orderId)
+    {
+        $user = $this->apiAuth->checkPermissionModule('order_change_status_payment', 'postChangeStatusPaymentOrder');
+        if (!$user) {
+            return $this->sendError(OrderResponseCode::ERROR_CODE_NO_PERMISSION);
+        }
+        $data = $this->orderService->postChangeStatusPaymentOrder($orderId, $user);
+        if (!$data) {
+            return $this->sendError(OrderResponseCode::ERROR_CODE_CHANGE_STATUS_ORDER);
+        }
+        return $this->sendSuccess($data, 'Confirm success');
+    }
+    
 }

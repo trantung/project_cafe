@@ -56,6 +56,11 @@ function listPermissionModules()
             'role_id' => [UserDataConst::ADMIN, UserDataConst::SHOP_MANAGER, UserDataConst::KITCHEN_BAR],
             'functions' => ['postChangeStatusOrder'],
         ],
+        'order_change_status_payment' => [
+            'role_id' => [UserDataConst::ADMIN, UserDataConst::SHOP_MANAGER, UserDataConst::CASHIER],
+            'functions' => ['postChangeStatusPaymentOrder'],
+        ],
+        
         'tag' => [
             'role_id' => [UserDataConst::ADMIN, UserDataConst::SHOP_MANAGER],
             'functions' => ['postEdit', 'postDelete', 'postCreate', 'getListTagProduct', 'postCreateTagProduct', 'getDetailTagProduct', 'postEditTagProduct', 'postDeleteTagProduct'],
