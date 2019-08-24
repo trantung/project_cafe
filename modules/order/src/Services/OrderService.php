@@ -286,6 +286,7 @@ class OrderService extends BaseService
         }
         $data['customer_name'] = $customer->name;
         $data['customer_id'] = $customer->id;
+        $data['customer_phone'] = $customer->phone;
         return $data;
     }
 
