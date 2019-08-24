@@ -191,7 +191,7 @@ class OrderDataDefault extends BaseService
 
     public static function ruleConditionOrder()
     {
-        $data = ['level_id'];
+        $data = ['level_id', 'customer_phone', 'number_waitting'];
         return $data;
     }
 

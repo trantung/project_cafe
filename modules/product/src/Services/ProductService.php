@@ -114,6 +114,7 @@ class ProductService extends BaseService
         foreach ($listSize as $key => $value) {
             $data[$key]['size_id'] = $value->id;
             $data[$key]['size_name'] = $value->name;
+            $data[$key]['size_product_price'] = $value->price;
             $data[$key]['material'] = $this->getMaterialProduct($productId, $value->id);
         }
         return $data;

@@ -170,7 +170,18 @@ class OrderService extends BaseService
             $data = Order::all();
             return $data;
         }
-        $data = Order::where($condition)->get();
+        $order = Order::join('order_bill_tmps', 'order_bill_tmps.order_id', '=', 'orders.id');
+        if ($condition['customer_phone']) {
+            $data = $order->where('orders.customer_phone', 'like', '%'.$condition['customer_phone'].'%');
+        }
+        if ($condition['number_waitting']) {
+            $data = $order->where('order_bill_tmps.code', $condition['number_waitting']);
+        }
+        if ($condition['level_id']) {
+            $data = $order->where('orders.level_id', $condition['level_id']);
+        }
+        $data = $order->orderBy('created_at', 'desc')->get();
+
         return $data;
     }
 
