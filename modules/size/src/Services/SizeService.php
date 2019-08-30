@@ -146,6 +146,7 @@ class SizeService extends BaseService
 
     public function createStep($sizeProductMaterial, $objectStep)
     {
+        $step['size_product_material_id'] = $sizeProductMaterial->id;
         $step['product_id'] = $sizeProductMaterial->product_id;
         $step['size_id'] = $sizeProductMaterial->size_id;
         $step['material_id'] = $sizeProductMaterial->material_id;

@@ -17,7 +17,7 @@ class Step extends Model
      * @var array
      */
     protected $fillable = [
-        'name', 'product_id', 'size_id', 'material_id', 'quantity', 'status'
+        'name', 'product_id', 'size_id', 'material_id', 'quantity', 'status', 'size_product_material_id'
     ];
 
 }
