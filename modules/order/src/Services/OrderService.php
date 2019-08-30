@@ -326,6 +326,7 @@ class OrderService extends BaseService
 
     public function getOrderCommon($order)
     {
+        $data['order_id'] = $order->id;
         $data['comment'] = $order->comment;
         $data['created_by'] = $this->commonGetPersonActionOrder($order, 'created_by');
         $data['updated_by'] = $this->commonGetPersonActionOrder($order, 'updated_by');
