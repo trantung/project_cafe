@@ -391,7 +391,7 @@ class OrderService extends BaseService
             'confirm_payment_by' => $user->id,
         ]);
         // money increase 
-        $this->calMoney($orderId);
+        $this->calMoney($orderId, $user->id);
         return true;
     }
 
@@ -449,7 +449,7 @@ class OrderService extends BaseService
         } else {
             $money = $transaction->total_after;
         }
-        $money = $this->getTotalMoney('total_before');
+        $money = $this->getTotalMoney('total_after');
         $input = [
             'order_id' => $orderId,
             'total_before' => $money,
