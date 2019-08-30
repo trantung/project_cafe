@@ -17,6 +17,7 @@ use APV\Product\Services\ProductService;
 use APV\Size\Services\SizeService;
 use APV\Topping\Services\ToppingService;
 use APV\Order\Services\OrderDataDefault;
+use APV\Promotion\Models\Promotion;
 use League\Fractal\Resource\Collection;
 use Illuminate\Http\Request;
 
@@ -125,6 +126,7 @@ class OrderService extends BaseService
         $orderProduct['level_id'] = $this->getTableByQrCode($input['table_qr_code'], 'level_id');
         $orderProduct['ship_id'] = $input['ship_id'];
         $listProduct = $input['list_product'];
+        $totalPriceProductAfterPromotion = 0;
         foreach ($listProduct as $key => $product) {
             $orderProduct['product_id'] = $product['product_id'];
             $orderProduct['quantity'] = $product['quantity'];
@@ -133,11 +135,82 @@ class OrderService extends BaseService
             $orderProduct['price'] = $product['price'];
             $orderProduct['order_product_comment'] = $product['order_product_comment'];
             $orderProduct['total_price'] = $product['total_price'];
-            $orderProduct['total_price_topping'] = $product['total_price_topping'];
+            $orderProduct['total_price_topping'] = $product['total_price_topping'];           
             $result['order_product'][] = $orderProductId = OrderProduct::create($orderProduct)->id;
             $result['order_product_topping'][] = $this->createOrderProductTopping($orderProductId, $product['topping']);
+
+            $priceAfterPromotion = $this->getPriceProductAfterPromotion($product['price']);
+            $totalPriceProductAfterPromotion = $totalPriceAfterPromotion + $this->getTotalPriceAfterPromotion($product['price'], $product['quantity']);
+
         }
+        $orderUp = Order::find($orderId);
+        $toppingTotal = $orderUp->total_topping_price;
+        $customerPayAmount = $this->getMoneyCustomerPay($totalPriceProductAfterPromotion, $toppingTotal);
+        $orderUp->update(['amount_after_promotion' => $customerPayAmount]);
         return $result;
+    }
+
+    public function getMoneyCustomerPay($totalPriceProductAfterPromotion, $toppingTotal)
+    {
+        if (empty($toppingTotal)) {
+            $topping = 0;
+        }
+        $money = $totalPriceProductAfterPromotion + $toppingTotal;
+        //kiem tra khuyen mai cua order
+        $promotion = $this->commonGetPromotion(2);
+        if (!$promotion) {
+            return $money;
+        }
+        //so sanh xem tong tien hoa don lon hon config ko
+        $moneyTotalMin = $promotion->money_total_min;
+        if ($money > $moneyTotalMin) {
+            if ($promotion->percent) {
+                $moneyPercent = $money * $percent/100;
+                return $money - $moneyPercent;
+            }
+            if ($promotion->money_promotion) {
+                return $money - $promotion->money_promotion;
+            }
+        }
+        return $money;
+    }
+
+    //status = 1: giảm giá toàn bộ
+    //status = 2: giảm giá cho hóa đơn có giá tiền trên money_total_min
+    public function commonGetPromotion($status)
+    {
+        $now = date('Y-m-d');
+        $promotion = Promotion::where('start_date', '<=', $now)
+            ->where('end_date', '>=', $now)
+            ->where('status', $status)
+            ->first();
+        return $promotion;
+    }
+
+    public function getTotalPriceAfterPromotion($price, $quantity)
+    {
+        $priceAfterPromotion = $this->getPriceProductAfterPromotion($price);
+        $money = $priceAfterPromotion * $quantity;
+        return $money;
+    }
+
+    public function getPriceProductAfterPromotion($price)
+    {
+        $now = date('Y-m-d');
+        $promotion = $this->commonGetPromotion(1);
+        if (!$promotion) {
+            return $price;
+        }
+        // 'name', 'status', 'percent', 'money_total_min', 'money_promotion', 'start_time', 'end_time'
+
+        if ($promotion->percent) {
+            $pricePercent = $price * $percent/100;
+            return $price - $pricePercent;
+        }
+        if ($promotion->money_promotion) {
+            return $price - $promotion->money_promotion;
+        }
+        return $price;
     }
 
     public function postCreate($input)
@@ -151,13 +224,15 @@ class OrderService extends BaseService
         if (!$orderId) {
             return false;
         }
+        // $input['amount_after_promotion'] = $this->getAmountOrderAfterPromotion($input);
         //tao order_product
         $orderProducts = $this->postCreateOrderProduct($orderId, $input);
         //tao ra mã phiếu cho đơn hàng: orderBill
         $numberWaitting = renderCodeOrderTmp($orderId);
-        // $data = $this->getDetail($orderId);
+
         $data['order_id'] = $orderId;
         $data[OrderDataConst::ORDER_NUMBER_WAITTING] = $numberWaitting;
+        //gia tien tổng order sau khi khuyen mai
         return $data;
     }
 
@@ -340,6 +415,7 @@ class OrderService extends BaseService
         $data['ship_id'] = $order->ship_id;
         $data['ship_name'] = $this->getShipNameByOrder($order);
         $data['amount'] = $order->amount;
+        $data['amount_after_promotion'] = $order->amount_after_promotion;
         return $data;
     }
 
