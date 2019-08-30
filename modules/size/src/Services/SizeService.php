@@ -5,6 +5,7 @@ use APV\Size\Models\Size;
 use APV\Size\Models\SizeProduct;
 use APV\Size\Models\SizeResource;
 use APV\Size\Models\Step;
+use APV\Order\Models\OrderMaterialLog;
 use APV\Material\Models\Material;
 use APV\Base\Services\BaseService;
 use League\Fractal\Resource\Collection;
@@ -189,6 +190,31 @@ class SizeService extends BaseService
                 }
             }
 
+        }
+        return true;
+    }
+
+    public function calMaterialQuantity($productId, $sizeId, $quantityProductOrder, $orderId)
+    {
+        $data = SizeResource::where('product_id', $productId)->where('size_id', $sizeId)->get();
+        foreach ($data as $key => $value) {
+            $materialId = $value->material_id;
+            $quantity = $value->quantity;
+            //cal total material of order
+            $materialProductOrder = $quantity * $quantityProductOrder;
+            $material = Material::find($materialId);
+            OrderMaterialLog::create(
+                [
+                    'orderId' => $orderId,
+                    'size_id' => $sizeId,
+                    'product_id' => $productId,
+                    'material_id' => $materialId,
+                    'material_order_quantity' => $materialProductOrder,
+                    'material_quantity' => $material->quantity,
+                ]
+            );
+            //decrease quantity material in table material by total material of order
+            $material->update(['quantity' => $material->quantity - $materialProductOrder]);
         }
         return true;
     }

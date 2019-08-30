@@ -5,6 +5,7 @@ use APV\Order\Models\Order;
 use APV\Order\Models\OrderProduct;
 use APV\Order\Models\OrderProductTopping;
 use APV\Order\Models\OrderLog;
+use APV\Order\Models\OrderTransactionLog;
 use APV\Table\Models\Table;
 use APV\Customer\Models\Customer;
 use APV\Topping\Models\Topping;
@@ -390,7 +391,7 @@ class OrderService extends BaseService
             'confirm_payment_by' => $user->id,
         ]);
         // money increase 
-        $this->calMoney();
+        $this->calMoney($orderId);
         return true;
     }
 
@@ -405,18 +406,57 @@ class OrderService extends BaseService
             'updated_by' => $user->id,
         ]);
         // tru nguyen lieu trong kho
-        $this->calMaterial();
+        $this->calMaterial($orderId);
         return true;
     }
 
-    public function calMaterial()
+    public function calMaterial($orderId)
     {
-
+        //get product, size and quantity of product by order_id
+        $orderProducts = OrderProduct::where('order_id', $orderId)->get();
+        //for each product get material by product_id, size_id
+        foreach ($orderProducts as $key => $value) {
+            //cal total material of order
+            $materialOrder = $this->sizeService->calMaterialQuantity($value->product_id, $value->size_id, $value->quantity, $orderId);
+        }
+        return true;
     }
 
-    public function calMoney()
+    public function getTotalMoney($field)
     {
+        $transaction = OrderTransactionLog::latest()->first();
+         if (!$transaction) {
+            $money = 0;
+        } else {
+            $money = $transaction->$field;
+        }
+        return $money;
+    }
+    public function getMoneyOrder($orderId)
+    {
+        $order = Order::find($orderId);
+        if (!$order) {
+            return 0;
+        }
+        return $order->amount;
+    }
 
+    public function calMoney($orderId, $userId)
+    {
+        $transaction = OrderTransactionLog::latest()->first();
+        if (!$transaction) {
+            $money = 0;
+        } else {
+            $money = $transaction->total_after;
+        }
+        $money = $this->getTotalMoney('total_before');
+        $input = [
+            'order_id' => $orderId,
+            'total_before' => $money,
+            'total_after' => $money + $this->getMoneyOrder($orderId),
+            'user_id' => $userId
+        ];
+        OrderTransactionLog::create($input);
     }
 
 }
