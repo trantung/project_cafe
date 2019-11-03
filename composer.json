@@ -48,7 +48,8 @@
             "APV\\Customer\\": "modules/customer/src",
             "APV\\Material\\": "modules/material/src",
             "APV\\Order\\": "modules/order/src",
-            "APV\\Tag\\": "modules/tag/src"
+            "APV\\Tag\\": "modules/tag/src",
+            "APV\\Promotion\\": "modules/promotion/src"
         },
         "classmap": [
             "database/seeds",
