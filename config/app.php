@@ -191,6 +191,7 @@ return [
         APV\Material\Providers\MaterialProvider::class,
         APV\Order\Providers\OrderProvider::class,
         APV\Tag\Providers\TagProvider::class,
+        APV\Promotion\Providers\PromotionProvider::class,
 
     ],
 
