@@ -71,5 +71,10 @@ class ProductApiController extends ApiBaseController
         $data = $this->productService->createProductTopping($productId, $input);
         return $this->sendSuccess($data, 'Delete success');
     }
-    
+    public function search(Request $request)
+    {
+        $input = $request->all();
+        $data = $this->productService->searchProduct($input);
+        return $this->sendSuccess($data, 'search success');
+    }
 }

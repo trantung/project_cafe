@@ -275,4 +275,12 @@ class ProductService extends BaseService
             CommonImage::create(['model_id' => $productId, 'model_name' => 'Product', 'image_url' => $imageUrl]);
         }
     }
+
+    public function searchProduct($input)
+    {
+        //product_id, product_name, category_id,
+        $data = Product::whereNull('deleted_at');
+
+        return $data;
+    }
 }
