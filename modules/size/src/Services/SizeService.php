@@ -90,7 +90,14 @@ class SizeService extends BaseService
      */
     public function createSizeProduct($input, $sizeId, $productId)
     {
-        $sizeProductId = SizeProduct::create(['size_id' => $sizeId, 'product_id' => $productId, 'price' => $input['price']])->id;
+        $sizeProductId = SizeProduct::create(
+            [
+                'size_id' => $sizeId, 
+                'product_id' => $productId, 
+                'price' => $input['price'],
+                'weight_number' => $input['weight_number'],
+            ]
+        )->id;
         if (!$sizeProductId) {
             return false;
         }
