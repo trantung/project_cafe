@@ -7,6 +7,7 @@ use League\Fractal\Resource\Collection;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Http\Request;
+use APV\Customer\Constants\CustomerDataConst;
 
 class CustomerService extends BaseService
 {
@@ -21,12 +22,9 @@ class CustomerService extends BaseService
      */
     public function postCreate($input)
     {
-        // $checkPhoneExist = $this->checkPhoneExist($input['phone']);
-        // if ($checkPhoneExist) {
-        //     return false;
-        // }
-        $customerId = Customer::create($input)->id;
-        $customer = Customer::find($customerId);
+        $input['username'] = $input['phone'];
+        $input['password'] = Hash::make(CustomerDataConst::PASSWORD_DEFAULT);
+        $customer = Customer::create($input);
         return $customer->toArray();
     }
     public function checkPhoneExist($phone)

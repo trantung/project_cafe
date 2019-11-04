@@ -515,7 +515,7 @@ class OrderService extends BaseService
         if (!$order) {
             return 0;
         }
-        return $order->amount;
+        return $order->amount_after_promotion;
     }
 
     public function calMoney($orderId, $userId)
