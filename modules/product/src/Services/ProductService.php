@@ -113,7 +113,9 @@ class ProductService extends BaseService
         $data = [];
         foreach ($listSize as $key => $value) {
             $data[$key]['size_id'] = $value->id;
+            $data[$key]['size_price'] = (int)$value->price;
             $data[$key]['size_name'] = $value->name;
+            $data[$key]['weight_number'] = $value->weight_number;
             $data[$key]['size_product_price'] = $value->price;
             $data[$key]['material'] = $this->getMaterialProduct($productId, $value->id);
         }
@@ -159,6 +161,8 @@ class ProductService extends BaseService
             return $product->$field;
         }
         $data = $product->toArray();
+        $data['price_origin'] = (int) $product->price_origin;
+        $data['price_pay'] = (int) $product->price_pay;
         $data['categories'] = $this->getCategoriesByProduct($productId);
         $data['product_images'] = $this->getProductImages($productId);
         $data['product_topping_own'] = $this->getToppingOwn($product);
@@ -271,5 +275,13 @@ class ProductService extends BaseService
             $imageUrl = '/uploads/products/' . $productId . '/images/' . $fileNameImage;
             CommonImage::create(['model_id' => $productId, 'model_name' => 'Product', 'image_url' => $imageUrl]);
         }
+    }
+
+    public function searchProduct($input)
+    {
+        //product_id, product_name, category_id,
+        $data = Product::whereNull('deleted_at');
+
+        return $data;
     }
 }
