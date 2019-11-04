@@ -180,8 +180,8 @@ class OrderService extends BaseService
     public function commonGetPromotion($status)
     {
         $now = date('Y-m-d');
-        $promotion = Promotion::where('start_date', '<=', $now)
-            ->where('end_date', '>=', $now)
+        $promotion = Promotion::where('start_time', '<=', $now)
+            ->where('end_time', '>=', $now)
             ->where('status', $status)
             ->first();
         return $promotion;
