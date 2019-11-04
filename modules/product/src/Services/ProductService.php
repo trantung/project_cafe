@@ -116,7 +116,6 @@ class ProductService extends BaseService
             $data[$key]['size_price'] = (int)$value->price;
             $data[$key]['size_name'] = $value->name;
             $data[$key]['weight_number'] = $value->weight_number;
-            $data[$key]['size_product_price'] = $value->price;
             $data[$key]['material'] = $this->getMaterialProduct($productId, $value->id);
         }
         return $data;
