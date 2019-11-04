@@ -126,7 +126,7 @@ class OrderService extends BaseService
         $orderProduct['level_id'] = $this->getTableByQrCode($input['table_qr_code'], 'level_id');
         $orderProduct['ship_id'] = $input['ship_id'];
         $listProduct = $input['list_product'];
-        $totalPriceProductAfterPromotion = 0;
+        $totalPriceProductAfterPromotion = $totalPriceAfterPromotion = 0;
         foreach ($listProduct as $key => $product) {
             $orderProduct['product_id'] = $product['product_id'];
             $orderProduct['quantity'] = $product['quantity'];
