@@ -243,7 +243,7 @@ class OrderService extends BaseService
             return $data;
         }
         if (!$condition) {
-            $data = Order::all();
+            $data = Order::orderBy('id', 'asc')->get();
             return $data;
         }
         $order = Order::join('order_bill_tmps', 'order_bill_tmps.order_id', '=', 'orders.id');
