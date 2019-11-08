@@ -105,6 +105,15 @@ class ProductService extends BaseService
         }
         return $data;
     }
+    
+    public function getSizeProductDetail($productId, $sizeId, $field)
+    {
+        $data = SizeProduct::where('product_id', $productId)->where('size_id', $sizeId)->first();
+        if (!$data) {
+            return null;
+        }
+        return $data->$field;
+    }
 
     public function getSizeProduct($productId)
     {
@@ -113,9 +122,9 @@ class ProductService extends BaseService
         $data = [];
         foreach ($listSize as $key => $value) {
             $data[$key]['size_id'] = $value->id;
-            $data[$key]['size_price'] = (int)$value->price;
+            $data[$key]['size_price'] = (int)$this->getSizeProductDetail($productId, $sizeId, 'price');
             $data[$key]['size_name'] = $value->name;
-            $data[$key]['weight_number'] = $value->weight_number;
+            $data[$key]['weight_number'] = $this->getSizeProductDetail($productId, $sizeId, 'weight_number');
             $data[$key]['material'] = $this->getMaterialProduct($productId, $value->id);
         }
         return $data;
