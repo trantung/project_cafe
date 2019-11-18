@@ -121,7 +121,7 @@ class ProductService extends BaseService
         $listSize = Size::whereIn('id', $listSizeId)->get();
         $data = [];
         foreach ($listSize as $key => $value) {
-            $data[$key]['size_id'] = $value->id;
+            $data[$key]['size_id'] = $sizeId = $value->id;
             $data[$key]['size_price'] = (int)$this->getSizeProductDetail($productId, $sizeId, 'price');
             $data[$key]['size_name'] = $value->name;
             $data[$key]['weight_number'] = $this->getSizeProductDetail($productId, $sizeId, 'weight_number');
