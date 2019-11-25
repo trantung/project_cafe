@@ -1,1 +1,0 @@
-<h3>Laravel Skeleton (Version <?=config('modules.base.general.version')?>)</h3>

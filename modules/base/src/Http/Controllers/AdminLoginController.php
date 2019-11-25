@@ -3,10 +3,10 @@ namespace APV\Base\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 
-class WelcomeController extends Controller
+class AdminLoginController extends Controller
 {
     public function index()
     {
-        return view('modules.base::welcome');
+        return view('admin.login');
     }
 }
