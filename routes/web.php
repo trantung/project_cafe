@@ -23,9 +23,8 @@ Route::group(['prefix' => '/admin', 'middleware' => 'auth:web'], function () {
     Route::get('/register', 'AdminController@getRegister');
     //Role
     Route::resource('/role', 'RoleController');
-    // Route::group(['prefix' => '/role'], function () {
-    // 	Route::resource('role', 'RoleController');
-
-    // });
+    //Tầng(level)
+    Route::resource('/level', 'LevelController');
+    
 });
 

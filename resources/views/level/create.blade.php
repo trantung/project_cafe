@@ -3,22 +3,22 @@
 
 <div class="container">
   <div class="card card-register mx-auto mt-5">
-    <div class="card-header">Edit a role</div>
+    <div class="card-header">Register a level</div>
     <div class="card-body">
-      {{ Form::open(array('method'=>'PUT', 'action' => array('RoleController@update', $role->id))) }}
+      {{ Form::open(['action' => 'LevelController@store']) }}
         <div class="form-group">
           <div class="form-row">
             <div class="col-md-6">
               <div class="form-label-group">
-                {{ Form::text('name', $role->name, array('class' => 'form-control')) }}
-                <label>Role name</label>
+                <input type="text" name="name" class="form-control" autofocus="autofocus">
+                <label>Level name</label>
               </div>
             </div>
           </div>
         </div>
         <div class="form-group">
           <div class="form-label-group">
-            {{ Form::text('description', $role->description, array('class' => 'form-control')) }}
+            <input type="text" name="description" class="form-control">
             <label>Decription</label>
           </div>
         </div>

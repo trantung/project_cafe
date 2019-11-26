@@ -13,7 +13,7 @@
     <div class="dropdown-menu" aria-labelledby="pagesDropdown">
       <h6 class="dropdown-header">Login Screens:</h6>
       <a class="dropdown-item" href="{{action('RoleController@index')}}">Role</a>
-      <a class="dropdown-item" href="{{action('AdminController@getRegister')}}">Register</a>
+      <a class="dropdown-item" href="{{action('LevelController@index')}}">Tầng</a>
       <a class="dropdown-item" href="forgot-password.html">Forgot Password</a>
       <div class="dropdown-divider"></div>
       <h6 class="dropdown-header">Other Pages:</h6>
