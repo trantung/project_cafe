@@ -5,18 +5,10 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Http\Controllers;
 use Illuminate\Support\Facades\Auth;
-use APV\Base\Services\ApiAuth;
-use APV\User\Services\UserService;
 use Illuminate\Support\Facades\Redirect;
 
 class AdminController extends Controller
 {
-    public function __construct(ApiAuth $apiAuth, UserService $userService)
-    {
-        $this->apiAuth = $apiAuth;
-        $this->userService = $userService;
-    }
-
     public function getLogin()
     {
     	return view('admin.login');
@@ -53,10 +45,15 @@ class AdminController extends Controller
     {
         return view('admin.charts');
     }
+    public function getRegister()
+    {
+        return view('admin.register');
+    }
     
     public function index()
     {
         return view('admin.index');
     }
+
     
 }
