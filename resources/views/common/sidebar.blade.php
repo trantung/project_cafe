@@ -14,7 +14,7 @@
       <h6 class="dropdown-header">Login Screens:</h6>
       <a class="dropdown-item" href="{{action('RoleController@index')}}">Role</a>
       <a class="dropdown-item" href="{{action('LevelController@index')}}">Tầng</a>
-      <a class="dropdown-item" href="forgot-password.html">Forgot Password</a>
+      <a class="dropdown-item" href="{{action('CategoryController@index')}}">Category</a>
       <div class="dropdown-divider"></div>
       <h6 class="dropdown-header">Other Pages:</h6>
       <a class="dropdown-item" href="404.html">404 Page</a>

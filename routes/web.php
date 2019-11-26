@@ -25,6 +25,8 @@ Route::group(['prefix' => '/admin', 'middleware' => 'auth:web'], function () {
     Route::resource('/role', 'RoleController');
     //Tầng(level)
     Route::resource('/level', 'LevelController');
-    
+    //Category
+    Route::resource('/category', 'CategoryController');
+
 });
 
