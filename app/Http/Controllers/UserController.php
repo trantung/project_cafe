@@ -40,6 +40,7 @@ class UserController extends AdminController
     public function store(Request $request)
     {
         $input = $request->all();
+        $input['password'] = Hash::make($input['password']);
         $userId = User::create($input)->id;
         return Redirect::action('UserController@index');
     }
