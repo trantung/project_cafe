@@ -1,6 +1,8 @@
 <?php
 
 use APV\Category\Models\Category;
+use APV\Level\Models\Level;
+use APV\User\Models\Role;
 use APV\Category\Constants\CategoryDataConst;
 
 function getNameOfCategoryParent($category)
@@ -47,5 +49,31 @@ function getPathCategory($parentId)
     }
     $path = $pathParent.'_'.$parentId;
     return $path;
+}
 
+function getNameLevelByTable($id)
+{
+    $level = Level::find($id);
+    if ($level) {
+        return $level->name;
+    }
+    return null;
+}
+
+function getListLevel()
+{
+    return Level::pluck('name', 'id')->toArray();
+}
+
+function getListRole()
+{
+    return Role::pluck('name', 'id')->toArray();
+}
+function getRoleNameById($id)
+{
+    $role = Role::find($id);
+    if ($role) {
+        return $role->name;
+    }
+    return null;
 }

@@ -11,9 +11,11 @@
       <span>Config common</span>
     </a>
     <div class="dropdown-menu" aria-labelledby="pagesDropdown">
-      <h6 class="dropdown-header">Login Screens:</h6>
+      <h6 class="dropdown-header">Table, Category,..:</h6>
       <a class="dropdown-item" href="{{action('RoleController@index')}}">Role</a>
+      <a class="dropdown-item" href="{{action('UserController@index')}}">User</a>
       <a class="dropdown-item" href="{{action('LevelController@index')}}">Tầng</a>
+      <a class="dropdown-item" href="{{action('TableController@index')}}">Bàn</a>
       <a class="dropdown-item" href="{{action('CategoryController@index')}}">Category</a>
       <div class="dropdown-divider"></div>
       <h6 class="dropdown-header">Other Pages:</h6>

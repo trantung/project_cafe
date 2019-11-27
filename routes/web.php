@@ -27,6 +27,10 @@ Route::group(['prefix' => '/admin', 'middleware' => 'auth:web'], function () {
     Route::resource('/level', 'LevelController');
     //Category
     Route::resource('/category', 'CategoryController');
+    //Table
+    Route::resource('/table', 'TableController');
+    //User
+    Route::resource('/user', 'UserController');
 
 });
 

@@ -12,14 +12,6 @@
 
     <div id="content-wrapper">
         @yield('content')
-      <footer class="sticky-footer">
-        <div class="container my-auto">
-          <div class="copyright text-center my-auto">
-            <span>Copyright © Your Website 2019</span>
-          </div>
-        </div>
-      </footer>
-
     </div>
     <!-- /.content-wrapper -->
 
@@ -44,7 +36,9 @@
         <div class="modal-body">Select "Logout" below if you are ready to end your current session.</div>
         <div class="modal-footer">
           <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
-          <a class="btn btn-primary" href="login.html">Logout</a>
+          {{ Form::open(array('method'=>'POST', 'action' => array('AdminController@postLogout'))) }}
+            {{ Form::submit('Logout', array('class' => 'btn btn-primary')) }}
+          {{ Form::close() }}
         </div>
       </div>
     </div>

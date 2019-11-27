@@ -6,7 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Redirect;
 use App\Http\Controllers\AdminController;
 use APV\Category\Models\Category;
-// use App\Helpers\AdminHelper;
+use APV\Product\Models\Product;
 
 class CategoryController extends AdminController
 {
@@ -111,6 +111,7 @@ class CategoryController extends AdminController
      */
     public function destroy($id)
     {
+        Product::where('category_id', $id)->update(['category_id', CATEGORY_NONE]);
         Category::destroy($id);
         return Redirect::action('CategoryController@index');
     }
