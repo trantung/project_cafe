@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Redirect;
 use App\Http\Controllers\AdminController;
 use APV\Material\Models\MaterialType;
 use APV\Material\Models\Material;
+use APV\Size\Models\SizeResource;
 
 class MaterialController extends AdminController
 {
@@ -90,6 +91,7 @@ class MaterialController extends AdminController
      */
     public function destroy($id)
     {
+        SizeResource::where('material', $id)->delete();
         Material::destroy($id);
         return Redirect::action('MaterialController@index');
     }
