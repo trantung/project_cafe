@@ -17,6 +17,9 @@
       <a class="dropdown-item" href="{{action('LevelController@index')}}">Tầng</a>
       <a class="dropdown-item" href="{{action('TableController@index')}}">Bàn</a>
       <a class="dropdown-item" href="{{action('CategoryController@index')}}">Category</a>
+      <a class="dropdown-item" href="{{action('SizeController@index')}}">Size</a>
+      <a class="dropdown-item" href="{{action('MaterialTypeController@index')}}">Material type</a>
+      <a class="dropdown-item" href="{{action('MaterialController@index')}}">Material</a>
       <div class="dropdown-divider"></div>
       <h6 class="dropdown-header">Other Pages:</h6>
       <a class="dropdown-item" href="404.html">404 Page</a>

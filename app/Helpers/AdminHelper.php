@@ -4,6 +4,8 @@ use APV\Category\Models\Category;
 use APV\Level\Models\Level;
 use APV\User\Models\Role;
 use APV\Category\Constants\CategoryDataConst;
+use APV\Material\Models\MaterialType;
+use APV\Material\Models\Material;
 
 function getNameOfCategoryParent($category)
 {
@@ -76,4 +78,18 @@ function getRoleNameById($id)
         return $role->name;
     }
     return null;
+}
+
+function getMaterialTypeName($id)
+{
+    $materialType = MaterialType::find($id);
+    if ($materialType) {
+        return $materialType->name;
+    }
+    return null;
+}
+
+function getListMaterialType()
+{
+    return $data = MaterialType::pluck('name', 'id')->toArray();
 }

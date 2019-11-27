@@ -31,6 +31,12 @@ Route::group(['prefix' => '/admin', 'middleware' => 'auth:web'], function () {
     Route::resource('/table', 'TableController');
     //User
     Route::resource('/user', 'UserController');
+    //Size
+    Route::resource('/size', 'SizeController');
+    //Material type: don vi tinh cua nguyen lieu(kg, g...)
+    Route::resource('/material_type', 'MaterialTypeController');
+    //Material
+    Route::resource('/material', 'MaterialController');
 
 });
 
