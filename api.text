@@ -1,6 +1,7 @@
 qui dinh path trong category
 a-->b--->c tuong ung co id: 1,2,3 va path: '', 1, 1_2 va parent_id la: 0, 1, 2
 
+45.118.144.123
 
 mysqldump -u developer -p developer > 26_11.sql
 

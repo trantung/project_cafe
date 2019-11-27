@@ -80,6 +80,8 @@ class UserController extends AdminController
         $user = User::find($id);
         if ($input['password']) {
             $input['password'] = Hash::make($input['password']);
+        } else {
+            unset($input['password']);
         }
         $user->update($input);
         return Redirect::action('UserController@index'); 
