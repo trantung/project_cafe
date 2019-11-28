@@ -37,6 +37,8 @@ Route::group(['prefix' => '/admin', 'middleware' => 'auth:web'], function () {
     Route::resource('/material_type', 'MaterialTypeController');
     //Material
     Route::resource('/material', 'MaterialController');
+    //Topping cho category
+    Route::resource('/topping', 'ToppingController');
 
 });
 

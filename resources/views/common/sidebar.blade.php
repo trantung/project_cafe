@@ -21,9 +21,8 @@
       <a class="dropdown-item" href="{{action('MaterialTypeController@index')}}">Material type</a>
       <a class="dropdown-item" href="{{action('MaterialController@index')}}">Material</a>
       <div class="dropdown-divider"></div>
-      <h6 class="dropdown-header">Other Pages:</h6>
-      <a class="dropdown-item" href="404.html">404 Page</a>
-      <a class="dropdown-item" href="blank.html">Blank Page</a>
+      <h6 class="dropdown-header">Topping:</h6>
+      <a class="dropdown-item" href="{{action('ToppingController@index')}}">Topping cho category</a>
     </div>
   </li>
   <li class="nav-item active">
