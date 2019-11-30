@@ -1,5 +1,6 @@
 <?php
 
+use App\Product;
 use APV\Category\Models\Category;
 use APV\Level\Models\Level;
 use APV\User\Models\Role;
@@ -52,7 +53,21 @@ function getPathCategory($parentId)
     $path = $pathParent.'_'.$parentId;
     return $path;
 }
-
+function getPathProduct($parentId)
+{
+    $path = '';
+    if ($parentId == 0) {
+        return $path;
+    }
+    $ProductParent = Product::find($parentId);
+    $pathParent =  $ProductParent->path;
+    if ($pathParent == '') {
+        $path = $parentId;
+        return $path;
+    }
+    $path = $pathParent.'_'.$parentId;
+    return $path;
+}
 function getNameLevelByTable($id)
 {
     $level = Level::find($id);
