@@ -30,10 +30,14 @@ function getNameOfCategoryParent($category)
     return $name;
 }
 
-function getListCategory()
+function getListCategory($default = null)
 {
     $data = Category::pluck('name', 'id')->toArray();
-    $data = [0 => 'category chính' ] + $data;
+    if ($default) {
+        return $data;
+    } else {
+        $data = [0 => 'category chính' ] + $data;       
+    }
     return $data;
 }
 
