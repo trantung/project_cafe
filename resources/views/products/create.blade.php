@@ -62,7 +62,7 @@
                 <label for="name">name:</label>
                 <input class="form-control" name="name" placeholder="name" id="name"/>
                 <p class="product_select"><label for="category_id">category_id:</label>
-                {{ Form::select('parent_id', getListCategory(), array('class' => 'form-control custom-select ')) }}</p>
+                {{ Form::select('category_id', getListCategory(), array('class' => 'form-control')) }}</p>
             </div>
         </div>
     </div>

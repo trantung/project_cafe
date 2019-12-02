@@ -53,19 +53,19 @@ function getPathCategory($parentId)
     $path = $pathParent.'_'.$parentId;
     return $path;
 }
-function getPathProduct($parentId)
+function getPathProduct($parId)
 {
     $path = '';
-    if ($parentId == 0) {
+    if ($parId == 0) {
         return $path;
     }
-    $ProductParent = Product::find($parentId);
+    $ProductParent = Product::find($parId);
     $pathParent =  $ProductParent->path;
     if ($pathParent == '') {
-        $path = $parentId;
+        $path = $parId;
         return $path;
     }
-    $path = $pathParent.'_'.$parentId;
+    $path = $pathParent.'_'.$parId;
     return $path;
 }
 function getNameLevelByTable($id)

@@ -86,16 +86,18 @@ class CategoryController extends AdminController
      */
     public function update(Request $request, $id)
     {
-        $input = $request->all();
         $category = Category::find($id);
-        $imageUrl = $category->image;
-
-        $file = request()->file('image');
-        if ($file) {
-            $fileNameImage = $file->getClientOriginalName();
-            request()->file('image')->move(public_path("/uploads/categories/" . $category . '/'), $fileNameImage);
-            $imageUrl = '/uploads/categories/' . $category . '/' . $fileNameImage;
-        }
+        $data = $request->all();
+        if ($request->hasFile('avatar')) {
+           $file = $request->file('avatar');
+           $name = $file->getClientOriginalName();
+           $data('avatar') = $name;
+            dd($name);
+           $request->file('avatar')->move(asset('/uploads/products/'), $name);
+                 return $name;
+             } else {
+                 return false;
+             }
         $path = getPathCategory($input['parent_id']);
         $input['path'] = $path;
         $input['image'] = $imageUrl;

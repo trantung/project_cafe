@@ -12,10 +12,10 @@ class ProductController extends Controller
      */
     public function index()
     {
-        $products = Product::latest()->paginate(5);
+        $products = Product::latest()->paginate(10);
   
         return view('products.index',compact('products'))
-            ->with('i', (request()->input('page', 1) - 1) * 5);
+            ->with('i', (request()->input('page', 1) - 1) * 10);
     }
    
     /**
@@ -54,7 +54,6 @@ class ProductController extends Controller
         }
        // Category::where('id', $categoryId)->update(['path' => $path, 'image' => $imageUrl]);
         Product::where('id',$ProductId)->update(['avatar' => $imageUrl]);
-        Product::create($request->all());
         return redirect()->route('products.index')
                         ->with('success','Thêm thành công.');
     }
@@ -91,19 +90,23 @@ class ProductController extends Controller
     public function update(Request $request,$id)
     {
         
+        $input = $request->all();
         $product = Product::find($id);
         $imageUrl = $product->avatar;
+        //dd($imageUrl);
         $file = request()->file('avatar');
-        $input = $request->all();
+       // dd($file);
         if ($file) {
             $fileNameImage = $file->getClientOriginalName();
-            request()->file('avatar')->move(public_path("/uploads/products/". $product . '/'), $fileNameImage);
-            $imageUrl = '/uploads/products/'. $product . '/'. $fileNameImage;
-           // dd($imageUrl);
+         //  dd($fileNameImage);
+           $file->move(public_path("/uploads/img/"),$fileNameImage);
+           $imageUrl = '/uploads/img/'.$fileNameImage;
+
         }
-       // Category::where('id', $categoryId)->update(['path' => $path, 'image' => $imageUrl]);
-        Product::where('id',$product)->update(['avatar' => $imageUrl]);
-        $product->update($request->all());
+       // $path = getPathCategory($input['parent_id']);
+       // $input['path'] = $path;
+        $input['avatar'] = $imageUrl;
+        $product->update($input);
         return redirect()->route('products.index')
                         ->with('success','Bạn đã cập nhập thành công');
     }
