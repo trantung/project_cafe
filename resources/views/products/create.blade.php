@@ -22,7 +22,7 @@
 </div>
 @endif
 
-{{ Form::open(array('action' => array('ProductController@store'), 'method' => "POST", 'files' => true , 'class'=>'form-product')) }}
+{{ Form::open(array('action' => array('ProductController@store'), 'method' => "POST", 'files' => true , 'class'=>'form-product','id'=>'upload')) }}
     @csrf
     <div class="row">
         <div class="col-md-4">
@@ -37,6 +37,17 @@
                 <input type="text" name="status" class="form-control" placeholder="status">
                 <label for="avatar">avatar:</label>
                 <input type='file' id="avatar" name="avatar" accept=".png, .jpg, .jpeg" />
+                <!-- <div class="form-group">
+                    <label for="images">Image </label>
+                    <input type="file" name="image"  class="selectImage" id="images" multiple="true" width="100px"/>
+                    <div class="show-progress">
+                    <!-- thẻ div này mình append các progress-bar để xử lý tiến trình -->
+                    <!-- </div>
+                    <div class="row justify-content-center" id="showImage">
+                             <!-- // thẻ div này mình dùng show hình ảnh ra --> 
+                    <!-- </div>
+
+                </div>  --> 
             </div>
         </div>
         <div class="col-md-4">
@@ -66,5 +77,5 @@
             </div>
         </div>
     </div>
-{{ Form::submit('Submit', array('class' => 'btn btn-primary btn-block product_submit')) }}
+{{ Form::submit('Submit', array('class' => 'btn btn-primary btn-block product_submit','id'=>'uploadImage')) }}
 @endsection

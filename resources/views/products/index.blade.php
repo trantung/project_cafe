@@ -12,25 +12,25 @@
         <a class="btn btn-success" href="{{ route('products.create') }}"><i class="fas fa-plus"></i> Thêm Mới</a></div>
         <div class="card-body">
             <div class="table-responsive">
-                <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                <table class="table table-striped table-bordered" id="example" width="100%" cellspacing="0">
                     <thead>
                         <tr>
                             <th >Thao Tac</th>
                             <th>STT</th>
-                            <th >duration_time</th>
-                            <th >close_time</th>
-                            <th >open_time</th>
+                            <th >Thời lượng</th>
+                            <th >Giờ đóng cửa phục vụ</th>
+                            <th >Giờ mở phục vụ</th>
                             <th >status</th>
                             <th >avatar</th>
-                            <th >weight_number</th>
-                            <th >description</th>
-                            <th >print_view</th>
+                            <th >Thứ tự</th>
+                            <th >Mô Tả</th>
+                            <th >Màn Hình in</th>
                             <th >barcode</th>
-                            <th >code</th>
-                            <th >price_pay</th>
-                            <th >price_origin</th>
-                            <th >name</th>
-                            <th >category_id</th>
+                            <th >mã code sp</th>
+                            <th >Giá Bán</th>
+                            <th >Giá Gốc</th>
+                            <th >Tên Sản Phẩm</th>
+                            <th >Danh Mục</th>
                             <th >created_at</th>
                             <th >updated_at</th>
                         </tr>
@@ -79,7 +79,9 @@
                                 <td>{{ $product->close_time }}</td>
                                 <td>{{ $product->open_time }}</td>
                                 <td>{{ $product->status }}</td>
-                                <td><img src="{{ $product->avatar }}" height="100px" width="100px"  /></td>
+                                <td>
+                                        <img src="{{$product->avatar}}" width="100px" height="100px">
+                                </td>
                                 <td>{{ $product->weight_number }}</td>
                                 <td>{{ $product->description }}</td>
                                 <td>{{ $product->print_view }}</td>

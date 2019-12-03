@@ -1,6 +1,5 @@
 <?php
 namespace App\Http\Controllers;
-  
 use App\Product;
 use Illuminate\Http\Request;
 class ProductController extends Controller
@@ -39,8 +38,7 @@ class ProductController extends Controller
         request()->validate([
  
             'avatar' => 'required',
-            'avatar.*' => 'image|mimes:jpeg,png,jpg,gif,svg|max:2048'
- 
+            'avatar.*' => 'image|mimes:jpeg,png,jpg,gif,svg|max:2048',
         ]);
         $file = request()->file('avatar');
         $imageUrl = '';

@@ -17,5 +17,7 @@
   <!-- Custom styles for this template-->
   <link href="{{url('css/sb-admin.css')}}" rel="stylesheet">
   <link href="{{url('css/style.css')}}" rel="stylesheet">
-
+<link rel="stylesheet" href="https://cdn.datatables.net/1.10.20/css/dataTables.bootstrap4.min.css">
+ <!-- image upload -->
+ 
 </head>

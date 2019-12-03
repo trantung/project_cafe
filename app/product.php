@@ -22,6 +22,7 @@ class Product extends Model
         "price_origin",
         "name",
         "category_id",
+        'image',
         "created_at",
         "updated_at",
         "deleted_at",
