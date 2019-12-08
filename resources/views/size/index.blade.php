@@ -17,7 +17,6 @@
             <th>Action</th>
           </tr>
         </thead>
-
         <tbody>
             @foreach($data as $size)
             <tr>
@@ -35,7 +34,7 @@
                         {{ Form::close() }}
                     </i>
 
-                   <a href="#"><span class="glyphicon glyphicon-info-sign" aria-hidden="true" style="color:#8BC34A" title="Chi tiết">Xem</span></a>
+                   <!-- <a href="#"><span class="glyphicon glyphicon-info-sign" aria-hidden="true" style="color:#8BC34A" title="Chi tiết" id = "productzise" name= "productsize" >Xem</span></a> -->
                 </td>
             </tr>
             @endforeach

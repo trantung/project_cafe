@@ -1,7 +1,7 @@
 $(document).ready(function() {
     $('#example').DataTable();
 } );
-  // upload file img
+  // upload nhiều ảnh file img
   $(document).ready(function(){
  
     var i=0;
