@@ -22,32 +22,22 @@
 </div>
 @endif
 
-{{ Form::open(array('action' => array('ProductController@store'), 'method' => "POST", 'files' => true , 'class'=>'form-product','id'=>'upload')) }}
+{{ Form::open(array('action' => array('ProductController@store'), 'method' => "POST", 'multiple'=>true,'files' => true , 'class'=>'form-product','id'=>'upload')) }}
     @csrf
     <div class="row">
         <div class="col-md-4">
             <div class="form-group">
                 <label for="duration_time">duration_time:</label>
-                <input type="text" name="duration_time" class="form-control" placeholder="duration_time">
+                <input type="text" name="duration_time" class="form-control" placeholder="duration_time" id="duration_time">
                 <label for="close_time">close_time:</label>
-                <input type="time" name="close_time" class="form-control">
+                <input type="time" name="close_time" class="form-control" id="close_time">
                 <label for="open_time">open_time:</label>
-                <input type="time" name="open_time" class="form-control">
+                <input type="time" name="open_time" class="form-control" id="open_time">
                 <label for="status">status:</label>
-                <input type="text" name="status" class="form-control" placeholder="status">
+                <input type="text" name="status" class="form-control" placeholder="status" id="status">
                 <label for="avatar">avatar:</label>
                 <input type='file' id="avatar" name="avatar" accept=".png, .jpg, .jpeg" />
-                <!-- <div class="form-group">
-                    <label for="images">Image </label>
-                    <input type="file" name="image"  class="selectImage" id="images" multiple="true" width="100px"/>
-                    <div class="show-progress">
-                    <!-- thẻ div này mình append các progress-bar để xử lý tiến trình -->
-                    <!-- </div>
-                    <div class="row justify-content-center" id="showImage">
-                             <!-- // thẻ div này mình dùng show hình ảnh ra --> 
-                    <!-- </div>
-
-                </div>  --> 
+               
             </div>
         </div>
         <div class="col-md-4">
@@ -58,8 +48,10 @@
                 <textarea class="form-control" style="height:48px" name="detdescriptionail" placeholder="description"></textarea>
                 <label for="print_view">print_view:</label>
                 <input type="number" name="print_view" class="form-control" placeholder="print_view">
-                <label for="barcode">barcode:</label>
-                <input type="text" name="barcode" class="form-control" placeholder="barcode">
+                <div class="form-group">
+                    <label for="images">Image </label>
+                    <input type="file" name="images" multiple id="images">
+                </div>  
             </div>
         </div>
         <div class="col-md-4 col">

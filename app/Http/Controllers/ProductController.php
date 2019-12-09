@@ -1,7 +1,10 @@
 <?php
 namespace App\Http\Controllers;
-use App\Product;
+use APV\Product\Models\Product;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Redirect;
+use App\Http\Controllers\AdminController;
+use APV\Product\Models\CommonImage;
 class ProductController extends Controller
 {
     /**
@@ -11,10 +14,12 @@ class ProductController extends Controller
      */
     public function index()
     {
-        $products = Product::latest()->paginate(10);
-  
-        return view('products.index',compact('products'))
-            ->with('i', (request()->input('page', 1) - 1) * 10);
+        // dd("adđ");
+        $products = Product::all();
+       // dd($products);
+        // return view('products.index',compact('products'))
+        //     ->with('i', (request()->input('page', 1) - 1) * 10);
+        return view('products.index')->with(compact('products'));
     }
    
     /**
@@ -35,25 +40,33 @@ class ProductController extends Controller
      */
     public function store(Request $request)
     {
-        request()->validate([
- 
-            'avatar' => 'required',
-            'avatar.*' => 'image|mimes:jpeg,png,jpg,gif,svg|max:2048',
-        ]);
-        $file = request()->file('avatar');
-        $imageUrl = '';
+        
+    //     return redirect()->route('products.index')
+    //                     ->with('success','Thêm thành công.');
+        
         $input = $request->all();
-        $ProductId = Product::create($input)->id;
-        if ($file) {
-            $fileNameImage = $file->getClientOriginalName();
-            request()->file('avatar')->move(public_path("/uploads/products/". $ProductId . '/'), $fileNameImage);
-            $imageUrl = '/uploads/products/'. $ProductId . '/'. $fileNameImage;
-           // dd($imageUrl);
+        Product::create($input)->id;
+        $file = request()->file('avatar');
+        if (!$file) {
+            return false;
         }
-       // Category::where('id', $categoryId)->update(['path' => $path, 'image' => $imageUrl]);
-        Product::where('id',$ProductId)->update(['avatar' => $imageUrl]);
-        return redirect()->route('products.index')
-                        ->with('success','Thêm thành công.');
+        $productId = Product::create($input)->id;
+        if (!$productId) {
+            return false;
+        }
+        //update barcode
+        $productBarcode = getBarCodeProduct($productId);
+        //upload avatar: todo
+        $fileNameImage = $file->getClientOriginalName();
+        $file->move(public_path("/uploads/products/" . $productId . '/avatar/'), $fileNameImage);
+        $imageUrl = '/uploads/products/' . $productId . '/avatar/' . $fileNameImage;
+        Product::where('id', $productId)->update(['avatar' => $imageUrl, 'barcode' => $productBarcode]);
+        //upload nhieu anh: todo
+       
+        if (is_countable($input['images']) && count($input['images']) > 0) {
+            $this->postCreateImages($productId, $input['images']);
+        }
+        return Redirect::action('ProductController@index')->with('success','Thêm thành công.');
     }
    
     /**
@@ -122,6 +135,17 @@ class ProductController extends Controller
         return redirect()->route('products.index')
                         ->with('success','Bạn xóa thành công');
     }
+    // post 
+    public function postCreateImages($productId, $images)
+    {
+        foreach ($images as $key => $value) {
+            $fileNameImage = $value->getClientOriginalName();
+            $value->move(public_path("/uploads/products/" . $productId . '/images/'), $fileNameImage);
+            $imageUrl = '/uploads/products/' . $productId . '/images/' . $fileNameImage;
+            CommonImage::create(['model_id' => $productId, 'model_name' => 'Product', 'image_url' => $imageUrl]);
+        }
+    }
+
 }
 
 

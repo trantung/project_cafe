@@ -21,6 +21,7 @@
       <a class="dropdown-item" href="{{action('MaterialTypeController@index')}}">Material type</a>
       <a class="dropdown-item" href="{{action('MaterialController@index')}}">Material</a>
       <a class="dropdown-item" href ="{{action('ProductController@index')}}">Sản Phẩm</a>
+      <a class="dropdown-item" href ="{{action('Product_sizeController@index')}}">Size product</a>
       <div class="dropdown-divider"></div>
       <h6 class="dropdown-header">Other Pages:</h6>
       <a class="dropdown-item" href="404.html">404 Page</a>

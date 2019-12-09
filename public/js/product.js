@@ -44,7 +44,7 @@ $(document).ready(function() {
             var id = position;
             $.ajax({
                 type:'POST',
-                url:'http://localhost:8000/admin/products/create',
+                url:'http://localhost:8000/admin/products',
                 data:formData,
                 contentType: false,
                 dataType:'json',

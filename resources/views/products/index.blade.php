@@ -1,38 +1,32 @@
 @extends('common.default')
  
 @section('content')
-    @if ($message = Session::get('success'))
-    <div class="alert alert-success">
-        <p>{{ $message }}</p>
-    </div>
-    @endif
+    
 <!-- DataTables Example -->
+<div class="container-fluid">
+    @if ($message = Session::get('success'))
+        <div class="alert alert-success">
+            <p>{{ $message }}</p>
+        </div>
+    @endif
     <div class="card mb-3">
         <div class="card-header">
-        <a class="btn btn-success" href="{{ route('products.create') }}"><i class="fas fa-plus"></i> Thêm Mới</a></div>
+            <a class="btn btn-success" href="{{ route('products.create') }}"><i class="fas fa-plus"></i> Thêm Mới</a>
+        </div>
         <div class="card-body">
             <div class="table-responsive">
-                <table class="table table-striped table-bordered" id="example" width="100%" cellspacing="0">
+                <table class="table table-striped table-bordered" id="dataTable" width="100%" cellspacing="0">
                     <thead>
                         <tr>
                             <th >Thao Tac</th>
                             <th>STT</th>
                             <th >Thời lượng</th>
-                            <th >Giờ đóng cửa phục vụ</th>
-                            <th >Giờ mở phục vụ</th>
                             <th >status</th>
                             <th >avatar</th>
-                            <th >Thứ tự</th>
                             <th >Mô Tả</th>
-                            <th >Màn Hình in</th>
-                            <th >barcode</th>
-                            <th >mã code sp</th>
                             <th >Giá Bán</th>
                             <th >Giá Gốc</th>
-                            <th >Tên Sản Phẩm</th>
-                            <th >Danh Mục</th>
-                            <th >created_at</th>
-                            <th >updated_at</th>
+                            <th>Tên sản phẩm</th>
                         </tr>
                     </thead>
                     <tfoot>
@@ -40,21 +34,12 @@
                             <th >Thao Tac</th>
                             <th>STT</th>
                             <th >duration_time</th>
-                            <th >close_time</th>
-                            <th >open_time</th>
                             <th >status</th>
                             <th >avatar</th>
-                            <th >weight_number</th>
                             <th >description</th>
-                            <th >print_view</th>
-                            <th >barcode</th>
-                            <th >code</th>
                             <th >price_pay</th>
                             <th >price_origin</th>
                             <th >name</th>
-                            <th >category_id</th>
-                            <th >created_at</th>
-                            <th >updated_at</th>
                         </tr>
                     </tfoot>
                     <tbody>
@@ -74,33 +59,23 @@
                                         </a >
                                     </form>
                                 </td>
-                                <td >{{ ++$i }}</td>
+                               <td >{{ $product->id }}</td>
                                 <td>{{ $product->duration_time }}</td>
-                                <td>{{ $product->close_time }}</td>
-                                <td>{{ $product->open_time }}</td>
                                 <td>{{ $product->status }}</td>
                                 <td>
                                         <img src="{{$product->avatar}}" width="100px" height="100px">
                                 </td>
-                                <td>{{ $product->weight_number }}</td>
                                 <td>{{ $product->description }}</td>
-                                <td>{{ $product->print_view }}</td>
-                                <td>{{ $product->barcode }}</td>
-                                <td>{{ $product->code }}</td>
                                 <td>{{ $product->price_pay }}</td>
                                 <td>{{ $product->price_origin }}</td>
                                 <td>{{ $product->name }}</td>
-                                <td>{{ $product->category_id }}</td>
-                                <td>{{ $product->created_at }}</td>
-                                <td>{{ $product->updated_at }}</td>
-                                
                             </tr>
                         @endforeach
                     </tbody>
                 </table>
-                {!! $products->links() !!}
             </div>
         </div>
     </div>
+</div>
 <!-- end DataTables Example -->
 @endsection

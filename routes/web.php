@@ -10,6 +10,10 @@
 | contains the "web" middleware group. Now create something great!
 |
 */
+
+//use Illuminate\Routing\Route;
+use Illuminate\Support\Facades\Route;
+
 Route::get('/admin/login', ['uses' => 'AdminController@getLogin', 'as' =>'login']);
 Route::post('/admin/login', ['uses' => 'AdminController@postLogin']);
 Route::post('/admin/logout', ['uses' => 'AdminController@postLogout', 'as' =>'logout']);
@@ -39,6 +43,7 @@ Route::group(['prefix' => '/admin', 'middleware' => 'auth:web'], function () {
     Route::resource('/material', 'MaterialController');
     // sản phẩm controller
     Route::resource('/products','ProductController');
-
+    // product_size
+     Route::resource('/size_product','Product_sizeController');
 });
 
