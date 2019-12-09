@@ -41,9 +41,13 @@ Route::group(['prefix' => '/admin', 'middleware' => 'auth:web'], function () {
     Route::resource('/material_type', 'MaterialTypeController');
     //Material
     Route::resource('/material', 'MaterialController');
-    // sản phẩm controller
     Route::resource('/products','ProductController');
     // product_size
      Route::resource('/size_product','Product_sizeController');
+
+    //Topping cho category
+    Route::resource('/topping', 'ToppingController');
+
+
 });
 

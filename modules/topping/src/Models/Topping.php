@@ -5,6 +5,9 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use APV\Product\Models\ProductTopping;
+use APV\Topping\Models\ToppingCategory;
+use APV\Product\Models\Product;
 
 /**
  * Class Topping
@@ -39,4 +42,30 @@ class Topping extends Model
     {
         return $this->belongsToMany('APV\Category\Models\Category', 'topping_category');
     }
+
+    public static function createToppingProduct($toppingId, $productId)
+    {
+        ProductTopping::create(['product_id' => $productId, 'topping_id' => $toppingId]);
+    }
+
+    public static function createToppingForOneCategory($toppingId, $categoryId)
+    {
+        if (!$categoryId) {
+            return true;
+        }
+        ToppingCategory::create(['topping_id' => $toppingId, 'category_id' => $categoryId]);
+        $list = Product::where('category_id', $categoryId)->get();
+        foreach ($list as $key => $product) {
+            self::createToppingProduct($toppingId, $product->id);
+        }
+    }
+
+    public static function createToppingForListCategory($toppingId, $categories)
+    {
+        foreach ($categories as $key => $value) {
+            self::createToppingForOneCategory($toppingId, $value);
+        }
+        return true;
+    }
+
 }
