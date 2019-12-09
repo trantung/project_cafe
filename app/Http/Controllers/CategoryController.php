@@ -93,8 +93,8 @@ class CategoryController extends AdminController
         $file = request()->file('image');
         if ($file) {
             $fileNameImage = $file->getClientOriginalName();
-            request()->file('image')->move(public_path("/uploads/categories/" . $categoryId . '/'), $fileNameImage);
-            $imageUrl = '/uploads/categories/' . $categoryId . '/' . $fileNameImage;
+            request()->file('image')->move(public_path("/uploads/categories/" . $category . '/'), $fileNameImage);
+            $imageUrl = '/uploads/categories/' . $category . '/' . $fileNameImage;
         }
         $path = getPathCategory($input['parent_id']);
         $input['path'] = $path;

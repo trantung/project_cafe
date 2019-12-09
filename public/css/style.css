@@ -1,0 +1,21 @@
+/* ======================== product start =================================================== */
+
+#content-wrapper .from_product{
+    border: 1px solid #ccbaba;
+    border-radius: 5px;
+    margin: 5px;
+}
+#content-wrapper .product_submit {
+    width: 100px;
+    text-align: center;
+    margin: 0 auto;
+
+}
+#content-wrapper p.product_select{
+    border: 1px solid #ccbaba;
+    margin: 5px 0;
+    border-radius: 5px;
+    padding: 4px 2px;
+}
+
+/* ============================ end product ================================================== */

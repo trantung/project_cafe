@@ -39,7 +39,7 @@ return [
     |
     */
 
-    'debug' => env('APP_DEBUG', false),
+    'debug' => env('APP_DEBUG', true),
 
     /*
     |--------------------------------------------------------------------------
@@ -192,6 +192,8 @@ return [
         APV\Order\Providers\OrderProvider::class,
         APV\Tag\Providers\TagProvider::class,
         APV\Promotion\Providers\PromotionProvider::class,
+        Barryvdh\Debugbar\ServiceProvider::class,  
+       // Barryvdh\Debugbar\ServiceProvider', 
 
     ],
 
@@ -241,6 +243,7 @@ return [
         'URL' => Illuminate\Support\Facades\URL::class,
         'Validator' => Illuminate\Support\Facades\Validator::class,
         'View' => Illuminate\Support\Facades\View::class,
+        'Debugbar' => 'Barryvdh\Debugbar\Facade',
 
     ],
 
