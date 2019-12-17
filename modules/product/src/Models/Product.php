@@ -1,6 +1,6 @@
 <?php
   
-  namespace App;
+  namespace APV\Product\Models;
   
   use Illuminate\Database\Eloquent\Model;
    
@@ -22,6 +22,7 @@ class Product extends Model
         "price_origin",
         "name",
         "category_id",
+        'images',
         "created_at",
         "updated_at",
         "deleted_at",

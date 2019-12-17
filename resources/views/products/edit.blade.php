@@ -1,83 +1,65 @@
 @extends('common.default')
 @section('content')
-    <div class="row">
-        <div class="col-lg-12 margin-tb">
-            <div class="pull-left">
-                <h2>Sửa thông tin sản phẩm</h2>
-            </div>
-            <div class="pull-right">
-                <a class="btn btn-primary" href="{{ route('products.index') }}"> Back</a>
-            </div>
-        </div>
-    </div>
+<div class="container">
+  <div class="card card-register mx-auto mt-5">
+    <div class="card-header">Thông tin chỉnh sửa</div>
    
-    @if ($errors->any())
-        <div class="alert alert-danger">
-            <strong>Whoops!</strong> There were some problems with your input.<br><br>
-            <ul>
-                @foreach ($errors->all() as $error)
-                    <li>{{ $error }}</li>
-                @endforeach
-            </ul>
-        </div>
-    @endif
-  
-    <form action="{{ route('products.update',$product->id) }}" method="POST" class="from_product">
-        @csrf
-        @method('PUT')
-        <div class="row">
-            <div class="col-md-4">
+    <div class="card-body">
+      {{ Form::open(array('method'=>'PUT','files' => true, 'action' => array('ProductController@update', $product->id))) }}
+          <div class="row">
+            <div class="col-md-6">
                 <div class="form-group">
-                    <label>duration_time:</label>
-                    <input type="text" name="duration_time" value="{{ $product->duration_time }}" class="form-control" placeholder="duration_time">
-                    <label>close_time:</label>
-                    <input type="time" name="close_time" value="{{ $product->close_time }}" class="form-control" placeholder="close_time">
-                    <label>open_time:</label>
-                    <input type="time" name="open_time" value="{{ $product->open_time }}" class="form-control" placeholder="open_time">
+                    <label>duration_time</label>
+                    {{ Form::text('duration_time', $product->duration_time, array('class' => 'form-control')) }}
+                    <label>close_time</label>
+                    {{ Form::time('close_time', $product->close_time, array('class' => 'form-control')) }}
+                    <label>open_time</label>
+                    {{ Form::time('open_time', $product->open_time, array('class' => 'form-control')) }}
+                    <label>status</label>
+                    {{ Form::text('status', $product->status, array('class' => 'form-control')) }}
                     <label>avatar</label>
-                    <div class="form-label-group">
-                        <input type="file" name="avatar" class="form-control"><br>
-                        @if($product->avatar)
-                            <img src="{{$product->avatar }}" width="150px" height="auto"  />
-                        @endif
-                    </div>
+                    <input type="file" name="avatar" class="form-control"><br>
+                    @if($product->avatar)
+                        <img src="{{$product->avatar }}" width="150px" height="auto"  />
+                    @endif
+                    <br>
+                    <label>weight_number</label>
+                    {{ Form::number('weight_number', $product->weight_number, array('class' => 'form-control')) }}
+                    
                 </div>
-            </div>  
-            <div class="col-md-4">
+            </div>
+            <div class="col-md-6">
                 <div class="form-group">
-                    <label for="status">status:</label>
-                    <input type="text" name="status" value="{{ $product->status }}" class="form-control" placeholder="status" id="status">
-                    <label>weight_number:</label>
-                    <input type="number" name="weight_number" value="{{ $product->weight_number }}" class="form-control" placeholder="weight_number" id="weight_number">
-                    <label for="description">description:</label>
-                    <textarea type="text" name="description" value="{{ $product->description }}" class="form-control" placeholder="Name" id="description" style="height: 48px;" ></textarea>
-                    <label for="print_view">print_view:</label>
-                    <input type="number" name="print_view" value="{{ $product->print_view }}" class="form-control" placeholder="print_view" id="print_view">
-                    <label for="price_origin">price_origin:</label>
-                    <input type="text" name="price_origin" class="form-control" placeholder="price_origin">
+                    <label>description</label>
+                    {{ Form::text('description', $product->description, array('class' => 'form-control')) }}
+                    <label>print_view</label>
+                    {{ Form::number('print_view', $product->print_view, array('class' => 'form-control')) }}
+                    <label>code</label>
+                    {{ Form::text('code', $product->code, array('class' => 'form-control')) }}
+                    <label>price_pay</label>
+                    {{ Form::number('price_pay', $product->price_pay, array('class' => 'form-control')) }}
+                    <label>price_origin</label>
+                    {{ Form::number('price_origin', $product->price_origin, array('class' => 'form-control')) }}
+                    <label>name</label>
+                    {{ Form::text('name', $product->name, array('class' => 'form-control')) }}
+                    <label>category_id:</label>
+                 {{ Form::select('category_id', getListCategory(), array('class' => 'form-control custom-select ')) }}
+                </div>
+            </div> 
+            <div class="row" style="margin: 0 auto;display: flex;">
+                <div class="pull-left" style="margin: 0 5px;">
+                    {{ Form::submit('Submit', array('class' => 'btn btn-primary')) }} 
+                </div>
+                <div class="pull-right" style="margin: 0 5px;">
+                    <a class="btn btn-danger" href="{{ route('products.index') }}"><i class="fas fa-backward"></i> Back</a>
                 </div>
             </div>
-            <div class="col-md-4">
-                <div class ="form-group">
-                    <label for="barcode">barcode:</label>
-                    <input type="text" name="barcode" value="{{ $product->barcode }}" class="form-control" placeholder="barcode" id="barcode">
-                    <label>code:</label>
-                    <input type="number" name="code" value="{{ $product->code }}" class="form-control" placeholder="code" id="code">
-                    <label for="price_pay">price_pay:</label>
-                    <input type="number" name="price_pay" class="form-control" placeholder="price_pay" id="price_pay">
-                    <label for="name">name:</label>
-                    <input class="form-control" name="name" placeholder="name" id="name"/>
-                    <p class="product_select">
-                    <label for="category_id">category_id:</label>
-                    {{ Form::select('parent_id', getListCategory(), array('class' => 'form-control custom-select ')) }}</p>
-                </div>
-            </div>
-            <div class="col-xs-12 col-sm-12 col-md-12 text-center">
-              <button type="submit" class="btn btn-primary">Submit</button>
-            </div>
-        </div>
-    </form>
-@endsection
+      {{ Form::close() }}
+    </div>
+  </div>
+</div>
+
+@stop
 <!-- /*duration_time varchar(255) 
 close_time time 
 open_time time 

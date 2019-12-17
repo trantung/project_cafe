@@ -5,9 +5,11 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Redirect;
 use App\Http\Controllers\AdminController;
+use APV\Product\Models\Product;
 use APV\Size\Models\Size;
 use APV\Size\Models\SizeProduct;
 use APV\Size\Models\SizeResource;
+use APV\Material\Models\Material;
 
 class SizeController extends AdminController
 {
@@ -53,7 +55,8 @@ class SizeController extends AdminController
      */
     public function show($id)
     {
-        //
+        $product = $this->products->find($id);
+        return view('size.list_size_product',['product'=>$product]);
     }
 
     /**
@@ -96,4 +99,5 @@ class SizeController extends AdminController
         Size::destroy($id);
         return Redirect::action('SizeController@index');
     }
+    
 }

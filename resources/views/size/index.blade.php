@@ -9,7 +9,7 @@
   </div>
   <div class="card-body">
     <div class="table-responsive">
-      <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+      <table class="table table-bordered " id="dataTable" width="100%" cellspacing="0">
         <thead>
           <tr>
             <th>Id</th>
@@ -17,7 +17,6 @@
             <th>Action</th>
           </tr>
         </thead>
-
         <tbody>
             @foreach($data as $size)
             <tr>
@@ -34,6 +33,9 @@
                             </button>
                         {{ Form::close() }}
                     </i>
+                    <i class="btn btn-info">
+                    <a href="{{ action('Product_sizeController@size',$size->id) }}"><i class="fa fa-info" style="color:#8BC34A"> Xem</i></a>
+                    </i>
                 </td>
             </tr>
             @endforeach
@@ -43,5 +45,6 @@
   </div>
 </div>
 </div>
+<script src="{{url('js/site.js')}}"></script>
 
 @stop

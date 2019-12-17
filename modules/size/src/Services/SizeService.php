@@ -8,6 +8,7 @@ use APV\Size\Models\Step;
 use APV\Order\Models\OrderMaterialLog;
 use APV\Material\Models\Material;
 use APV\Base\Services\BaseService;
+use APV\Product\Models\Product;
 use League\Fractal\Resource\Collection;
 use Illuminate\Http\Request;
 
@@ -26,12 +27,6 @@ class SizeService extends BaseService
             return false;
         }
         return $sizeId;
-    }
-
-    public function getList()
-    {
-        $data = Size::all();
-        return $data->toArray();
     }
 
     public function getDetail($sizeId, $field = null)
@@ -75,10 +70,7 @@ class SizeService extends BaseService
         return true;
     }
 
-    public function getListSizeProduct()
-    {
-        
-    }
+    
     /**
      * [createSizeProduct description]
      * @param  [type] $input: dang array của nguyên liệu chế biến 

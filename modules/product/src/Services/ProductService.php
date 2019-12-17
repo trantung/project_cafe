@@ -19,7 +19,7 @@ use APV\Size\Models\SizeResource;
 use APV\Size\Models\Step;
 use APV\Material\Models\Material;
 use APV\Base\Services\BaseService;
-use League\Fractal\Resource\Collection;
+//use League\Fractal\Resource\Collection;
 use Illuminate\Database\Eloquent\Collection as Collect;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Http\UploadedFile;
@@ -54,7 +54,7 @@ class ProductService extends BaseService
         $imageUrl = '/uploads/products/' . $productId . '/avatar/' . $fileNameImage;
         Product::where('id', $productId)->update(['avatar' => $imageUrl, 'barcode' => $productBarcode]);
         //upload nhieu anh: todo
-        if (count($input['images']) > 0) {
+        if (is_countable($input['images']) && count($input['images']) > 0) {
             $this->postCreateImages($productId, $input['images']);
         }
         return $productId;

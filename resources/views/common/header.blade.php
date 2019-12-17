@@ -17,5 +17,6 @@
   <!-- Custom styles for this template-->
   <link href="{{url('css/sb-admin.css')}}" rel="stylesheet">
   <link href="{{url('css/style.css')}}" rel="stylesheet">
-
+ <!-- image upload -->
+ 
 </head>

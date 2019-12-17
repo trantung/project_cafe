@@ -10,6 +10,10 @@
 | contains the "web" middleware group. Now create something great!
 |
 */
+
+//use Illuminate\Routing\Route;
+use Illuminate\Support\Facades\Route;
+
 Route::get('/admin/login', ['uses' => 'AdminController@getLogin', 'as' =>'login']);
 Route::post('/admin/login', ['uses' => 'AdminController@postLogin']);
 Route::post('/admin/logout', ['uses' => 'AdminController@postLogout', 'as' =>'logout']);
@@ -33,14 +37,18 @@ Route::group(['prefix' => '/admin', 'middleware' => 'auth:web'], function () {
     Route::resource('/user', 'UserController');
     //Size
     Route::resource('/size', 'SizeController');
+    
     //Material type: don vi tinh cua nguyen lieu(kg, g...)
     Route::resource('/material_type', 'MaterialTypeController');
     //Material
     Route::resource('/material', 'MaterialController');
-    //Topping cho category
-    Route::resource('/topping', 'ToppingController');
     // sản phẩm controller
     Route::resource('/products','ProductController');
+    // product_size
+     Route::resource('/size_product','Product_sizeController');
+     Route::get('/size_product/size/{size_id}','Product_sizeController@size')->where(['size_id'=>'[0-9]+']);
+    //Topping cho category
+    Route::resource('/topping', 'ToppingController');
 
 });
 
