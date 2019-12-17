@@ -26,8 +26,8 @@
                           <th>{{$data->id}}</th>
                         <td>{{$data->active}}</td>
                         <td>{{$data->weight_number}}</td>
-                        <td>{{ $data->size_id }}</td>
-                        <td>{{ $data->product_id }}</td>
+                        <td>{{ ListProductName($data->product_id) }}</td>
+                        <td>{{ ListsizeName($data->size_id) }}</td>
                         <td>{{ $data->price }}</td>
                         <td>
                             <form action="{{ route('size_product.destroy',$data->id) }}" method="POST">

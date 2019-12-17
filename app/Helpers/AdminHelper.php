@@ -1,12 +1,13 @@
 <?php
 
-use App\Product;
+use APV\Product\Models\Product;
 use APV\Category\Models\Category;
 use APV\Level\Models\Level;
 use APV\User\Models\Role;
 use APV\Category\Constants\CategoryDataConst;
 use APV\Material\Models\MaterialType;
 use APV\Material\Models\Material;
+use APV\Size\Models\Size;
 
 function getNameOfCategoryParent($category)
 {
@@ -107,4 +108,28 @@ function getMaterialTypeName($id)
 function getListMaterialType()
 {
     return $data = MaterialType::pluck('name', 'id')->toArray();
+}
+// lấy name theo ip table product
+function ListProductName($id){
+    $size_product = Product::find($id);
+    if($size_product){
+        return $size_product->name;
+    }
+    return null;
+}
+function ListsizeName($id){
+    $size = Size::find($id);
+    if($size){
+        return $size->name;
+    }
+    return null;
+}
+// lấy list theo name
+function getListProduct()
+{
+    return $data = Product::pluck('name', 'id')->toArray();
+}
+function getListSizeProduct()
+{
+    return $data = Size::pluck('name', 'id')->toArray();
 }

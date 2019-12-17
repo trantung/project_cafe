@@ -37,6 +37,7 @@ Route::group(['prefix' => '/admin', 'middleware' => 'auth:web'], function () {
     Route::resource('/user', 'UserController');
     //Size
     Route::resource('/size', 'SizeController');
+    
     //Material type: don vi tinh cua nguyen lieu(kg, g...)
     Route::resource('/material_type', 'MaterialTypeController');
     //Material
@@ -44,7 +45,7 @@ Route::group(['prefix' => '/admin', 'middleware' => 'auth:web'], function () {
     Route::resource('/products','ProductController');
     // product_size
      Route::resource('/size_product','Product_sizeController');
-
+     Route::get('/size_product/size/{size_id}','Product_sizeController@size')->where(['size_id'=>'[0-9]+']);
     //Topping cho category
     Route::resource('/topping', 'ToppingController');
 

@@ -29,16 +29,6 @@ class SizeService extends BaseService
         return $sizeId;
     }
 
-    public function getList()
-    {
-        $data = Size::all();
-        return $data->toArray();
-    }
-    public function getListSizeProduct()
-    {
-        $data = Product::all();
-        return $data->toArray();
-    }
     public function getDetail($sizeId, $field = null)
     {
         $size = Size::find($sizeId);
