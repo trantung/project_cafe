@@ -18,21 +18,22 @@
           </tr>
         </thead>
         <tbody>
-            @foreach($size_product as $sizes)
+            @foreach($listSizeProduct as $sizeProduct)
             <tr>
-                <td>{{ ListProductName($sizes->product_id) }}</td>
-                <td>{{$sizes->price}}
-                  <td>{{$sizes->weight_number}}</td>
+                <td>{{ ListProductName($sizeProduct->product_id) }}</td>
+                <td>{{ $sizeProduct->price }}
+                  <td>{{ $sizeProduct->weight_number }}</td>
                 <td>
-                  <form action="{{ route('size_product.destroy',$sizes->id) }}" method="POST">
-                    <a href="{{ route('size_product.show',$sizes->id) }}"><i class="fa fa-info" style="color:#8BC34A">Xem</i></a>
-                    <a  href="{{ route('size_product.edit',$sizes->id) }}"><i class="fas fa-edit" style="color:#f783ac"> Sửa</i></a>
-                    <a class="glyphicon glyphicon-trash">
-                    @csrf
-                        @method('DELETE')
-                    <button class="btn btn-danger" type="submit"><i class="fa fa-trash-alt"> Xóa</i></button>
-                    </a >
-                  </form>
+                    <a href="{{ action('SizeProductController@show',$sizeProduct->id) }}"><i class="fa fa-info" style="color:#8BC34A">Xem</i></a>
+                    <a  href="{{ action('SizeProductController@edit',$sizeProduct->id) }}"><i class="fas fa-edit" style="color:#f783ac">Sửa</i></a>
+
+                    <i class="glyphicon glyphicon-trash">
+                        {{ Form::open(array('method'=>'DELETE', 'action' => array('SizeProductController@destroy', $sizeProduct->id), 'style' => 'display: inline-block;')) }}
+                            <button class="btn btn-danger" onclick="return confirm('Bạn có chắc chắn muốn xóa?');">
+                                Delete
+                            </button>
+                        {{ Form::close() }}
+                    </i>
                 </td>
             </tr>
             @endforeach
