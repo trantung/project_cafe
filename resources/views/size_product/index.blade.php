@@ -21,18 +21,18 @@
                 </tr>
                 </thead>
                 <tbody>
-                  @foreach($size_product as $data )
-                      <tr>
-                          <th>{{$data->id}}</th>
-                        <td>{{$data->active}}</td>
-                        <td>{{$data->weight_number}}</td>
+                    @foreach($size_product as $data )
+                    <tr>
+                        <th>{{ $data->id }}</th>
+                        <td>{{ $data->active }}</td>
+                        <td>{{ $data->weight_number }}</td>
                         <td>{{ ListProductName($data->product_id) }}</td>
                         <td>{{ ListsizeName($data->size_id) }}</td>
                         <td>{{ $data->price }}</td>
                         <td>
                             <form action="{{ route('size_product.destroy',$data->id) }}" method="POST">
             
-                                <a href="{{ route('size_product.show',$data->id) }}"><i class="fa fa-info" style="color:#8BC34A"> Xem</i></a>
+                                <a href="{{ route('size_product.show',$data->id) }}"><i class="fa fa-info" style="color:#8BC34A">Xem</i></a>
                 
                                 <a  href="{{ route('size_product.edit',$data->id) }}"><i class="fas fa-edit" style="color:#f783ac"> Sửa</i></a>
             
@@ -43,9 +43,8 @@
                                 </a >
                             </form>
                         </td>
-                      </tr>
-                  @endforeach
-                   
+                    </tr>
+                    @endforeach
                 </tbody>
             </table>
             </div>

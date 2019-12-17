@@ -25,11 +25,8 @@
                   <td>{{$sizes->weight_number}}</td>
                 <td>
                   <form action="{{ route('size_product.destroy',$sizes->id) }}" method="POST">
-              
-                    <a href="{{ route('size_product.show',$sizes->id) }}"><i class="fa fa-info" style="color:#8BC34A"> Xem</i></a>
-
+                    <a href="{{ route('size_product.show',$sizes->id) }}"><i class="fa fa-info" style="color:#8BC34A">Xem</i></a>
                     <a  href="{{ route('size_product.edit',$sizes->id) }}"><i class="fas fa-edit" style="color:#f783ac"> Sửa</i></a>
-
                     <a class="glyphicon glyphicon-trash">
                     @csrf
                         @method('DELETE')
@@ -38,7 +35,6 @@
                   </form>
                 </td>
             </tr>
-
             @endforeach
         </tbody>
       </table>

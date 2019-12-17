@@ -5,7 +5,7 @@
     <div class="card-header">Thông tin chỉnh sửa</div>
    
     <div class="card-body">
-      {{ Form::open(array('method'=>'PUT', 'action' => array('Product_sizeController@update', $size_product->id))) }}
+      {{ Form::open(array('method'=>'PUT', 'action' => array('SizeProductController@update', $size_product->id))) }}
           <div class="row">
             <div class="col-md-6">
                 <div class="form-group">

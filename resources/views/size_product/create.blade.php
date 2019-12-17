@@ -26,7 +26,7 @@
     @endif
 </div>
     <div class="card-body">
-      {{ Form::open(array('method'=>'POST', 'action' => array('Product_sizeController@store'))) }}
+      {{ Form::open(array('method'=>'POST', 'action' => array('SizeProductController@store'))) }}
         <div class="form-group">
           <div class="form-row">
             <div class="col-md-6">

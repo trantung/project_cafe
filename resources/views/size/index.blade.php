@@ -34,7 +34,7 @@
                         {{ Form::close() }}
                     </i>
                     <i class="btn btn-info">
-                    <a href="{{ action('Product_sizeController@size',$size->id) }}"><i class="fa fa-info" style="color:#8BC34A"> Xem</i></a>
+                    <a href="{{ action('SizeProductController@size',$size->id) }}"><i class="fa fa-info" style="color:#8BC34A">Xem danh sách product</i></a>
                     </i>
                 </td>
             </tr>

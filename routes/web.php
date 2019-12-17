@@ -45,8 +45,8 @@ Route::group(['prefix' => '/admin', 'middleware' => 'auth:web'], function () {
     // sản phẩm controller
     Route::resource('/products','ProductController');
     // product_size
-     Route::resource('/size_product','Product_sizeController');
-     Route::get('/size_product/size/{size_id}','Product_sizeController@size')->where(['size_id'=>'[0-9]+']);
+    Route::resource('/size_product','SizeProductController');
+    Route::get('/size_product/size/{size_id}','SizeProductController@size')->where(['size_id'=>'[0-9]+']);
     //Topping cho category
     Route::resource('/topping', 'ToppingController');
 
