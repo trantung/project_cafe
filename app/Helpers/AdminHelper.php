@@ -160,3 +160,24 @@ function getSourceProductTopping($source)
     }
     
 }
+
+function getProductIsShip()
+{
+    $data = array(
+        PRODUCT_IS_SHIP_INACTIVE =>'Inactive',
+        PRODUCT_IS_SHIP_ACTIVE => 'Active',
+    );
+    return $data;
+}
+
+function getFieldNameMaterial($id, $field)
+{
+    $data = Material::find($id);
+    return $data->$field;
+}
+
+function getListMaterail()
+{
+    $data = Material::pluck('name', 'id');
+    return $data;
+}

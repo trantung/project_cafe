@@ -56,9 +56,13 @@ Route::group(['prefix' => '/admin', 'middleware' => 'auth:web'], function () {
     Route::get('/product_topping/{id}/edit/{product_topping_id}', 'ProductToppingController@edit');
     Route::post('/product_topping/{id}/edit/{product_topping_id}', 'ProductToppingController@update');
     Route::post('/product_topping/{id}/destroy/{product_topping_id}', 'ProductToppingController@destroy');
-    
-    // Route::get('/product_topping/{id}/create', 'ProductToppingController@create');
-    // Route::post('/product_topping/{id}/create', 'ProductToppingController@store');
+    //config material cho size_product
+    Route::get('/size_product/{size_product_id}/config_material', 'SizeProductMaterialController@list');
+    Route::get('/size_product/{size_product_id}/config_material/create', 'SizeProductMaterialController@create');
+    Route::post('/size_product/{size_product_id}/config_material/create', 'SizeProductMaterialController@store');
+    Route::get('/size_product/{size_product_id}/config_material/{size_product_material_id}/edit', 'SizeProductMaterialController@edit');
+    Route::post('/size_product/{size_product_id}/config_material/{size_product_material_id}/edit', 'SizeProductMaterialController@update');
+    Route::post('/size_product/{size_product_id}/config_material/{size_product_material_id}/destroy', 'SizeProductMaterialController@destroy');
 
 });
 

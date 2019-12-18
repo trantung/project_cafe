@@ -35,7 +35,7 @@
                             <a href="{{ action('SizeProductController@show',$sizeProduct->id) }}"><i class="fa fa-info" style="color:#8BC34A">Xem</i></a>
             
                             <a  href="{{ action('SizeProductController@edit',$sizeProduct->id) }}"><i class="fas fa-edit" style="color:#f783ac"> Sửa</i></a>
-
+                            <a  href="{{ action('SizeProductMaterialController@list',$sizeProduct->id) }}"><i class="fas fa-shower" style="color:#f783ac">Nguyên liệu</i></a>
                             <i class="glyphicon glyphicon-trash">
                                 {{ Form::open(array('method'=>'DELETE', 'action' => array('SizeProductController@destroy', $sizeProduct->id), 'style' => 'display: inline-block;')) }}
                                     <button class="btn btn-danger" onclick="return confirm('Bạn có chắc chắn muốn xóa?');">
