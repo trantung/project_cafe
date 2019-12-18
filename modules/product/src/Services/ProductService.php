@@ -42,7 +42,10 @@ class ProductService extends BaseService
         if (!$file) {
             return false;
         }
-        $productId = Product::create($input)->id;
+        $inputImage = $input;
+        unset($input['images']);
+        $inputProduct = $input;
+        $productId = Product::create($inputProduct)->id;
         if (!$productId) {
             return false;
         }
@@ -54,8 +57,8 @@ class ProductService extends BaseService
         $imageUrl = '/uploads/products/' . $productId . '/avatar/' . $fileNameImage;
         Product::where('id', $productId)->update(['avatar' => $imageUrl, 'barcode' => $productBarcode]);
         //upload nhieu anh: todo
-        if (is_countable($input['images']) && count($input['images']) > 0) {
-            $this->postCreateImages($productId, $input['images']);
+        if (is_countable($inputImage['images']) && count($inputImage['images']) > 0) {
+            $this->postCreateImages($productId, $inputImage['images']);
         }
         return $productId;
     }
@@ -215,17 +218,20 @@ class ProductService extends BaseService
         if (!$product) {
             return false;
         }
+        $inputImage = $input;
+        unset($input['images']);
+        $inputProduct = $input;
         $file = request()->file('avatar');
         if ($file) {
             $fileNameImage = $file->getClientOriginalName();
             $file->move(public_path("/uploads/products/" . $productId . '/avatar/'), $fileNameImage);
             $imageUrl = '/uploads/products/' . $productId . '/avatar/' . $fileNameImage;
-            $input['avatar'] = $imageUrl;
+            $inputProduct['avatar'] = $imageUrl;
         }
-        $product->update($input);
+        $product->update($inputProduct);
 
-        if (count($input['images']) > 0) {
-            $this->postUpdateImages($productId, $input['images']);
+        if (count($inputImage['images']) > 0) {
+            $this->postUpdateImages($productId, $inputImage['images']);
         }
 
         return true;
