@@ -6,17 +6,15 @@
   <meta name="description" content="">
   <meta name="author" content="">
 
-  <title>MeeGu-Coffee</title>
+  <title>SB Admin - Dashboard</title>
 
   <!-- Custom fonts for this template-->
   <link href="{{url('vendor/fontawesome-free/css/all.min.css')}}" rel="stylesheet" type="text/css">
 
   <!-- Page level plugin CSS-->
   <link href="{{url('vendor/datatables/dataTables.bootstrap4.css')}}" rel="stylesheet">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.1.3/css/bootstrap.min.css" />
+
   <!-- Custom styles for this template-->
   <link href="{{url('css/sb-admin.css')}}" rel="stylesheet">
-  <link href="{{url('css/style.css')}}" rel="stylesheet">
- <!-- image upload -->
- 
+
 </head>

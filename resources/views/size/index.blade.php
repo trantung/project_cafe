@@ -45,6 +45,5 @@
   </div>
 </div>
 </div>
-<script src="{{url('js/site.js')}}"></script>
 
 @stop

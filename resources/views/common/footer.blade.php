@@ -15,11 +15,6 @@
 
 <!-- Demo scripts for this page-->
 <script src="{{url('js/demo/datatables-demo.js')}}"></script>
-<script src="{{url('js/demo/chart-area-demo.js')}}"></script>
  <!-- bootstrap datatables -->
  <script src="{{url('js/product.js')}}"></script>
  <script src="{{url('js/site.js')}}"></script>
-<script src="https://code.jquery.com/jquery-3.3.1.js"></script>
-<script src="https://cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js"></script>
-<script src="https://cdn.datatables.net/1.10.20/js/dataTables.bootstrap4.min.js"></script>
-<script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.js"></script>
