@@ -5,7 +5,9 @@
 <div class="card mb-3">
   <div class="card-header">
     <i class="fas fa-table"></i>
-    <a href="{{ action('ProductToppingController@create', $productId) }}">Add topping for product</a>
+    <a href="{{ action('ProductToppingController@create', $productId) }}">
+      Add topping for product_id: {{ $productId }}, product_name: {{ getNameProductById($productId) }}
+    </a>
   </div>
   <div class="card-body">
     <div class="table-responsive">
@@ -28,11 +30,16 @@
                 <td>{{ getValueTopping($productTopping->topping_id, 'price') }}</td>
                 <td>{{ getSourceProductTopping($productTopping->source) }}</td>
                 <td>
+                    @if($productTopping->source == PRODUCT_TOPPING_SOURCE)
                     <i class="btn btn-warning">
                         <a href="{{ action('ProductToppingController@edit', array($productId, $productTopping->id)) }}">Edit</a>
                     </i>
+                    @else
+                     <i class="btn btn-warning">
+                        Không được chỉnh sửa
+                    </i>
+                    @endif
                     <i class="glyphicon glyphicon-trash">
-                      
                         {{ Form::open([
                           'method' => 'POST', 
                           'action' => ['ProductToppingController@destroy', $productId, $productTopping->id]]) }}

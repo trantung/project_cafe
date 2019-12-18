@@ -5,6 +5,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Redirect;
 use App\Http\Controllers\AdminController;
 use APV\Product\Models\CommonImage;
+use APV\Product\Services\ProductService;
 
 class ProductController extends AdminController
 {
@@ -13,6 +14,11 @@ class ProductController extends AdminController
      *
      * @return \Illuminate\Http\Response
      */
+    public function __construct(ProductService $productService)
+    {
+        $this->productService = $productService;
+    }
+
     public function index()
     {
         // dd("adđ");
@@ -131,10 +137,8 @@ class ProductController extends AdminController
      */
     public function destroy(Product $product)
     {
-        $product->delete();
-  
-        return redirect()->route('products.index')
-                        ->with('success','Bạn xóa thành công');
+        $this->productService->delete($product->id);
+        return Redirect::action('ProductController@index')->with('success','Bạn xóa thành công');
     }
     // post 
     public function postCreateImages($productId, $images)
