@@ -10,7 +10,7 @@
           <div class="form-row">
             <div class="col-md-6">
               <div class="form-label-group">
-                {{ Form::text('name', null, array('class' => 'form-control')) }}
+                {{ Form::text('username', null, array('class' => 'form-control')) }}
                 <label>User name</label>
               </div>
             </div>

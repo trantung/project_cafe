@@ -5,7 +5,7 @@
   <div class="card card-register mx-auto mt-5">
     <div class="card-header">Edit a category</div>
     <div class="card-body">
-      {{ Form::open(array('method'=>'PUT', 'action' => array('CategoryController@update', $category->id))) }}
+      {{ Form::open(array('method'=>'PUT', 'action' => array('CategoryController@update', $category->id), 'files' => true)) }}
         <div class="form-group">
           <div class="form-row">
             <div class="col-md-6">
