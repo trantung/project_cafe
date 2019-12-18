@@ -9,11 +9,11 @@
                 <div class="col-md-6">
                     <div class="form-group">
                         <label>weight_number</label>
-                        {{ Form::number('weight_number', sizeProduct->weight_number, array('class' => 'form-control')) }}
+                        {{ Form::number('weight_number', $sizeProduct->weight_number, array('class' => 'form-control')) }}
                         <label>price</label>
-                        {{ Form::text('price', sizeProduct->price, array('class' => 'form-control')) }}
+                        {{ Form::text('price', $sizeProduct->price, array('class' => 'form-control')) }}
                         <label>active</label>
-                        {{ Form::select('active', [1 => 'Active', 0 => 'Inactive'], sizeProduct->active, array('class' => 'form-control')) }}
+                        {{ Form::select('active', [1 => 'Active', 0 => 'Inactive'], $sizeProduct->active, array('class' => 'form-control')) }}
                        
                     </div>
                 </div> 

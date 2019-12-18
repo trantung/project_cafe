@@ -192,7 +192,7 @@ return [
         APV\Order\Providers\OrderProvider::class,
         APV\Tag\Providers\TagProvider::class,
         APV\Promotion\Providers\PromotionProvider::class,
-        Barryvdh\Debugbar\ServiceProvider::class,  
+        // Barryvdh\Debugbar\ServiceProvider::class,
        // Barryvdh\Debugbar\ServiceProvider', 
 
     ],
