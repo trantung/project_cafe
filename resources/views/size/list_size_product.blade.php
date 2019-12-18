@@ -20,7 +20,7 @@
         <tbody>
             @foreach($listSizeProduct as $sizeProduct)
             <tr>
-                <td>{{ ListProductName($sizeProduct->product_id) }}</td>
+                <td>{{ getNameProductById($sizeProduct->product_id) }}</td>
                 <td>{{ $sizeProduct->price }}
                   <td>{{ $sizeProduct->weight_number }}</td>
                 <td>

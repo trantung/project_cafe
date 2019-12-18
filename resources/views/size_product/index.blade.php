@@ -23,8 +23,8 @@
                     @foreach($data as $sizeProduct )
                     <tr>
                         <th>{{ $sizeProduct->id }}</th>
-                        <td>{{ ListProductName($sizeProduct->product_id) }}</td>
-                        <td>{{ ListsizeName($sizeProduct->size_id) }}</td>
+                        <td>{{ getNameProductById($sizeProduct->product_id) }}</td>
+                        <td>{{ getNameSizeById($sizeProduct->size_id) }}</td>
                         <td>{{ $sizeProduct->price }}</td>
                         <td>{{ $sizeProduct->weight_number }}</td>
                         <td>

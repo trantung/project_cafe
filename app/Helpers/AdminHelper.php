@@ -113,21 +113,22 @@ function getListMaterialType()
 {
     return $data = MaterialType::pluck('name', 'id')->toArray();
 }
-// lấy name theo ip table product
-function ListProductName($id){
-    $size_product = Product::find($id);
-    if($size_product){
-        return $size_product->name;
+// lấy name theo id va model
+function getNameProductById($id){
+    $data = Product::find($id);
+    if($data){
+        return $data->name;
     }
     return null;
 }
-function ListsizeName($id){
-    $size = Size::find($id);
-    if($size){
-        return $size->name;
+function getNameSizeById($id){
+    $data = Size::find($id);
+    if($data){
+        return $data->name;
     }
     return null;
 }
+
 // lấy list theo name
 function getListProduct()
 {
