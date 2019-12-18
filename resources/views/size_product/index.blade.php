@@ -13,7 +13,9 @@
                 <tr>
                     <th>Id</th>
                     <th>Product</th>
+                    <th>ProductID</th>
                     <th>Size</th>
+                    <th>SizeId</th>
                     <th>Price</th>
                     <th>Trọng số hiển thị</th>
                     <th>Action</th>
@@ -24,7 +26,9 @@
                     <tr>
                         <th>{{ $sizeProduct->id }}</th>
                         <td>{{ getNameProductById($sizeProduct->product_id) }}</td>
+                        <td>{{ $sizeProduct->product_id }}</td>
                         <td>{{ getNameSizeById($sizeProduct->size_id) }}</td>
+                        <td>{{ $sizeProduct->size_id }}</td>
                         <td>{{ $sizeProduct->price }}</td>
                         <td>{{ $sizeProduct->weight_number }}</td>
                         <td>
