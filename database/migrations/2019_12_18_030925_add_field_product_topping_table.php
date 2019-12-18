@@ -4,17 +4,18 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class AddImageToProducts extends Migration
+class AddFieldProductToppingTable extends Migration
 {
     /**
      * Run the migrations.
-     *
+     *source = 1(category), soruce = 0(product own)
      * @return void
      */
     public function up()
     {
-        Schema::table('products', function (Blueprint $table) {
-            $table->string('images')->nullable();
+        Schema::table('product_topping', function (Blueprint $table) {
+            $table->integer('source')->nullable()->after('id');
+
         });
     }
 
@@ -25,8 +26,8 @@ class AddImageToProducts extends Migration
      */
     public function down()
     {
-        Schema::table('products', function (Blueprint $table) {
-            $table->dropColumn(['images']);
+        Schema::table('product_topping', function (Blueprint $table) {
+            $table->dropColumn('source');
         });
     }
 }

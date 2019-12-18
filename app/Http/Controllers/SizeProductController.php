@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Http\Controllers;
 
 use APV\Product\Models\Product;
@@ -9,8 +8,9 @@ use APV\Size\Models\SizeProduct;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Http\Request;
 use APV\Size\Services\SizeService;
+use App\Http\Controllers\AdminController;
 
-class SizeProductController extends Controller
+class SizeProductController extends AdminController
 {
     public function __construct(SizeService $sizeService)
     {

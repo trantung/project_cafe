@@ -17,7 +17,8 @@ class ProductTopping extends Model
         'id',
         'product_id',
         'topping_id',
-        'status'
+        'status',
+        'source'
     ];
 
 }

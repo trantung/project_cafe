@@ -5,7 +5,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Redirect;
 use App\Http\Controllers\AdminController;
 use APV\Product\Models\CommonImage;
-class ProductController extends Controller
+
+class ProductController extends AdminController
 {
     /**
      * Display a listing of the resource.
@@ -145,8 +146,4 @@ class ProductController extends Controller
             CommonImage::create(['model_id' => $productId, 'model_name' => 'Product', 'image_url' => $imageUrl]);
         }
     }
-
 }
-
-
-?>

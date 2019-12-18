@@ -8,6 +8,7 @@ use APV\Category\Constants\CategoryDataConst;
 use APV\Material\Models\MaterialType;
 use APV\Material\Models\Material;
 use APV\Size\Models\Size;
+use APV\Topping\Models\Topping;
 
 function getNameOfCategoryParent($category)
 {
@@ -137,4 +138,25 @@ function getListProduct()
 function getListSizeProduct()
 {
     return $data = Size::pluck('name', 'id')->toArray();
+}
+
+//get value topping
+function getValueTopping($toppingId, $field)
+{
+    $topping = Topping::find($toppingId);
+    if ($topping) {
+        return $topping->$field;
+    }
+    return null;
+}
+//get source Name product_topping
+function getSourceProductTopping($source)
+{
+    if ($source == CATEGORY_TOPPING_SOURCE) {
+        return 'Category';
+    }
+    if ($source == PRODUCT_TOPPING_SOURCE) {
+        return 'Product';
+    }
+    
 }

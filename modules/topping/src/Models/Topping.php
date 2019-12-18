@@ -45,7 +45,12 @@ class Topping extends Model
 
     public static function createToppingProduct($toppingId, $productId)
     {
-        ProductTopping::create(['product_id' => $productId, 'topping_id' => $toppingId]);
+        $id = ProductTopping::create([
+            'product_id' => $productId, 
+            'topping_id' => $toppingId,
+            'source' => 1,
+        ])->id;
+        return $id;
     }
 
     public static function createToppingForOneCategory($toppingId, $categoryId)

@@ -42,13 +42,23 @@ Route::group(['prefix' => '/admin', 'middleware' => 'auth:web'], function () {
     Route::resource('/material_type', 'MaterialTypeController');
     //Material
     Route::resource('/material', 'MaterialController');
-    // sản phẩm controller
+    //Product
     Route::resource('/products','ProductController');
     // product_size
     Route::get('/size_product/size/{size_id}','SizeProductController@size')->where(['size_id'=>'[0-9]+']);
     Route::resource('/size_product','SizeProductController');
     //Topping cho category
     Route::resource('/topping', 'ToppingController');
+    //Topping cho product
+    Route::get('/product_topping/{id}', 'ProductToppingController@list');
+    Route::get('/product_topping/{id}/create', 'ProductToppingController@create');
+    Route::post('/product_topping/{id}/create', 'ProductToppingController@store');
+    Route::get('/product_topping/{id}/edit/{product_topping_id}', 'ProductToppingController@edit');
+    Route::post('/product_topping/{id}/edit/{product_topping_id}', 'ProductToppingController@update');
+    Route::post('/product_topping/{id}/destroy/{product_topping_id}', 'ProductToppingController@destroy');
+    
+    // Route::get('/product_topping/{id}/create', 'ProductToppingController@create');
+    // Route::post('/product_topping/{id}/create', 'ProductToppingController@store');
 
 });
 

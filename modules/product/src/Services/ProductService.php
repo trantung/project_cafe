@@ -233,8 +233,6 @@ class ProductService extends BaseService
 
     public function delete($productId)
     {
-        
-
         $product = Product::find($productId);
         if (!$product) {
             return false;
@@ -246,15 +244,28 @@ class ProductService extends BaseService
         TagProduct::where('product_id', $productId)->delete();
         ProductTopping::where('product_id', $productId)->delete();
         CommonImage::where('model_name', 'Product')->where('model_id', $productId)->delete();
-
         Product::destroy($productId);
+        return true;
+    }
+
+    public function updateProductTopping($productToppingId, $input)
+    {
+        $productTopping = ProductTopping::find($productToppingId);
+        $productId = $productTopping->product_id;
+        Topping::destroy($productTopping->topping_id);
+        ProductTopping::destroy($productToppingId);
+        $this->createProductTopping($productId, $input);
         return true;
     }
 
     public function createProductTopping($productId, $input)
     {
         $toppingId = Topping::create($input)->id;
-        ProductTopping::create(['product_id' => $productId, 'topping_id' => $toppingId]);
+        ProductTopping::create([
+            'product_id' => $productId, 
+            'topping_id' => $toppingId,
+            'source' => 0
+        ]);
         return true;
     }
 
