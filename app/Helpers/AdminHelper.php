@@ -9,6 +9,7 @@ use APV\Material\Models\MaterialType;
 use APV\Material\Models\Material;
 use APV\Size\Models\Size;
 use APV\Topping\Models\Topping;
+use APV\Order\Constants\OrderDataConst;
 
 function getNameOfCategoryParent($category)
 {
@@ -223,4 +224,22 @@ function getNameStatusTable($status)
 {
     $data = getArrayStatus();
     return $data[$status];
+}
+//order
+function getStatusOrder()
+{
+    $data = array(
+        OrderDataConst::ORDER_STATUS_CANCEL => 'Hủy đơn',
+        OrderDataConst::ORDER_STATUS_CREATED => 'Tạo mới',
+        OrderDataConst::ORDER_STATUS_CONFIRM_KITCHENT => 'Bếp confirm',
+        OrderDataConst::ORDER_STATUS_CONFIRM_CASHIER => 'Thu ngân confirm',
+        OrderDataConst::ORDER_STATUS_DELETE => 'Xóa đơn',
+    );
+    return $data;
+}
+
+function getNameStatusOrder($orderStatus)
+{
+    $data = getStatusOrder();
+    return $data[$orderStatus];
 }

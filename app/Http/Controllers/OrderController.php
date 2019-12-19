@@ -25,24 +25,10 @@ class OrderController extends AdminController
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function process($id)
     {
-        return view('order.create');
+        return view('order.process');
     }
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
-    {
-        $input = $request->all();
-        $orderId = Order::create($input)->id;
-        return Redirect::action('OrderController@index');
-    }
-
     /**
      * Display the specified resource.
      *
@@ -51,7 +37,8 @@ class OrderController extends AdminController
      */
     public function show($id)
     {
-        //
+        $order = Order::find($id);
+        return view('order.show')->with(compact('order'));
     }
 
     /**
@@ -90,6 +77,6 @@ class OrderController extends AdminController
     public function destroy($id)
     {
         Order::destroy($id);
-        return Redirect::action('OrderController@index');
+        return Redirect::action('OrderController@index')->with('success','Bạn xóa thành công');
     }
 }

@@ -5,7 +5,7 @@
   <div class="card card-register mx-auto mt-5">
     <div class="card-header">Register a role</div>
     <div class="card-body">
-      {{ Form::open(['action' => 'RoleController@store']) }}
+      {{ Form::open(['action' => 'OrderController@store']) }}
         <div class="form-group">
           <div class="form-row">
             <div class="col-md-6">

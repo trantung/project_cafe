@@ -64,6 +64,7 @@ Route::group(['prefix' => '/admin', 'middleware' => 'auth:web'], function () {
     Route::post('/size_product/{size_product_id}/config_material/{size_product_material_id}/edit', 'SizeProductMaterialController@update');
     Route::post('/size_product/{size_product_id}/config_material/{size_product_material_id}/destroy', 'SizeProductMaterialController@destroy');
     //Order
+    Route::get('/order/process/{id}', 'OrderController@process');
     Route::resource('/order', 'OrderController');
 
 });
