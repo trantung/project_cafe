@@ -108,6 +108,11 @@ class OrderService extends BaseService
         $order['total_product_price'] = $input['total_product_price'];
         $order['total_topping_price'] = $input['total_topping_price'];
         $order['amount'] = $input['amount'];
+        if (!isset($input['code'])) {
+            $order['code'] = renderCodeOrder();
+        } else {
+            $order['code'] = $input['code'];
+        }
         $orderId = Order::create($order)->id;
         if (!$orderId) {
             return false;
@@ -133,19 +138,23 @@ class OrderService extends BaseService
             $orderProduct['size_id'] = $product['size_id'];
             $orderProduct['product_price'] = $product['product_price'];
             $orderProduct['price'] = $product['price'];
-            $orderProduct['order_product_comment'] = $product['order_product_comment'];
+            if (!isset($product['order_product_comment'])) {
+                $orderProduct['order_product_comment'] = '';
+            } else {
+                $orderProduct['order_product_comment'] = $product['order_product_comment'];
+            }
             $orderProduct['total_price'] = $product['total_price'];
             $orderProduct['total_price_topping'] = $product['total_price_topping'];           
             $result['order_product'][] = $orderProductId = OrderProduct::create($orderProduct)->id;
             $result['order_product_topping'][] = $this->createOrderProductTopping($orderProductId, $product['topping']);
 
             $priceAfterPromotion = $this->getPriceProductAfterPromotion($product['price']);
-            $totalPriceProductAfterPromotion = $totalPriceAfterPromotion + $this->getTotalPriceAfterPromotion($product['price'], $product['quantity']);
+            $totalPriceAfterPromotion = $totalPriceAfterPromotion + $this->getTotalPriceAfterPromotion($product['price'], $product['quantity']);
 
         }
         $orderUp = Order::find($orderId);
         $toppingTotal = $orderUp->total_topping_price;
-        $customerPayAmount = $this->getMoneyCustomerPay($totalPriceProductAfterPromotion, $toppingTotal);
+        $customerPayAmount = $this->getMoneyCustomerPay($totalPriceAfterPromotion, $toppingTotal);
         $orderUp->update(['amount_after_promotion' => $customerPayAmount]);
         return $result;
     }
@@ -198,6 +207,7 @@ class OrderService extends BaseService
     {
         $now = date('Y-m-d');
         $promotion = $this->commonGetPromotion(1);
+        // dd($pro)
         if (!$promotion) {
             return $price;
         }
@@ -480,7 +490,7 @@ class OrderService extends BaseService
         }
         $order->update([
             'status' => OrderDataConst::ORDER_STATUS_CONFIRM_KITCHENT,
-            'updated_by' => $user->id,
+            'updated_order_by' => $user->id,
         ]);
         // tru nguyen lieu trong kho
         $this->calMaterial($orderId);

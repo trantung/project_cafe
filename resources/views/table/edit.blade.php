@@ -24,10 +24,8 @@
           </div>
 
         <div class="form-group">
-          <div class="form-label-group">
-            {{ Form::text('qr_code', $table->qr_code, array('class' => 'form-control')) }}
-            <label>QR code</label>
-          </div>
+            <label>QR code: </label>
+            {{ $table->qr_code }}
         </div>
         
         <div class="form-group">
@@ -38,23 +36,23 @@
         </div>
         
         <div class="form-group">
+            <label>Kích cỡ</label>
           <div class="form-label-group">
-            {{ Form::text('size', $table->size, array('class' => 'form-control')) }}
-            <label>Size</label>
+            {{ Form::select('size', getSizeDefault(), $table->size, array('class' => 'form-control')) }}
           </div>
         </div>
         
         <div class="form-group">
+          <label>Loại bàn</label>
           <div class="form-label-group">
-            {{ Form::text('type', $table->type, array('class' => 'form-control')) }}
-            <label>Type</label>
+            {{ Form::select('type', getTypeDefault(), $table->type, array('class' => 'form-control')) }}
           </div>
         </div>
         
         <div class="form-group">
+          <label>Số lượng người tối đa</label>
           <div class="form-label-group">
-            {{ Form::text('max_number_person', $table->max_number_person, array('class' => 'form-control')) }}
-            <label>Max number person</label>
+            {{ Form::number('max_number_person', $table->max_number_person, array('class' => 'form-control')) }}
           </div>
         </div>
 
@@ -62,7 +60,7 @@
           <div class="form-group">
             <label>Active</label>
           <div class="form-label-group">
-            {{ Form::select('active', [1 => 'Active', 0 => 'Inactive'], $table->active, array('class' => 'form-control')) }}
+            {{ Form::select('active', getArrayStatus(), $table->active, array('class' => 'form-control')) }}
           </div>
         </div>
         {{ Form::submit('Submit', array('class' => 'btn btn-primary btn-block')) }}

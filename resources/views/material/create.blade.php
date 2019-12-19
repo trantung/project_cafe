@@ -19,7 +19,7 @@
 
         <div class="form-group">
           <div class="form-label-group">
-            {{ Form::text('quantity ', null, array('class' => 'form-control')) }}
+            {{ Form::text('quantity', null, array('class' => 'form-control')) }}
             <label>Quantity</label>
           </div>
         </div>

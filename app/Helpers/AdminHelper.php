@@ -181,3 +181,46 @@ function getListMaterail()
     $data = Material::pluck('name', 'id');
     return $data;
 }
+
+function getArrayStatus()
+{
+    return [1 => 'Active', 0 => 'Inactive'];
+}
+//table: size: kích cỡ bàn(lớn vừa nhỏ), type: thể loại bàn: Hình tròn, Hình vuông, Hình chữ nhật
+function getSizeDefault()
+{
+    $data = array(
+        TABLE_SIZE_S => 'S',
+        TABLE_SIZE_M => 'M',
+        TABLE_SIZE_L => 'L',
+    );
+    return $data;
+}
+
+function getTypeDefault()
+{
+    $data = array(
+        TABLE_TYPE_CIRCLE => 'Hình tròn',
+        TABLE_TYPE_SQUARE => 'Hình vuông',
+        TABLE_TYPE_REC => 'Hình chữ nhật'
+    );
+    return $data;
+}
+
+function getNameSizeTable($tableSizeId)
+{
+    $data = getSizeDefault();
+    return $data[$tableSizeId];
+}
+
+function getNameTypeTable($tableTypeId)
+{
+    $data = getTypeDefault();
+    return $data[$tableTypeId];
+}
+
+function getNameStatusTable($status)
+{
+    $data = getArrayStatus();
+    return $data[$status];
+}

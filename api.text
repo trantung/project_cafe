@@ -269,43 +269,65 @@ trong do 2 là id của user vừa được tạo mới
     "message": "List shop success"
 }
 
-7. Api cho change password
+data post cho order
 
-8. Api cho reset password
+{
+    "table_qr_code": "eqCDJ4oSxblT9Htf",
+    "customer_id": "1",
+    "comment": "comment so 1",
+    "created_by": 1,
+    "updated_by": 1,
+    "status": 1,
+    "list_product": [
+        {
+            "product_id": 1,
+            "quantity": 2,
+            "size_id": 1,
+            "topping": [
+                {
+                    "topping_id": 1,
+                    "topping_price": 10000
+                },
+                {
+                    "topping_id": 2,
+                    "topping_price": 15000
+                }
+            ],
+            "price": 100000,
+            "product_price": 100000,
+            "total_price_topping": 25000,
+            "total_price": 225000,
+            "order_product_comment": "Nothing"
+        },
+        {
+            "product_id": 3,
+            "quantity": 1,
+            "size_id": 3,
+            "topping": [],
+            "price": 200000,
+            "product_price": 200000,
+            "total_price_topping": 0,
+            "total_price": 200000,
+            "order_product_comment": "Nothing"
 
-9. Api cho edit user
-
-10. Api cho delete user
-
-15. Api cho create table in shop
-
-16. Api cho edit table in shop
-
-17. Api cho delete table in shop
-
-26. Api cho level(tầng)
-
-21. Api create topping cho categories
-
-21. Api edit topping cho categories
-
-21. Api delete topping cho categories
-
-22. Api list topping cho categories
-
-
-
-18. Api cho create product
-
-19. Api cho edit product
-
-20. Api cho list product
-
-22. Api create topping cho product
-
-23. Api edit topping cho product
-
-24. Api delete topping cho product
-
-25. Api list topping cho product
+        },
+        {
+            "product_id": 1,
+            "quantity": 1,
+            "size_id": 2,
+            "topping": [],
+            "price": 300000,
+            "product_price": 300000,
+            "total_price_topping": 0,
+            "total_price": 300000,
+            "order_product_comment": "Nothing"
+        }
+    ],
+    "total_topping_price":25000,
+    "total_product_price":700000,
+    "order_type_id":1,
+    "ship_price": "",
+    "ship_id":"",
+    "amount": 725000
+}
 

@@ -204,7 +204,7 @@ class SizeService extends BaseService
             $material = Material::find($materialId);
             OrderMaterialLog::create(
                 [
-                    'orderId' => $orderId,
+                    'order_id' => $orderId,
                     'size_id' => $sizeId,
                     'product_id' => $productId,
                     'material_id' => $materialId,

@@ -5,9 +5,9 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Redirect;
 use App\Http\Controllers\AdminController;
-use APV\Table\Models\Table;
+use APV\Order\Models\Order;
 
-class TableController extends AdminController
+class OrderController extends AdminController
 {
     /**
      * Display a listing of the resource.
@@ -16,8 +16,8 @@ class TableController extends AdminController
      */
     public function index()
     {
-        $data = Table::all();
-        return view('table.index')->with(compact('data'));
+        $data = Order::all();
+        return view('order.index')->with(compact('data'));
     }
 
     /**
@@ -27,7 +27,7 @@ class TableController extends AdminController
      */
     public function create()
     {
-        return view('table.create');
+        return view('order.create');
     }
 
     /**
@@ -39,9 +39,8 @@ class TableController extends AdminController
     public function store(Request $request)
     {
         $input = $request->all();
-        $input['qr_code'] = renderQrCode();
-        $tableId = Table::create($input)->id;
-        return Redirect::action('TableController@index');
+        $orderId = Order::create($input)->id;
+        return Redirect::action('OrderController@index');
     }
 
     /**
@@ -63,8 +62,8 @@ class TableController extends AdminController
      */
     public function edit($id)
     {
-        $table = Table::find($id);
-        return view('table.edit')->with(compact('table'));
+        $order = Order::find($id);
+        return view('order.edit')->with(compact('order'));
     }
 
     /**
@@ -77,12 +76,9 @@ class TableController extends AdminController
     public function update(Request $request, $id)
     {
         $input = $request->all();
-        $table = Table::find($id);
-        if (!$table->qr_code) {
-            $input['qr_code'] = renderQrCode();
-        }
-        $table->update($input);
-        return Redirect::action('TableController@index'); 
+        $order = Order::find($id);
+        $order->update($input);
+        return Redirect::action('OrderController@index'); 
     }
 
     /**
@@ -93,7 +89,7 @@ class TableController extends AdminController
      */
     public function destroy($id)
     {
-        Table::destroy($id);
-        return Redirect::action('TableController@index');
+        Order::destroy($id);
+        return Redirect::action('OrderController@index');
     }
 }

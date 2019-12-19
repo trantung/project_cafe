@@ -34,9 +34,9 @@
                 <td>{{ $table->name }}</td>
                 <td>{{ getNameLevelByTable($table->level_id) }}</td>
                 <td>{{ $table->max_number_person }}</td>
-                <td>{{ $table->size }}</td>
-                <td>{{ $table->type }}</td>
-                <td>{{ $table->active }}</td>
+                <td>{{ getNameSizeTable($table->size) }}</td>
+                <td>{{ getNameTypeTable($table->type) }}</td>
+                <td>{{ getNameStatusTable($table->active) }}</td>
                 <td>
                     <i class="btn btn-warning">
                         <a href="{{ action('TableController@edit', $table->id) }}">Edit</a>
