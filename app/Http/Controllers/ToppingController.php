@@ -19,7 +19,7 @@ class ToppingController extends AdminController
      */
     public function index()
     {
-        $data = Topping::where('source', 1)->get();
+        $data = Topping::all();
         return view('topping.index')->with(compact('data'));
     }
 
