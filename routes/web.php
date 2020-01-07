@@ -24,7 +24,7 @@ Route::group(['prefix' => '/admin', 'middleware' => 'auth:web'], function () {
         $order = Order::all();
         foreach ($order as $key => $value) {
             $code = renderCodeOrder();
-            $order->update(['code' => $code]);
+            Order::where('id', $value->id)->update(['code' => $code]);
         }
         dd('done');
     });
