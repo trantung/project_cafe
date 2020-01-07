@@ -13,12 +13,21 @@
 
 //use Illuminate\Routing\Route;
 use Illuminate\Support\Facades\Route;
+use APV\Order\Models\Order;
 
 Route::get('/admin/login', ['uses' => 'AdminController@getLogin', 'as' =>'login']);
 Route::post('/admin/login', ['uses' => 'AdminController@postLogin']);
 Route::post('/admin/logout', ['uses' => 'AdminController@postLogout', 'as' =>'logout']);
 
 Route::group(['prefix' => '/admin', 'middleware' => 'auth:web'], function () {
+    Route::get('/update_order_code', function (){
+        $order = Order::all();
+        foreach ($order as $key => $value) {
+            $code = renderCodeOrder();
+            $order->update(['code' => $code]);
+        }
+        dd('done');
+    });
     Route::get('/dashboard', 'AdminController@index');
     Route::get('/error', 'AdminController@getError');
     Route::get('/blank', 'AdminController@getBlank');

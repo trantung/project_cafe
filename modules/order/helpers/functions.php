@@ -38,9 +38,3 @@ function getIdOrderUpdatedBy($status)
     return null;
 }
 
-function renderCodeOrder()
-{
-    $length = 16;
-    $randstring = substr(str_shuffle(str_repeat($x='0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ', ceil($length/strlen($x)) )),1,$length);
-    return $randstring;
-}
