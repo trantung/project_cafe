@@ -140,9 +140,24 @@ class ProductController extends AdminController
         $this->productService->delete($product->id);
         return Redirect::action('ProductController@index')->with('success','Bạn xóa thành công');
     }
-    // post 
+    /* upload Multiple Files images */
+    public function imagesUploadPost(Request $request,$images, $productId){
+        dd($images);
+        dd($productId);
+        request()->validate([
+            'images' => 'required',
+        ]);
+        foreach ($request->file('images') as $key => $value) {
+
+            $imageName = time(). $key . '.' . $value->getClientOriginalExtension();
+            $value->move(public_path("/uploads/products/" . $productId . '/images/'), $imageName);
+        }
+        return response()->json(['success'=>'Images Uploaded Successfully.']);
+    }
     public function postCreateImages($productId, $images)
     {
+        var_dump($images);
+        dd("1223");
         foreach ($images as $key => $value) {
             $fileNameImage = $value->getClientOriginalName();
             $value->move(public_path("/uploads/products/" . $productId . '/images/'), $fileNameImage);

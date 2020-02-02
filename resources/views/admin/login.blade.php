@@ -16,34 +16,33 @@
 
 </head>
 
-<body class="bg-dark">
-
+<body class="login">
   <div class="container">
     <div class="card card-login mx-auto mt-5">
       <div class="card-header">Login</div>
       <div class="card-body">
         {{ Form::open(['action' => 'AdminController@postLogin']) }}
-          <div class="form-group">
-            <div class="form-label-group">
-              <input type="text" id="inputEmail" name="username" class="form-control" required="required" autofocus="autofocus">
-              <label for="inputEmail">Username</label>
-            </div>
+        <div class="form-group">
+          <div class="form-label-group">
+            <input type="text" id="inputEmail" name="username" class="form-control" required="required" autofocus="autofocus">
+            <label for="inputEmail">Username</label>
           </div>
-          <div class="form-group">
-            <div class="form-label-group">
-              <input type="password" name="password" id="inputPassword" class="form-control" required="required">
-              <label for="inputPassword">Password</label>
-            </div>
+        </div>
+        <div class="form-group">
+          <div class="form-label-group">
+            <input type="password" name="password" id="inputPassword" class="form-control" required="required">
+            <label for="inputPassword">Password</label>
           </div>
-          <div class="form-group">
-            <div class="checkbox">
-              <label>
-                <input type="checkbox" value="remember-me">
-                Remember Password
-              </label>
-            </div>
+        </div>
+        <div class="form-group">
+          <div class="checkbox">
+            <label>
+              <input type="checkbox" value="remember-me">
+              Remember Password
+            </label>
           </div>
-          {{ Form::submit('Login', array('class' => 'btn btn-primary btn-block')) }}
+        </div>
+        {{ Form::submit('Login', array('class' => 'btn btn-primary btn-block')) }}
         {{ Form::close() }}
 
         <div class="text-center">
@@ -62,4 +61,3 @@
   <script src="vendor/jquery-easing/jquery.easing.min.js"></script>
 
 </body>
-

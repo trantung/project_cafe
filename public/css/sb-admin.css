@@ -10,6 +10,12 @@
  * Copyright 2011-2019 Twitter, Inc.
  * Licensed under MIT (https://github.com/twbs/bootstrap/blob/master/LICENSE)
  */
+ .login{
+  background-image: url("../uploads/img/background_login.jpg");
+  width: 100%;
+  background-position-x: center;
+  background-position-y: top;
+}
 :root {
   --blue: #007bff;
   --indigo: #6610f2;

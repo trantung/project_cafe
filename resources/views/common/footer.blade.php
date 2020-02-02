@@ -1,20 +1,21 @@
-<script src="{{url('vendor/jquery/jquery.min.js')}}"></script>
-<script src="{{url('vendor/bootstrap/js/bootstrap.bundle.min.js')}}"></script>
+<script src="{{url('assets/bundles/libscripts.bundle.js')}}"></script>    
+<script src="{{url('assets/bundles/vendorscripts.bundle.js')}}"></script>
 
-<!-- Core plugin JavaScript-->
-<script src="{{url('vendor/jquery-easing/jquery.easing.min.js')}}"></script>
+<script src="{{url('assets/bundles/chartist.bundle.js')}}"></script>
+<script src="{{url('assets/bundles/knob.bundle.js')}}"></script> <!-- Jquery Knob-->
+<script src="{{url('assets/bundles/flotscripts.bundle.js')}}"></script> <!-- flot charts Plugin Js')}} --> 
+<script src="{{url('assets/vendor/flot-charts/jquery.flot.selection.js')}}"></script>
 
-<!-- Page level plugin JavaScript-->
-<script src="{{url('vendor/chart.js/Chart.min.js')}}"></script>
-<script src="{{url('vendor/datatables/jquery.dataTables.js')}}"></script>
-<script src="{{url('vendor/datatables/dataTables.bootstrap4.js')}}"></script>
+<script src="{{url('assets/bundles/mainscripts.bundle.js')}}"></script>
+<script src="{{url('assets/js/index.js')}}"></script>
 
-<!-- Custom scripts for all pages-->
-<script src="{{url('js/sb-admin.min.js')}}"></script>
- 
 
-<!-- Demo scripts for this page-->
-<script src="{{url('js/demo/datatables-demo.js')}}"></script>
- <!-- bootstrap datatables -->
- <script src="{{url('js/product.js')}}"></script>
- <script src="{{url('js/site.js')}}"></script>
+<script src="{{url('assets/bundles/datatablescripts.bundle.js')}}"></script>
+<script src="{{url('assets/vendor/jquery-datatable/buttons/dataTables.buttons.min.js')}}"></script>
+<script src="{{url('assets/vendor/jquery-datatable/buttons/buttons.bootstrap4.min.js')}}"></script>
+<script src="{{url('assets/vendor/jquery-datatable/buttons/buttons.colVis.min.js')}}"></script>
+<script src="{{url('assets/vendor/jquery-datatable/buttons/buttons.html5.min.js')}}"></script>
+<script src="{{url('assets/vendor/jquery-datatable/buttons/buttons.print.min.js')}}"></script>
+<script src="{{url('assets/vendor/sweetalert/sweetalert.min.js')}}"></script> <!-- SweetAlert Plugin Js')}} --> 
+<script src="{{url('assets/bundles/morrisscripts.bundle.js')}}"></script>
+<script src="{{url('vendors/jquery-table/tables/jquery-datatable.js')}}"></script>

@@ -1,3 +1,9 @@
+.login{
+    background-image: url("../uploads/img/background_login.jpg");
+    width: 100%;
+    background-position-x: center;
+    background-position-y: top;
+}
 /* ======================== product start =================================================== */
 /* chi tiet san pham */
 #content-wrapper p.item1 {
@@ -24,5 +30,7 @@
     border-radius: 5px;
     padding: 4px 2px;
 }
+
+
 
 /* ============================ end product ================================================== */

@@ -48,26 +48,37 @@
                 <textarea class="form-control" style="height:48px" name="detdescriptionail" placeholder="description"></textarea>
                 <label for="print_view">print_view:</label>
                 <input type="number" name="print_view" class="form-control" placeholder="print_view">
-                <div class="form-group">
-                    <label for="images">Image </label>
-                    <input type="file" name="images" multiple id="images">
-                </div>  
+               
             </div>
         </div>
         <div class="col-md-4 col">
             <div class="form-group">
                 <label for="code">code:</label>
                 <input type="text" name="code" class="form-control" placeholder="code" id="code">
-                <label for="price_pay">price_pay:</label>
-                <input type="number" name="price_pay" class="form-control" placeholder="price_pay" id="price_pay">
-                <label for="price_origin">price_origin:</label>
-                <input type="text" name="price_origin" class="form-control" placeholder="price_origin">
                 <label for="name">name:</label>
                 <input class="form-control" name="name" placeholder="name" id="name"/>
+                
                 <p class="product_select"><label for="category_id">category_id:</label>
                 {{ Form::select('category_id', getListCategory(), array('class' => 'form-control')) }}</p>
+            </div>
+            <div class="form-group">
+                <form action="" enctype="multipart/form-data" method="post" id="upload">
+                    <div class="form-group">
+                        <label for="image 1">Image </label>
+                        <input type="file" name="files"  class="selectImage" id="images"/>
+                        <div class="show-progress">
+                            
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <button type="submit" class="btn btn-primary" id="uploadImage">Upload</button>
+                    </div> 
+                </form>
+            </div>
+            <div class="row justify-content-center" id="showImage">
             </div>
         </div>
     </div>
 {{ Form::submit('Submit', array('class' => 'btn btn-primary btn-block product_submit','id'=>'uploadImage')) }}
+
 @endsection

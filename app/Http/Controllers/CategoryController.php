@@ -51,6 +51,7 @@ class CategoryController extends AdminController
             $imageUrl = '/uploads/categories/' . $categoryId . '/' . $fileNameImage;
         }
         Category::where('id', $categoryId)->update(['path' => $path, 'image' => $imageUrl]);
+        // category_zise 
         return Redirect::action('CategoryController@index');
     }
 
@@ -100,6 +101,8 @@ class CategoryController extends AdminController
         $input['path'] = $path;
         $input['image'] = $imageUrl;
         $category->update($input);
+        //category_size 
+
         return Redirect::action('CategoryController@index'); 
     }
 
@@ -112,6 +115,7 @@ class CategoryController extends AdminController
     public function destroy($id)
     {
         Product::where('category_id', $id)->update(['category_id', CATEGORY_NONE]);
+        // category_size
         Category::destroy($id);
         return Redirect::action('CategoryController@index');
     }

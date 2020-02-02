@@ -42,6 +42,7 @@ class MaterialController extends AdminController
     {
         $input = $request->all();
         $materialId = Material::create($input)->id;
+        // add table material_stock
         return Redirect::action('MaterialController@index');
     }
 

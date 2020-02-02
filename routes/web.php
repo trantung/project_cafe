@@ -12,6 +12,8 @@
 */
 
 //use Illuminate\Routing\Route;
+
+use Illuminate\Routing\Route as RoutingRoute;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/admin/login', ['uses' => 'AdminController@getLogin', 'as' =>'login']);
@@ -43,6 +45,8 @@ Route::group(['prefix' => '/admin', 'middleware' => 'auth:web'], function () {
     //Material
     Route::resource('/material', 'MaterialController');
     //Product
+    Route::get('/uploadFile','CommonImagesController@index')->name('products.index');;
+    Route::post('/uploadFile/file','CommonImagesController@store')->name('products.store');
     Route::resource('/products','ProductController');
     // product_size
     Route::get('/size_product/size/{size_id}','SizeProductController@size')->where(['size_id'=>'[0-9]+']);
