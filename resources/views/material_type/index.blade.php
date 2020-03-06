@@ -10,16 +10,18 @@
         <table class="table table-bordered table-hover js-basic-example dataTable table-custom">
           <thead>
             <tr>
-            <th>Id</th>
-            <th>Name</th>
-            <th>Thao tác</th>
+              <th>Id</th>
+              <th>Tên loại NVL</th>
+              <th>Trạng Thái</th>
+              <th>Thao tác</th>
             </tr>
           </thead>
           <tbody>
             @foreach($data as $materialType)
             <tr>
-            <td>{{ $materialType->id }}</td>
-                <td>{{ $materialType->name }}</td>
+              <td>{{ $materialType->id }}</td>
+              <td>{{ $materialType->name }}</td>
+              <td>{{$materialType->active}}</td>
               <td>
                 <a href="{{  action('MaterialTypeController@edit', $materialType->id) }}"><i class="fa fa-edit" style="color: blue"> Sửa</i></a>
                 {{ Form::open(array('method'=>'DELETE', 'action' => array('MaterialTypeController@destroy', $materialType->id), 'style' => 'display: inline-block;')) }}
@@ -34,7 +36,8 @@
           <tfoot>
             <tr>
               <th>Id</th>
-              <th>Name</th>
+              <th>Tên</th>
+              <th>Trạng Thái</th>
               <th>Thao tác</th>
             </tr>
           </tfoot>

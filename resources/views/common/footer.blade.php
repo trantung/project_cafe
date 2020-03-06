@@ -8,7 +8,7 @@
 
 <script src="{{url('assets/bundles/mainscripts.bundle.js')}}"></script>
 <script src="{{url('assets/js/index.js')}}"></script>
-
+<script src="{{url('js/site.js')}}"></script>
 
 <script src="{{url('assets/bundles/datatablescripts.bundle.js')}}"></script>
 <script src="{{url('assets/vendor/jquery-datatable/buttons/dataTables.buttons.min.js')}}"></script>

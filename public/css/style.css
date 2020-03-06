@@ -31,6 +31,22 @@
     padding: 4px 2px;
 }
 
-
-
-/* ============================ end product ================================================== */
+/* ================================ materialType ========================== */
+.convert_content input{
+    page-break-after: auto;
+    padding: 5px;
+    border-radius: 5px;
+    width: 20%;
+    line-height: 20px;
+    text-emphasis: inherit;
+    text-align: center;
+}
+#dynamic_field .input1{
+    page-break-after: auto;
+    padding: 5px;
+    border-radius: 5px;
+    width: 20%;
+    line-height: 20px;
+    text-emphasis: inherit;
+    text-align: center;
+}

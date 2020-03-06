@@ -192,8 +192,8 @@ return [
         APV\Order\Providers\OrderProvider::class,
         APV\Tag\Providers\TagProvider::class,
         APV\Promotion\Providers\PromotionProvider::class,
-        // Barryvdh\Debugbar\ServiceProvider::class,
-       // Barryvdh\Debugbar\ServiceProvider', 
+        Barryvdh\Debugbar\ServiceProvider::class,
+       Barryvdh\Debugbar\ServiceProvider::class, 
 
     ],
 
@@ -243,7 +243,7 @@ return [
         'URL' => Illuminate\Support\Facades\URL::class,
         'Validator' => Illuminate\Support\Facades\Validator::class,
         'View' => Illuminate\Support\Facades\View::class,
-        'Debugbar' => 'Barryvdh\Debugbar\Facade',
+       // 'Debugbar' => 'Barryvdh\Debugbar\Facade',
 
     ],
 

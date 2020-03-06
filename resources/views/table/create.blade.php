@@ -63,7 +63,7 @@
             {{ Form::select('active', [1 => 'Active', 0 => 'Inactive'], array('class' => 'form-control')) }}
           </div>
         </div>
-        {{ Form::submit('Submit', array('class' => 'btn btn-primary btn-block')) }}
+        {{ Form::submit('Submit', array('class' => 'btn btn-primary')) }}
       {{ Form::close() }}
     </div>
   </div>

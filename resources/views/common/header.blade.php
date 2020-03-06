@@ -53,4 +53,6 @@
   <!-- table css  -->
   <link rel="stylesheet" href="{{url('css/css-table/select.dataTables.min.css')}}" /> 
   <link rel="stylesheet" href="{{url('css/css-table/sweetalert.css')}}" /> 
+  <link rel="stylesheet" href="{{url('css/css-table/animate.min.css')}}"/>
+  <link href="{{url('css/style.css')}}" rel="stylesheet">
 </head>

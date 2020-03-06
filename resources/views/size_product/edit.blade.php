@@ -1,9 +1,9 @@
 @extends('common.default')
 @section('content')
 <div class="container">
-    <div class="card card-register mx-auto mt-5">
+    <div class="header">
         <div class="card-header">Thông tin chỉnh sửa</div>
-        <div class="card-body">
+        <div class="body">
             {{ Form::open(array('method'=>'PUT', 'action' => array('SizeProductController@update', $sizeProduct->id))) }}
             <div class="row">
                 <div class="col-md-6">

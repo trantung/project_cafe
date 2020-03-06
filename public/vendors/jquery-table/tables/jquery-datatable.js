@@ -5,8 +5,6 @@ $(function () {
     $('.js-exportable').DataTable({
         "dom": 'Bfrtip',
         "buttons": [
-            { extend: 'copy', text: 'Copy all', charset: 'utf-8', bom: true, init: function (api, node, config) { $(node).addClass("btn btn-round btn-primary btn-danger"); }, exportOptions: { modifier: { selected: null } } },
-            { extend: 'copy', text: 'Copy selected', charset: 'utf-8', bom: true,init: function (api, node, config) { $(node).addClass(" btn btn-round btn-primary btn-info"); }, exportOptions: { modifier: { selected: true } } },
             { extend: 'csv', text: 'CSV all', charset: 'utf-8', bom: true, init: function (api, node, config) { $(node).addClass(" btn btn-round btn-primary btn-danger"); }, exportOptions: { modifier: { selected: null } } },
             { extend: 'csv', text: 'CSV selected', charset: 'utf-8', bom: true,init: function (api, node, config) { $(node).addClass(" btn btn-round btn-primary btn-info"); }, exportOptions: { modifier: { selected: true, } } },
             { extend: 'print', text: 'Print all', charset: 'utf-8', bom: true, init: function (api, node, config) { $(node).addClass("btn btn-round btn-primary btn-danger"); }, exportOptions: { modifier: { selected: null } } },

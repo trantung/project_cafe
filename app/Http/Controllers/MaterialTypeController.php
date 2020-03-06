@@ -43,7 +43,21 @@ class MaterialTypeController extends AdminController
         $materialTypeId = MaterialType::create($input)->id;
         return Redirect::action('MaterialTypeController@index');
     }
-
+    public function addMorePost(Request $request)
+    {
+        $rules = [];
+        foreach($request->input('converts') as $key => $value) {
+            $rules["converts.{$key}"] = 'required';
+        }
+        $validator = MaterialType::make($request->all(), $rules);
+        if ($validator->passes()) {
+            foreach($request->input('converts') as $key => $value) {
+                MaterialType::create(['converts'=>$value]);
+            }
+            return response()->json(['success'=>'done']);
+        }
+        return response()->json(['error'=>$validator->errors()->all()]);
+    }
     /**
      * Display the specified resource.
      *

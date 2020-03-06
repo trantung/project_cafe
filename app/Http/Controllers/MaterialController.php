@@ -81,6 +81,8 @@ class MaterialController extends AdminController
         $input = $request->all();
         $material = Material::find($id);
         $material->update($input);
+        $material->desc = $request->desc;
+        $material->save();
         return Redirect::action('MaterialController@index'); 
     }
 

@@ -28,7 +28,7 @@
                 <a href="{{  action('MaterialController@edit', $material->id) }}"><i class="fa fa-edit" style="color: blue"> Sửa</i></a>
                 {{ Form::open(array('method'=>'DELETE', 'action' => array('MaterialController@destroy', $material->id), 'style' => 'display: inline-block;')) }}
                 <a onclick="return confirm('Bạn có chắc chắn muốn xóa?');">
-                  <i class="glyphicon glyphicon-trash" style="color: red"> Xóa</i>
+                  <i class="glyphicon glyphicon-trash" style="color:red">xóa</i>
                 </a>
                 {{ Form::close() }}
               </td>

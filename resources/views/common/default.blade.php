@@ -4,7 +4,7 @@
 <body id="page-top" class="theme-blue">
 <div class="page-loader-wrapper">
     <div class="loader">
-        <div class="m-t-30"><img src="../assets/images/thumbnail.png" width="48" height="48" alt="Mplify"></div>
+        <div class="m-t-30"><img src="{{url('assets/images/cooffe.jpg')}}" width="48" height="48" alt="Mplify"></div>
         <p>Please wait...</p>        
     </div>
 </div>
@@ -14,21 +14,16 @@
  
 
   <div id="wrapper">
-      <!-- top header -->
-      
-        @include('common.header')
-    <nav class="navbar navbar-fixed-top">
-    </nav>
-  <!-- nav_bar -->
-  @include('common.nav_bar')
+    <!-- top header -->
+    @include('common.header')
+    <!-- nav_bar -->
+    @include('common.nav_bar')
     <!-- Sidebar -->
     @include('common.sidebar')
-
     <div id="main-content">
         @yield('content')
     </div>
     <!-- /.content-wrapper -->
-
   </div>
   <!-- /#wrapper -->
 

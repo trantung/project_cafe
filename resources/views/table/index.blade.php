@@ -14,26 +14,26 @@
         <table class="table table-bordered table-hover js-basic-example dataTable table-custom">
           <thead>
             <tr>
-            <th>Id</th>
-            <th>Name</th>
-            <th>Level</th>
-            <th>Max person</th>
-            <th>Kick co</th>
-            <th>The loai</th>
-            <th>Active</th>
-            <th>Thao tác</th>
+              <th>Id</th>
+              <th>Name</th>
+              <th>Level</th>
+              <th>Max person</th>
+              <th>Kick co</th>
+              <th>The loai</th>
+              <th>Active</th>
+              <th>Thao tác</th>
             </tr>
           </thead>
           <tbody>
             @foreach($data as $table)
             <tr>
-            <td>{{ $table->id }}</td>
-                <td>{{ $table->name }}</td>
-                <td>{{ getNameLevelByTable($table->level_id) }}</td>
-                <td>{{ $table->max_number_person }}</td>
-                <td>{{ $table->size }}</td>
-                <td>{{ $table->type }}</td>
-                <td>{{ $table->active }}</td>
+              <td>{{ $table->id }}</td>
+              <td>{{ $table->name }}</td>
+              <td>{{ getNameLevelByTable($table->level_id) }}</td>
+              <td>{{ $table->max_number_person }}</td>
+              <td>{{ $table->size }}</td>
+              <td>{{ $table->type }}</td>
+              <td>{{ $table->active }}</td>
               <td>
                 <a href="{{  action('TableController@edit', $table->id) }}"><i class="fa fa-edit" style="color: blue"> Sửa</i></a>
                 {{ Form::open(array('method'=>'DELETE', 'action' => array('TableController@destroy', $table->id), 'style' => 'display: inline-block;')) }}
