@@ -12,7 +12,8 @@
             <tr>
               <th>Id</th>
               <th>Tên</th>
-              <th>Thao tác</th>
+              <th>Trạng thái</th>
+              <th colspan="2">Thao tác</th>
             </tr>
           </thead>
           <tbody>
@@ -20,13 +21,17 @@
             <tr>
               <td>{{ $size->id }}</td>
               <td>{{ $size->name }}</td>
+              <td>{{$size->status == '1' ? 'active':'no active' }}</td>
               <td>
-                <a href="{{   action('SizeController@edit', $size->id) }}"><i class="fa fa-edit" style="color: blue"> Sửa</i></a>
-                {{ Form::open(array('method'=>'DELETE', 'action' => array('SizeController@destroy', $size->id), 'style' => 'display: inline-block;')) }}
-                <a onclick="return confirm('Bạn có chắc chắn muốn xóa?');">
+                <a href="{{   action('SizeController@edit', $size->id) }}"><i class="fa fa-edit" style="color: blue"> Sửa</i></a></td>
+              <td><form action="{{ route('size.destroy', $size->id)}}" method="post">
+                  @csrf
+                  @method('DELETE')
+                  <button class="btn" type="submit"><a onclick="return confirm('Bạn có chắc chắn muốn xóa?');">
                   <i class="glyphicon glyphicon-trash" style="color: red">Xóa</i>
-                </a>
-                {{ Form::close() }}
+                </a></button>
+                </form>
+
                 \<a href="{{ action('SizeProductController@size',$size->id) }}"><i class="fa fa-info" style="color:#8BC34A">Xem danh sách product</i></a>
               </td>
             </tr>
@@ -36,6 +41,7 @@
             <tr>
               <th>Id</th>
               <th>Tên</th>
+              <th>Trạng thái</th>
               <th>Thao tác</th>
             </tr>
           </tfoot>

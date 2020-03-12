@@ -26,7 +26,7 @@
             <div class="table-responsive">
               <table class="table table-bordered" id="dynamic_field">
                 <tr>
-                  <td><input type="text" name="converts[]"  class="form-control name_list" value="{{$materialType->converts}}" /></td>
+                 <td><input type="text" name="convert1" class="input1"><input type="text" value="{{$materialType->slug}}" class="input1"><span>=</span><input type="text" name="convert2" class="input1">{{ Form::select('', getListMaterialType(), array('class' => 'browser-default custom-select')) }}</td>
                   <td><button type="button" name="add" id="add" class="btn btn-success"><i class="icon-plus"><u>thêm quy đổi</u></i></button></td>
                 </tr>
               </table>
@@ -150,16 +150,3 @@
 </div>
 
 @stop
-<script>
-  $(document).ready(function() {
-    var i = 1;
-    $('#add').click(function() {
-      i++;
-      $('#dynamic_field').append('<tr id="row' + i + '"><td><input type="text" name="converts[]"  class="form-control name_list" /></td><td><button type="button" name="remove" id="' + i + '" class="btn btn-danger btn_remove">X</button></td></tr>');
-    });
-    $(document).on('click', '.btn_remove', function() {
-      var button_id = $(this).attr("id");
-      $('#row' + button_id + '').remove();
-    });
-  });
-</script>

@@ -14,6 +14,7 @@
               <th>Tên</th>
               <th>Đơn vị(material_type)</th>
               <th>số lượng</th>
+              <th>trạng thái</th>
               <th>Thao tác</th>
             </tr>
           </thead>
@@ -23,7 +24,8 @@
               <td>{{ $material->id }}</td>
               <td>{{ $material->name }}</td>
               <td>{{ getMaterialTypeName($material->material_type_id) }}</td>
-              <td>{{ $material->quantity }}</td>
+              <td>{{ $material->quantity}}</td>
+              <td>{{$material->active == '1' ? 'active' : 'no active'}}</td>
               <td>
                 <a href="{{  action('MaterialController@edit', $material->id) }}"><i class="fa fa-edit" style="color: blue"> Sửa</i></a>
                 {{ Form::open(array('method'=>'DELETE', 'action' => array('MaterialController@destroy', $material->id), 'style' => 'display: inline-block;')) }}
@@ -41,6 +43,7 @@
               <th>Tên</th>
               <th>Đơn vị(material_type)</th>
               <th>số lượng</th>
+              <th>trạng thái</th>
               <th>Thao tác</th>
             </tr>
           </tfoot>

@@ -32,12 +32,13 @@
           <div class="col-md-6">
             <div class="form-label-group">
               <label>Quy đổi đơn vị</label>
-              <div class="convert_content">
-                  <input type="text" name="converts[]">
+              <table class="convert_content" id="dynamic_field">
+              <td><input type="text" name="converts[]">
                   {{ Form::text('', null, array('class' => '','id'=>'slug','name' =>'converts[]')) }}
                   <span>=</span><input type="text" name=" converts[]"> 
-                  {{ Form::select('', getListMaterialType(), array('class' => 'browser-default custom-select')) }}
-              </div>
+                  {{ Form::select('', getListMaterialType(), array('class' => 'browser-default custom-select')) }}</td>
+                  <td><button type="button" name="add" id="add" class="btn btn-success"><i class="icon-plus"><u>thêm quy đổi</u></i></button></td>
+              </table>
             </div>
           </div>
           <div class="col-md-6">

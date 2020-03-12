@@ -11,7 +11,9 @@
           <thead>
             <tr>
               <th>Id</th>
-              <th>Tên loại NVL</th>
+              <th>Đơn vị NVL</th>
+              <th>mã đơn vị NVL</th>
+              <th>quy đổi</th>
               <th>Trạng Thái</th>
               <th>Thao tác</th>
             </tr>
@@ -21,7 +23,9 @@
             <tr>
               <td>{{ $materialType->id }}</td>
               <td>{{ $materialType->name }}</td>
-              <td>{{$materialType->active}}</td>
+              <td>{{$materialType->slug}}</td>
+              <td>{{$materialType->converts}}</td>
+              <td>{{$materialType->active == '1' ? 'active': 'no active'}}</td>
               <td>
                 <a href="{{  action('MaterialTypeController@edit', $materialType->id) }}"><i class="fa fa-edit" style="color: blue"> Sửa</i></a>
                 {{ Form::open(array('method'=>'DELETE', 'action' => array('MaterialTypeController@destroy', $materialType->id), 'style' => 'display: inline-block;')) }}
@@ -35,8 +39,10 @@
           </tbody>
           <tfoot>
             <tr>
-              <th>Id</th>
-              <th>Tên</th>
+              <th>id</th>
+              <th>Đơn vị NVL</th>
+              <th>mã đơn vị NVL</th>
+              <th>quy đổi</th>
               <th>Trạng Thái</th>
               <th>Thao tác</th>
             </tr>
