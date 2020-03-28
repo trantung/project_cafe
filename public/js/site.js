@@ -73,3 +73,22 @@ function ChangeToSlug() {
     //In slug ra textbox có id “slug”
     document.getElementById('slug').value = slug;
   }
+  
+  $(function(){
+    $('.submit').click(function(){
+      // get data as array
+      var converts = $('input[name ="converts[]"]').map(function(){
+        return this.value;
+
+      }).get();
+      $.ajax({
+        type:"POST",
+        data:{
+          'converts[]':converts,
+        },
+        success:function(){
+
+        }
+      });
+    });
+  });

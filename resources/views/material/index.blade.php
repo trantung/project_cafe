@@ -5,9 +5,10 @@
     <div class="header">
       <a href="{{ action('MaterialController@create') }}" class="btn btn-info"><i class="icon-plus" style="color: red">Thêm </i></a>
     </div>
-    <div class="body">
-      <div class="table-responsive">
-        <table class="table table-bordered table-hover js-basic-example dataTable table-custom">
+    <div class="body " >
+    <a href="#demo1" data-toggle="collapse"><i class ="fa fa-minus"></i></a>
+      <div class="table-responsive" id ="demo1">
+        <table class="table table-bordered table-hover js-basic-example dataTable table-custom" id = >
           <thead>
             <tr>
               <th>Id</th>
@@ -28,11 +29,13 @@
               <td>{{$material->active == '1' ? 'active' : 'no active'}}</td>
               <td>
                 <a href="{{  action('MaterialController@edit', $material->id) }}"><i class="fa fa-edit" style="color: blue"> Sửa</i></a>
-                {{ Form::open(array('method'=>'DELETE', 'action' => array('MaterialController@destroy', $material->id), 'style' => 'display: inline-block;')) }}
-                <a onclick="return confirm('Bạn có chắc chắn muốn xóa?');">
-                  <i class="glyphicon glyphicon-trash" style="color:red">xóa</i>
-                </a>
-                {{ Form::close() }}
+                <form action="{{ route('material.destroy', $material->id)}}" method="post">
+                  @csrf
+                  @method('DELETE')
+                  <button class="btn" type="submit"><a onclick="return confirm('Bạn có chắc chắn muốn xóa?');">
+                  <i class="glyphicon glyphicon-trash" style="color: red">Xóa</i>
+                </a></button>
+                </form>
               </td>
             </tr>
             @endforeach
