@@ -40,12 +40,12 @@ Route::group(['prefix' => '/admin', 'middleware' => 'auth:web'], function () {
     Route::resource('/level', 'LevelController');
     //Category
     Route::resource('/category', 'CategoryController');
-    //Table
-    Route::resource('/table', 'TableController');
+    //Schoolbocks
+    Route::resource('/schoolbock', 'SchoolbocksController');
     //User
     Route::resource('/user', 'UserController');
-    //Size
-    Route::resource('/size', 'SizeController');
+    //Class
+    Route::resource('/class', 'ClassController');
     
     //Material type: don vi tinh cua nguyen lieu(kg, g...)
     Route::resource('/material_type', 'MaterialTypeController');

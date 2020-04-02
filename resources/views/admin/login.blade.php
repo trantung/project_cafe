@@ -10,13 +10,13 @@
 
   <!-- Custom fonts for this template-->
   <link href="{{url('vendor/fontawesome-free/css/all.min.css" rel="stylesheet')}}" type="text/css">
-
+  <link href="{{url('../public/css/style.css')}}" type="text/css">
   <!-- Custom styles for this template-->
   <link href="{{url('css/sb-admin.css')}}" rel="stylesheet">
 
 </head>
 
-<body class="bg-dark">
+<body class="bg-dark background_login" >
 
   <div class="container">
     <div class="card card-login mx-auto mt-5">
@@ -57,7 +57,6 @@
   <!-- Bootstrap core JavaScript-->
   <script src="vendor/jquery/jquery.min.js"></script>
   <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
-
   <!-- Core plugin JavaScript-->
   <script src="vendor/jquery-easing/jquery.easing.min.js"></script>
 
