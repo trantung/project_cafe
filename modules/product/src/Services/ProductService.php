@@ -357,5 +357,13 @@ class ProductService extends BaseService
         }
         return $res;
     }
-
+    public function customerGetDetail($input)
+    {
+        $productId = '';
+        if (isset($input['product_id'])) {
+            $productId = $input['product_id'];
+            return $this->getDetail($productId);
+        }
+        return '';
+    }
 }

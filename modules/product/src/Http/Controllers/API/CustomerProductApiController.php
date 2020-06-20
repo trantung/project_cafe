@@ -25,57 +25,11 @@ class CustomerProductApiController extends ApiBaseController
         return $this->sendSuccess($data, 'success');
     }
 
-    public function postCreate(Request $request)
+    public function getDetail(Request $request)
     {
         $input = $request->all();
-        if (!$this->apiAuth->checkPermissionModule('product', 'postCreate')) {
-            return $this->sendError(ProductResponseCode::ERROR_CODE_NO_PERMISSION);
-        }
-        $data = $this->productService->create($input);
-        if (!$data) {
-            return $this->sendError(ProductResponseCode::ERROR_CODE_UNCREATE_NEW);
-        }
-        return $this->sendSuccess($data, 'Create success');
-    }
-
-    public function getDetail($productId)
-    {
-        $data = $this->productService->getDetail($productId);
+        $data = $this->productService->customerGetDetail($input);
         return $this->sendSuccess($data, 'Detail success');
     }
 
-    public function postEdit(Request $request, $productId)
-    {
-        $input = $request->all();
-        if (!$this->apiAuth->checkPermissionModule('product', 'postEdit')) {
-            return $this->sendError(ProductResponseCode::ERROR_CODE_NO_PERMISSION);
-        }
-        $data = $this->productService->edit($productId, $input);
-        return $this->sendSuccess($data, 'Edit success');
-    }
-
-    public function postDelete(Request $request, $productId)
-    {
-        $input = $request->all();
-        if (!$this->apiAuth->checkPermissionModule('product', 'postDelete')) {
-            return $this->sendError(ProductResponseCode::ERROR_CODE_NO_PERMISSION);
-        }
-        $data = $this->productService->delete($productId);
-        return $this->sendSuccess($data, 'Delete success');
-    }
-    public function postCreateProductTopping(Request $request, $productId)
-    {
-        $input = $request->all();
-        if (!$this->apiAuth->checkPermissionModule('product', 'postDelete')) {
-            return $this->sendError(ProductResponseCode::ERROR_CODE_NO_PERMISSION);
-        }
-        $data = $this->productService->createProductTopping($productId, $input);
-        return $this->sendSuccess($data, 'Delete success');
-    }
-    public function search(Request $request)
-    {
-        $input = $request->all();
-        $data = $this->productService->searchProduct($input);
-        return $this->sendSuccess($data, 'search success');
-    }
 }

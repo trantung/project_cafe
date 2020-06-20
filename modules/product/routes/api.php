@@ -17,5 +17,5 @@ Route::group([
     'namespace' => 'APV\Product\Http\Controllers\API',
 ], function () {
     Route::get('productList', 'CustomerProductApiController@getList');
-    // Route::get('productList', 'CustomerProductApiController@getList');
+    Route::get('productDetail', 'CustomerProductApiController@getDetail');
 });
