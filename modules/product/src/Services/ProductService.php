@@ -331,6 +331,7 @@ class ProductService extends BaseService
         $res['base_price'] = $product->price_origin;
         $res['sale_price'] = $product->price_pay;
         $res['image_thumbnail'] = $product->avatar;
+        return $res;
     }
 
     public function customerGetList($input)
