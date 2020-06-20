@@ -12,3 +12,10 @@ Route::group([
     Route::post('delete_product/{id}', 'ProductApiController@postDelete');
     Route::post('create_product_topping/{id}', 'ProductApiController@postCreateProductTopping');
 });
+Route::group([
+    'prefix' => 'api_customer/product',
+    'namespace' => 'APV\Product\Http\Controllers\API',
+], function () {
+    Route::get('productList', 'CustomerProductApiController@getList');
+    // Route::get('productList', 'CustomerProductApiController@getList');
+});

@@ -304,9 +304,57 @@ class ProductService extends BaseService
         return $data;
     }
 
-    /**
-     * 
-     * 
-     * 
-     */
+    public function getNameCategory($categoryId)
+    {
+        $cate = Category::find($categoryId);
+        if ($cate) {
+            return $cate->name;
+        }
+        return '';
+    }
+    //product to do
+    public function getImportant($productId)
+    {
+        return 1;
+    }
+    public function getSpecialTagProduct($productId)
+    {
+        return 'special_tag';
+    }
+    //end to do
+    public function getInfoProduct($product)
+    {
+        $res = [];
+        $res['id'] = $product->id;
+        $res['name'] = $product->name;
+        $res['short_description'] = $product->description;
+        $res['base_price'] = $product->price_origin;
+        $res['sale_price'] = $product->price_pay;
+        $res['image_thumbnail'] = $product->avatar;
+    }
+
+    public function customerGetList($input)
+    {
+        $orderType = $shopLocation = $deliveryAddress = '';
+        if (isset($input['OrderType'])) {
+            $orderType = $input['OrderType'];
+        }
+        if (isset($input['ShopLocation'])) {
+            $shopLocation = $input['ShopLocation'];
+        }
+        if (isset($input['DeliveryAddress'])) {
+            $deliveryAddress = $input['DeliveryAddress'];
+        }
+        $res = [];
+        $data = Product::all();
+        foreach ($data as $key => $value) {
+            $res[$key]['category_id'] = $value->category_id;
+            $res[$key]['name'] = $this->getNameCategory($value->category_id);
+            $res[$key]['important'] = $this->getImportant($value->id);
+            $res[$key]['special_tag'] = $this->getImportant($value->id);
+            $res[$key]['product'] = $this->getInfoProduct($value);
+        }
+        return $res;
+    }
+
 }
