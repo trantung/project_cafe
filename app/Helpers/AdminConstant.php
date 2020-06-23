@@ -5,3 +5,7 @@ define('PRODUCT_TOPPING_SOURCE', 0);
 
 define('PRODUCT_IS_SHIP_ACTIVE', 1);
 define('PRODUCT_IS_SHIP_INACTIVE', 0);
+//group_option_product_type
+define('GROUP_OPTION_PRODUCT_TYPE_SWIPE', 1);
+define('GROUP_OPTION_PRODUCT_TYPE_TAG', 2);
+define('GROUP_OPTION_PRODUCT_TYPE_CHECKBOX', 3);

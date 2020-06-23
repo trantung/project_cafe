@@ -470,8 +470,9 @@ class ProductService extends BaseService
             $res['cover_list'] = $this->getCoverListProduct($product);
             $res['group_option'] = $this->getGroupOptionDetail($product);
             $res['size'] = $this->getSizeProduct($product->id, true);
-            $res['product_topping_own'] = $this->getToppingOwn($product);
-            $res['product_topping_by_category'] = $this->getToppingByCategory($product);
+            $res['product_topping'] = array_merge($this->getToppingOwn($product), $this->getToppingByCategory($product));
+            // $res['product_topping_own'] = $this->getToppingOwn($product);
+            // $res['product_topping_by_category'] = $this->getToppingByCategory($product);
             $res['product_tags'] = $this->getTagByProduct($productId);
             // return $this->getDetail($productId);
             return $res;

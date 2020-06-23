@@ -5,7 +5,7 @@
  * @apiName getProductList
  * @apiGroup Product
  *
- * @apiParam {Number} order_type kiểu order(có thể không truyền)
+ * @apiParam {Number} order_type kiểu order(có thể không truyền. 0:Không ship, 1: Ship)
  * @apiParam {Number} location_id id của location(có thể không truyền)
  * @apiParam {Number} delivery_address địa chỉ nhận hàng(có thể không truyền)
  *
@@ -106,7 +106,7 @@ public function getList(Request $request)
  *
  * @apiParam {Number} product_id id của product(required)
  *
- * @apiSuccessExample Success-Response:
+ * @apiSuccessExample Success-Response: group_option_product_type là kiểu hiển thị: 1: kiểu kéo trượt, 2: kiểu tag, 3: kiểu checkbox
  * HTTP/1.1 200 OK
 {
     "success": true,
@@ -184,8 +184,7 @@ public function getList(Request $request)
                 "weight_number": null
             }
         ],
-        "product_topping_own": [],
-        "product_topping_by_category": [
+        "product_topping": [
             {
                 "topping_price": "10000",
                 "topping_name": "Espresso (1shot)",
