@@ -6,6 +6,10 @@ use APV\Shop\Models\Shop;
 use APV\Category\Models\Category;
 use APV\Topping\Models\Topping;
 use APV\Product\Models\Product;
+use APV\Product\Models\GroupOption;
+use APV\Product\Models\GroupOptionProduct;
+use APV\Product\Models\Option;
+use APV\Product\Models\OptionProduct;
 use APV\Product\Models\CommonStep;
 use APV\Topping\Models\ToppingCategory;
 use APV\Product\Models\ProductTopping;
@@ -19,6 +23,7 @@ use APV\Size\Models\SizeResource;
 use APV\Size\Models\Step;
 use APV\Material\Models\Material;
 use APV\Base\Services\BaseService;
+use APV\Category\Services\CategoryService;
 //use League\Fractal\Resource\Collection;
 use Illuminate\Database\Eloquent\Collection as Collect;
 use Illuminate\Support\Facades\Storage;
@@ -34,6 +39,8 @@ class ProductService extends BaseService
    public function __construct(Product $model)
     {
         parent::__construct($model);
+        $categoryService = new CategoryService(new Category);
+        $this->categoryService = $categoryService;
     }
 
     public function create($input)
@@ -115,7 +122,7 @@ class ProductService extends BaseService
         return $data->$field;
     }
 
-    public function getSizeProduct($productId)
+    public function getSizeProduct($productId, $material = null)
     {
         $listSizeId = SizeProduct::where('product_id', $productId)->pluck('size_id');
         $listSize = Size::whereIn('id', $listSizeId)->get();
@@ -125,7 +132,9 @@ class ProductService extends BaseService
             $data[$key]['size_price'] = (int)$this->getSizeProductDetail($productId, $sizeId, 'price');
             $data[$key]['size_name'] = $value->name;
             $data[$key]['weight_number'] = $this->getSizeProductDetail($productId, $sizeId, 'weight_number');
-            $data[$key]['material'] = $this->getMaterialProduct($productId, $value->id);
+            if ($material == null) {
+                $data[$key]['material'] = $this->getMaterialProduct($productId, $value->id);
+            }
         }
         return $data;
     }
@@ -317,53 +326,156 @@ class ProductService extends BaseService
     {
         return 1;
     }
-    public function getSpecialTagProduct($productId)
+    public function getSpecialTagByCate($categoryId)
     {
-        return 'special_tag';
+        return 'Món được ưa thích';
     }
     //end to do
+    public function getSalePrice($product)
+    {
+        return $product->price_pay;
+    }
+
     public function getInfoProduct($product)
     {
         $res = [];
-        $res['id'] = $product->id;
-        $res['name'] = $product->name;
-        $res['short_description'] = $product->description;
-        $res['base_price'] = $product->price_origin;
-        $res['sale_price'] = $product->price_pay;
-        $res['image_thumbnail'] = $product->avatar;
+        $res['product_id'] = $product->id;
+        $res['product_name'] = $product->name;
+        $res['product_short_desc'] = $product->short_desc;
+        $res['product_description'] = $product->description;
+        $res['product_base_price'] = $product->price_pay;
+        $res['product_sale_price'] = $this->getSalePrice($product);
+        $res['product_image_thumbnail'] = $product->avatar;
+        return $res;
+    }
+
+    public function getProductByCategory($cateId)
+    {
+        $res = [];
+        $listCategory = $this->categoryService->getListCategoryByRoot($cateId);
+        $listProduct = Product::whereIn('category_id', $listCategory)->get();
+        $res['product_count'] = count($listProduct);
+        foreach ($listProduct as $key => $value) {
+            $res[$key] = $this->getInfoProduct($value);
+        }
         return $res;
     }
 
     public function customerGetList($input)
     {
         $orderType = $shopLocation = $deliveryAddress = '';
-        if (isset($input['OrderType'])) {
-            $orderType = $input['OrderType'];
+        if (isset($input['order_type'])) {
+            $orderType = $input['order_type'];
         }
-        if (isset($input['ShopLocation'])) {
-            $shopLocation = $input['ShopLocation'];
+        if (isset($input['location_id'])) {
+            $locationId = $input['location_id'];
         }
-        if (isset($input['DeliveryAddress'])) {
-            $deliveryAddress = $input['DeliveryAddress'];
+        if (isset($input['delivery_address'])) {
+            $deliveryAddress = $input['delivery_address'];
         }
         $res = [];
-        $data = Product::all();
-        foreach ($data as $key => $value) {
-            $res[$key]['category_id'] = $value->category_id;
-            $res[$key]['name'] = $this->getNameCategory($value->category_id);
-            $res[$key]['important'] = $this->getImportant($value->id);
-            $res[$key]['special_tag'] = $this->getImportant($value->id);
-            $res[$key]['product'] = $this->getInfoProduct($value);
+        $listCate = null;
+        if (isset($input['category_id'])) {
+            $categoryId = $input['category_id'];
+            $arrayCate = $this->categoryService->getListCategoryByRoot($input['category_id']);
+            $listCate = Category::whereIn('id', $arrayCate)->get();
+        } else {
+            $listCate = Category::all();
+        }
+        $res['category_count'] = count($listCate);
+        foreach ($listCate as $key => $value) {
+            $res[$key]['category_id'] = $value->id;
+            $res[$key]['category_name'] = $value->name;
+            $res[$key]['special_tag'] = $this->getSpecialTagByCate($value);
+            $res[$key]['list_product'] = $this->getProductByCategory($value->id);
         }
         return $res;
     }
+
+    public function getVideoByProduct($product)
+    {
+        $res = [];
+        return $res;
+    }
+
+    public function getCoverListProduct($product)
+    {
+        $res = [];
+        $data = $this->getProductImages($product->id)->toArray();
+        $dataVideo = $this->getVideoByProduct($product);
+        $res = array_merge($data, $dataVideo);
+
+        return $res;
+    }
+
+    public function getGroupOptionName($groupOptionId)
+    {
+        $res = GroupOption::find($groupOptionId);
+        if ($res) {
+            return $res->name;
+        }
+        return null;
+    }
+
+    public function getOptionProduct($product, $groupOptionId)
+    {
+        $res = [];
+        $data = OptionProduct::where('product_id', $product->id)->pluck('option_id');
+        $listOptions = Option::whereIn('id', $data)->where('group_option_id', $groupOptionId)->get();
+        foreach ($listOptions as $key => $value) {
+            $res[$key]['option_id'] = $value->id;
+            $res[$key]['option_name'] = $value->name;
+        }
+        return $res;
+    }
+
+    public function getGroupOptionDetail($product)
+    {
+        $res = [];
+        $data = GroupOptionProduct::where('product_id', $product->id)->get();
+        foreach ($data as $key => $value) {
+            $res[$key]['group_option_id'] = $value->group_option_id;
+            $res[$key]['group_option_name'] = $this->getGroupOptionName($value->group_option_id);
+            $res[$key]['group_option_product_type'] = $value->type;
+            $res[$key]['group_option_product_type_show'] = $value->type_show;
+            $res[$key]['option_list'] = $this->getOptionProduct($product, $value->group_option_id);
+        }
+        return $res;
+    }
+
+    public function getToppingByProduct($product)
+    {
+        $res = [];
+        $data = ProductTopping::where('product_id', $product->id)->pluck('topping_id');
+        $listTopping = Topping::whereIn('id', $data)->get();
+        foreach ($listTopping as $key => $value) {
+            $res[$key]['topping_id'] = $value->id;
+            $res[$key]['topping_name'] = $value->name;
+            $res[$key]['topping_price'] = $value->price;
+        }
+        return $res;
+    }
+
     public function customerGetDetail($input)
     {
         $productId = '';
+        $res = [];
         if (isset($input['product_id'])) {
             $productId = $input['product_id'];
-            return $this->getDetail($productId);
+            $product = Product::find($productId);
+            if (!$product) {
+                return [];
+            }
+            $res = $this->getInfoProduct($product);
+            $res['cover_list'] = $this->getCoverListProduct($product);
+            $res['group_option'] = $this->getGroupOptionDetail($product);
+            $res['size'] = $this->getSizeProduct($product->id, true);
+            $res['product_topping_own'] = $this->getToppingOwn($product);
+            $res['product_topping_by_category'] = $this->getToppingByCategory($product);
+            $res['product_tags'] = $this->getTagByProduct($productId);
+            // return $this->getDetail($productId);
+            return $res;
         }
-        return '';
+        return [];
     }
 }

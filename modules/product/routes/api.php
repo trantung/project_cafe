@@ -17,5 +17,7 @@ Route::group([
     'namespace' => 'APV\Product\Http\Controllers\API',
 ], function () {
     Route::get('productList', 'CustomerProductApiController@getList');
+    //coverlist: image con và cả video(thiếu video cho sp)
+    //them kieu type cho product de tra ve theo kieu: 1: keo, 2: kieu tag, 3: checkbox, type_show: 1 hoac 2
     Route::get('productDetail', 'CustomerProductApiController@getDetail');
 });

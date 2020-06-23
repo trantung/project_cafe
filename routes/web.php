@@ -15,6 +15,58 @@
 
 use Illuminate\Routing\Route as RoutingRoute;
 use Illuminate\Support\Facades\Route;
+use APV\Product\Models\GroupOption;
+use APV\Product\Models\GroupOptionProduct;
+use APV\Product\Models\Option;
+use APV\Product\Models\OptionProduct;
+use APV\Product\Models\Product;
+
+Route::get('/default_group_option', function(){
+    $data = ['Độ ngọt', 'Độ chua'];
+    foreach ($data as $key => $value) {
+        GroupOption::create(['name' => $value]);
+    }
+    dd('group option');
+});
+Route::get('/default_option', function(){
+    $data = ['Nhiều', 'ít', 'Không có'];
+    $group = GroupOption::all();
+    foreach ($group as $key => $value) {
+        foreach ($data as $k => $v) {
+            Option::create(['name' => $v,'group_option_id' => $value->id, 'status' => 1]);
+        }
+    }
+    dd('option');
+});
+Route::get('/default_product_group_option', function(){
+    $data = Product::all();
+    $group = GroupOption::all();
+    foreach ($data as $product) {
+        foreach ($group as $value) {
+            GroupOptionProduct::create([
+                'product_id' => $product->id,
+                'group_option_id' => $value->id,
+                'type' => getRandomType(),
+                'type_show' => getRandomTypeShow(),
+            ]);
+        }
+    }
+    dd('default_product_group_option');
+});
+Route::get('/default_product_option', function(){
+    $data = Product::all();
+    $options = Option::all();
+    foreach ($data as $product) {
+        foreach ($options as $value) {
+            OptionProduct::create([
+                'product_id' => $product->id,
+                'option_id' => $value->id,
+            ]);
+        }
+    }
+    dd('default_product_option');
+});
+
 
 Route::get('/admin/login', ['uses' => 'AdminController@getLogin', 'as' =>'login']);
 Route::post('/admin/login', ['uses' => 'AdminController@postLogin']);

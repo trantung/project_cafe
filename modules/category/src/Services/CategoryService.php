@@ -170,6 +170,7 @@ class CategoryService extends BaseService
         return array_merge($array, [$categoryId=>$categoryId]);
 
     }
+    
     public function getListProductByCategory($categoryId)
     {
         $listCategory = $this->getListCategoryByRoot($categoryId);

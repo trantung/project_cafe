@@ -181,3 +181,18 @@ function getListMaterail()
     $data = Material::pluck('name', 'id');
     return $data;
 }
+
+function getRandomType()
+{
+    $array =[1,2,3];
+    $k = array_rand($array);
+    $v = $array[$k];
+    return $v;
+}
+function getRandomTypeShow()
+{
+    $array =[1,2];
+    $k = array_rand($array);
+    $v = $array[$k];
+    return $v;
+}

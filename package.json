@@ -21,5 +21,24 @@
         "sass": "^1.15.2",
         "sass-loader": "^7.1.0",
         "vue": "^2.5.17"
+    },
+    "apidoc": {
+        "name": "API cafe megu",
+        "version": "0.1.0",
+        "description": "Api cho cafe",
+        "apidoc": {
+            "title": "Custom apiDoc browser title"
+        },
+        "order": [
+            "getProductList",
+            "getProductListByCategory"
+        ],
+        "template": {
+            "withCompare": true,
+            "withGenerator": true
+        }
+    },
+    "dependencies": {
+        "bootstrap-colorpicker": "^3.2.0"
     }
 }

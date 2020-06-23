@@ -27,6 +27,7 @@ class Product extends Model
         "updated_at",
         "deleted_at",
         'is_ship',
+        'short_desc',
     ];
     public function parentProduct()
     {
