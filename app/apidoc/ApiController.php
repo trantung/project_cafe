@@ -106,7 +106,7 @@ public function getList(Request $request)
  *
  * @apiParam {Number} product_id id của product(required)
  *
- * @apiSuccessExample Success-Response: group_option_product_type là kiểu hiển thị: 1: kiểu kéo trượt, 2: kiểu tag, 3: kiểu checkbox
+ * @apiSuccessExample Success-Response: group_option_product_type là kiểu hiển thị: 1: single choice, 2: kiểu multi-choice, group_option_product_type_show: 1: slide, 2: tag, 3: checkbox
  * HTTP/1.1 200 OK
 {
     "success": true,

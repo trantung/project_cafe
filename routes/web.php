@@ -43,11 +43,17 @@ Route::get('/default_product_group_option', function(){
     $group = GroupOption::all();
     foreach ($data as $product) {
         foreach ($group as $value) {
+            $type = getRandomType();
+            if ($type == 2) {
+                $typeShow = GROUP_OPTION_PRODUCT_TYPE_SHOW_CHECKBOX;
+            } else {
+                $typeShow = getRandomTypeShow();
+            }
             GroupOptionProduct::create([
                 'product_id' => $product->id,
                 'group_option_id' => $value->id,
-                'type' => getRandomType(),
-                'type_show' => getRandomTypeShow(),
+                'type' => $type,
+                'type_show' => $typeShow,
             ]);
         }
     }

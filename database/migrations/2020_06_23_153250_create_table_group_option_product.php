@@ -17,8 +17,8 @@ class CreateTableGroupOptionProduct extends Migration
             $table->increments('id');
             $table->integer('product_id');
             $table->integer('group_option_id');
-            $table->integer('type')->comment('kiểu hiển thị: 1: kéo, 2: tag, 3:checkbox');
-            $table->integer('type_show')->comment('kiểu màu sắc, kích thước, etc: 1 hoặc 2');
+            $table->integer('type')->comment('kiểu chọn:1:single-choice, 2:multi-choice');
+            $table->integer('type_show')->comment('kiểu hiển thị: 1:slide, 2: tag, 3:checkbox');
             $table->timestamps();
         });
     }
