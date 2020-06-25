@@ -5,10 +5,9 @@ use APV\Base\Http\Controllers\API\ApiBaseController;
 use APV\Product\Services\ProductService;
 use Illuminate\Http\Request;
 use APV\Base\Services\ApiAuth;
-use APV\Product\Constants\ProductResponseCode;
 /**
  * Class CustomerProductApiController
- * @package APV\Product\Http\Controllers\API
+ * @property ProductService $productService
  */
 class CustomerProductApiController extends ApiBaseController
 {
@@ -32,4 +31,10 @@ class CustomerProductApiController extends ApiBaseController
         return $this->sendSuccess($data, 'Detail success');
     }
 
+    public function addProduct(Request $request)
+    {
+        $input = $request->all();
+        $data = $this->productService->customerAddProduct($input);
+        return $this->sendSuccess($data, 'Detail success');
+    }
 }

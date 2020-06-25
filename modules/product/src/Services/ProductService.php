@@ -10,6 +10,12 @@ use APV\Product\Models\GroupOption;
 use APV\Product\Models\GroupOptionProduct;
 use APV\Product\Models\Option;
 use APV\Product\Models\OptionProduct;
+use APV\Customer\Models\Customer;
+use APV\Order\Constants\OrderDataConst;
+use APV\Order\Models\Order;
+use APV\Order\Models\OrderProduct;
+use APV\Order\Models\OrderProductTopping;
+use APV\Order\Models\OrderProductOption;
 use APV\Product\Models\CommonStep;
 use APV\Topping\Models\ToppingCategory;
 use APV\Product\Models\ProductTopping;
@@ -354,7 +360,7 @@ class ProductService extends BaseService
         $res = [];
         $listCategory = $this->categoryService->getListCategoryByRoot($cateId);
         $listProduct = Product::whereIn('category_id', $listCategory)->get();
-        $res['product_count'] = count($listProduct);
+//        $res['product_count'] = count($listProduct);
         foreach ($listProduct as $key => $value) {
             $res[$key] = $this->getInfoProduct($value);
         }
@@ -376,13 +382,12 @@ class ProductService extends BaseService
         $res = [];
         $listCate = null;
         if (isset($input['category_id'])) {
-            $categoryId = $input['category_id'];
             $arrayCate = $this->categoryService->getListCategoryByRoot($input['category_id']);
             $listCate = Category::whereIn('id', $arrayCate)->get();
         } else {
             $listCate = Category::all();
         }
-        $res['category_count'] = count($listCate);
+//        $res['category_count'] = count($listCate);
         foreach ($listCate as $key => $value) {
             $res[$key]['category_id'] = $value->id;
             $res[$key]['category_name'] = $value->name;
@@ -458,8 +463,6 @@ class ProductService extends BaseService
 
     public function customerGetDetail($input)
     {
-        $productId = '';
-        $res = [];
         if (isset($input['product_id'])) {
             $productId = $input['product_id'];
             $product = Product::find($productId);
@@ -474,9 +477,144 @@ class ProductService extends BaseService
             // $res['product_topping_own'] = $this->getToppingOwn($product);
             // $res['product_topping_by_category'] = $this->getToppingByCategory($product);
             $res['product_tags'] = $this->getTagByProduct($productId);
-            // return $this->getDetail($productId);
             return $res;
         }
         return [];
     }
+
+    public function getInfoCustomer($input)
+    {
+        $res['customer_id'] = OrderDataConst::DEFAULT_CUSTOMER_ID;
+        $res['customer_name'] = OrderDataConst::DEFAULT_CUSTOMER_NAME;
+        $res['customer_phone'] = OrderDataConst::DEFAULT_CUSTOMER_PHONE;
+        if (!isset($input['customer_id'])) {
+            return $res;
+        }
+        $customer = Customer::find($input['customer_id']);
+        if ($customer) {
+            $res['customer_id'] = $customer->id;
+            $res['customer_name'] = $customer->customer_name;
+            $res['customer_phone'] = $customer->customer_phone;
+        }
+        return $res;
+    }
+    public function formatAddProductToCart($input)
+    {
+        $order = [];
+        $customer = $this->getInfoCustomer($input);
+        $order['status'] = OrderDataConst::ORDER_STATUS_CUSTOMER_CREATED;
+        $order = array_merge($order, $customer);
+        $order['comment'] = $this->getValueDefault($input, 'comment', '');
+        $order['created_by'] = $input['customer_id'];
+        $order['order_type_id'] = $input['order_type_id'];
+        $order['ship_price'] = $this->getValueDefault($input, 'ship_price', 0);
+        $order['ship_id'] = $this->getValueDefault($input, 'ship_id', 1);
+        $order['total_product_price'] = $this->getValueDefault($input, 'total_product_price', 0);
+        $order['total_topping_price'] = $this->getValueDefault($input, 'total_topping_price', 0);
+//        $order['amount'] = $this->getMoneyAmountByProduct($input);
+        return $order;
+    }
+    public function getPriceAfterPromotion($price)
+    {
+        return $price;
+    }
+
+    public function getPriceProductBySize($productId, $sizeId)
+    {
+        $priceBeforePromotion = $this->getSizeProductDetail($productId, $sizeId, 'price');
+        $priceAfterPromotion = $this->getPriceAfterPromotion($priceBeforePromotion);
+        return $priceAfterPromotion;
+    }
+
+    public function getToppingFromStr($strTopping)
+    {
+        $arrayTopping = explode(',', $strTopping);
+        $data = Topping::whereIn('id', $arrayTopping)->pluck('price', 'id');
+        return $data;
+    }
+    public function getOptionFromStr($strOption)
+    {
+        $arrayOption = explode(',', $strOption);
+        $data = Option::whereIn('id', $arrayOption)->pluck('name', 'id');
+        return $data;
+    }
+    public function getTotalPriceToppingByProduct($strTopping)
+    {
+        $total = 0;
+        if ($strTopping == '') {
+            return $total;
+        }
+        $arrayTopping = explode(',', $strTopping);
+        foreach ($arrayTopping as $toppingId)
+        {
+            $topping = Topping::find($toppingId);
+            if ($topping) {
+                $total = $total + $topping->price;
+            }
+        }
+        return $total;
+    }
+
+    public function customerAddProduct($input)
+    {
+        $res = [];
+        $order = $this->formatAddProductToCart($input);
+        $orderId = Order::create($order)->id;
+        if (!$orderId) {
+            return $res;
+        }
+        $res['size'] = $this->getSizeProduct($input['product_id'], true);
+        //tao mới record trong bảng order_product
+        $productPrice = $this->getPriceProductBySize($input['product_id'], $input['size_id']);
+        $totalPriceTopping = $this->getTotalPriceToppingByProduct($input['topping']);
+        $productPriceTotal = $productPrice * $input['product_quantity'];
+        $totalPrice = $productPriceTotal + $totalPriceTopping;
+        $orderProduct['order_id'] = $orderId;
+        $orderProduct['status'] = OrderDataConst::ORDER_STATUS_CUSTOMER_CREATED;
+        $orderProduct['customer_id'] = $input['customer_id'];
+        $orderProduct['table_id'] = $this->getValueDefault($input, 'table_id', 1);
+        $orderProduct['table_qr_code'] = $this->getValueDefault($input, 'table_qr_code', '');
+        $orderProduct['level_id'] = $this->getValueDefault($input, 'level_id', 1);
+        $orderProduct['ship_id'] = $this->getValueDefault($input, 'ship_id', 1);
+        $orderProduct['product_id'] = $res['product_id'] = $input['product_id'];
+        $orderProduct['quantity'] = $res['product_quantity'] = $input['product_quantity'];
+        $orderProduct['size_id'] = $input['size_id'];
+        $orderProduct['order_product_comment'] = $input['product_comment'];
+        $orderProduct['product_price'] = $productPrice;
+        $orderProduct['price'] = $productPriceTotal;
+        $orderProduct['total_price'] = $totalPrice;
+        $orderProduct['total_price_topping'] = $totalPriceTopping;
+        $orderProductId = OrderProduct::create($orderProduct)->id;
+        //tao moi record trong bang order_product_topping
+        $listTopping = $this->getToppingFromStr($input['topping']);
+        foreach ($listTopping as $toppingId => $toppingPrice) {
+            $oPTopping[$toppingId]['order_product_id'] = $orderProductId;
+            $oPTopping[$toppingId]['order_id'] = $orderId;
+            $oPTopping[$toppingId]['product_id'] = $input['product_id'];
+            $oPTopping[$toppingId]['topping_id'] = $toppingId;
+            $oPTopping[$toppingId]['topping_price'] = $toppingPrice;
+            OrderProductTopping::create([
+                'order_product_id' => $orderProductId,
+                'order_id' => $orderId,
+                'product_id' => $input['product_id'],
+                'topping_id' => $toppingId,
+                'topping_price' => $toppingPrice,
+            ]);
+        }
+        //tao moi record trong bang order_product_option
+        $arrayOption = $this->getOptionFromStr($input['option']);
+        $groupOption = [];
+        $res['group_option'] = $groupOption;
+        foreach ($arrayOption as $optionId => $optionName) {
+            $groupOption[$optionId]['option_id'] = $optionId;
+            $groupOption[$optionId]['option_name'] = $optionName;
+            OrderProductOption::create([
+                'product_id' => $input['product_id'],
+                'order_id' => $orderId,
+                'option_id' => $optionId,
+            ]);
+        }
+        return $res;
+    }
+
 }

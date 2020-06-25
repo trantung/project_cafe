@@ -36,4 +36,12 @@ class BaseService
     {
         return $this->model->getTable();
     }
+
+    public function getValueDefault($input, $field, $default = null)
+    {
+        if (isset($input[$field])) {
+            return $input[$field];
+        }
+        return $default;
+    }
 }
