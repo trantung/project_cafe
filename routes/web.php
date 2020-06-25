@@ -97,6 +97,16 @@ Route::get('/default_customer_friend', function(){
     }
     dd('default_customer_friend');
 });
+Route::get('/default_product_des', function(){
+    $data = Product::all();
+    $text = 'Cafe cốt dừa là một loại cafe đang rất được ưu chuộng hiện nay tại các quán cafe bởi hương vị mới lạ và ngon miệng. Khi nước cốt dừa hòa quyện với cà phê sẽ giúp đẩy mùi vị của cà phê hấp dẫn hơn rất nhiều. Với những ai yêu cà phê và thích thú với hương vị béo ngậy của dừa hòa quyện với vị đắng đậm đà của cà phê thì không thể bỏ qua món đồ uống này.';
+    foreach ($data as $key => $value) {
+        if ($value->description == '') {
+            $value->update(['description' => $text]);
+        }
+    }
+    dd('default_product_des');
+});
 
 Route::get('/admin/login', ['uses' => 'AdminController@getLogin', 'as' =>'login']);
 Route::post('/admin/login', ['uses' => 'AdminController@postLogin']);
