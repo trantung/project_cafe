@@ -286,12 +286,17 @@ class ProductService extends BaseService
 
     public function getProductImages($productId)
     {
+        $res = [];
         $data = CommonImage::where('model_name', 'Product')->where('model_id', $productId)->pluck('image_url');
-        return $data;
+        foreach ($data as $key => $value) {
+            $res[] = url($value);
+        }
+        return $res;
     }
 
     public function postCreateImages($productId, $images)
     {
+
         foreach ($images as $key => $value) {
             $fileNameImage = $value->getClientOriginalName();
             $value->move(public_path("/uploads/products/" . $productId . '/images/'), $fileNameImage);
