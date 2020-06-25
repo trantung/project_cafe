@@ -5,13 +5,44 @@
  * @apiName getProductList
  * @apiGroup Product
  *
- * @apiParam {Number} order_use kiểu sử dụng order(có thể không truyền. 0:Không ship, 1: Ship)
+ * @apiParam {Number} using_at kiểu sử dụng(có thể không truyền. 1:Đặt tại quầy, 2: Ship tận nơi)
  * @apiParam {Number} location_id id của location(có thể không truyền)
  * @apiParam {Number} delivery_address địa chỉ nhận hàng(có thể không truyền)
  *
  * @apiSuccessExample Success-Response:
  * HTTP/1.1 200 OK
-
+{
+    "success": true,
+    "response_code": 1000,
+    "data": [
+        {
+            "category_id": 18,
+            "category_name": "Espresso",
+            "special_tag": "Món được ưa thích",
+            "list_product": [
+                {
+                    "product_id": 19,
+                    "product_name": "Espresso Đá",
+                    "product_short_desc": "",
+                    "product_description": "Espresso Đá",
+                    "product_base_price": 45000,
+                    "product_sale_price": 45000,
+                    "product_image_thumbnail": "/uploads/products/19/avatar/espresso_master.jpg"
+                },
+                {
+                    "product_id": 20,
+                    "product_name": "Espresso Nóng",
+                    "product_short_desc": "",
+                    "product_description": "Espresso Nóng",
+                    "product_base_price": 40000,
+                    "product_sale_price": 40000,
+                    "product_image_thumbnail": "/uploads/products/20/avatar/espresso_master.jpg"
+                }
+            ]
+        }
+    ],
+    "message": "success"
+}
 */
 
 /**
@@ -19,7 +50,7 @@
  * @apiName getProductListByCategory
  * @apiGroup Product
  *
- * @apiParam {Number} order_use kiểu sử dụng order(có thể không truyền)
+ * @apiParam {Number} using_at kiểu sử dụng(có thể không truyền 1:Đặt tại quầy, 2: Ship tận nơi)
  * @apiParam {Number} location_id id của location(có thể không truyền)
  * @apiParam {Number} delivery_address địa chỉ nhận hàng(có thể không truyền)
  * @apiParam {Number} category_id id của category(required)
@@ -196,7 +227,6 @@
  * @apiParam {String} option danh sách option lựa chọn của product(là list các id của option khi chọn product và cách nhau bởi dấu ','. Ví dụ: "1,2,3" hoặc "1")
  * @apiParam {String} topping danh sách topping của product(Tương tự option)
  * @apiParam {String} product_comment comment của product(required)
- * @apiParam {Number} order_use kiểu sử dụng của đơn hàng(required). 0: đặt tại quầy, 1:Mang đi
  *
  * @apiSuccessExample Success-Response: 
  * HTTP/1.1 200 OK
