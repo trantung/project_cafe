@@ -357,6 +357,7 @@ class ProductService extends BaseService
         $res['product_base_price'] = $product->price_pay;
         $res['product_sale_price'] = $this->getSalePrice($product);
         $res['product_image_thumbnail'] = $product->avatar;
+        $res['product_using_at'] = $product->using_at;
         return $res;
     }
 
@@ -375,8 +376,9 @@ class ProductService extends BaseService
     public function customerGetList($input)
     {
         $orderType = $shopLocation = $deliveryAddress = '';
-        if (isset($input['order_use'])) {
-            $orderType = $input['order_use'];
+        $usingAt = ProductDataConst::PRODUCT_USING_AT_SHOP;
+        if (isset($input['using_at'])) {
+            $usingAt = $input['using_at'];
         }
         if (isset($input['location_id'])) {
             $locationId = $input['location_id'];
@@ -398,6 +400,17 @@ class ProductService extends BaseService
             $res[$key]['category_name'] = $value->name;
             $res[$key]['special_tag'] = $this->getSpecialTagByCate($value);
             $res[$key]['list_product'] = $this->getProductByCategory($value->id);
+        }
+        foreach ($res as $key => $value) {
+            foreach ($value['list_product'] as $k => $product) {
+                if ($product['product_using_at'] != $usingAt) {
+                    unset($value['list_product'][$k]);
+                }
+            }
+            if (count($value['list_product']) == 0) {
+                unset($res[$key]);
+            }
+
         }
         return $res;
     }
@@ -573,14 +586,6 @@ class ProductService extends BaseService
         return false;
     }
 
-    public function formatArray2Array($data)
-    {
-        $res = [];
-        foreach ($data as $key => $value){
-            $res[] = $value;
-        }
-        return $res;
-    }
     public function customerAddProduct($input)
     {
         $res = [];

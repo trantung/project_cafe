@@ -29,4 +29,7 @@ class ProductDataConst extends BaseDataConst
     const SEED_PRODUCT_IMAGE_QUANTITY = 2000;
 
     const PRODUCT_PER_PAGE = 20;
+    //product using_at
+    const PRODUCT_USING_AT_SHOP = 1;
+    const PRODUCT_USING_AT_SHIP = 2;
 }

@@ -44,4 +44,13 @@ class BaseService
         }
         return $default;
     }
+    
+    public function formatArray2Array($data)
+    {
+        $res = [];
+        foreach ($data as $key => $value){
+            $res[] = $value;
+        }
+        return $res;
+    }
 }
