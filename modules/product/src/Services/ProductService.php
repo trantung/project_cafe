@@ -424,7 +424,7 @@ class ProductService extends BaseService
     public function getCoverListProduct($product)
     {
         $res = [];
-        $data = $this->getProductImages($product->id)->toArray();
+        $data = $this->getProductImages($product->id);
         $dataVideo = $this->getVideoByProduct($product);
         $res = array_merge($data, $dataVideo);
 
