@@ -12,3 +12,10 @@ Route::group([
     Route::post('delete_customer/{id}', 'CustomerApiController@postDelete');
     Route::post('check_phone_customer', 'CustomerApiController@postCheckPhoneCustomer');
 });
+
+Route::group([
+    'prefix' => 'api_customer/friend/',
+    'namespace' => 'APV\Customer\Http\Controllers\API',
+], function () {
+    Route::get('friendList', 'CustomerApiController@getFriendList');
+});

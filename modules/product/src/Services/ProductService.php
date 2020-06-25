@@ -555,6 +555,25 @@ class ProductService extends BaseService
         return $total;
     }
 
+    public function getSizeOrderProduct($productId, $sizeId)
+    {
+        $listSize = $this->getSizeProduct($productId, true);
+        foreach ($listSize as $size) {
+            if ($size['size_id'] == $sizeId) {
+                return $size;
+            }
+        }
+        return false;
+    }
+
+    public function formatArray2Array($data)
+    {
+        $res = [];
+        foreach ($data as $key => $value){
+            $res[] = $value;
+        }
+        return $res;
+    }
     public function customerAddProduct($input)
     {
         $res = [];
@@ -563,7 +582,8 @@ class ProductService extends BaseService
         if (!$orderId) {
             return $res;
         }
-        $res['size'] = $this->getSizeProduct($input['product_id'], true);
+
+        $res['size'] = $this->getSizeOrderProduct($input['product_id'], $input['size_id']);
         //tao mới record trong bảng order_product
         $productPrice = $this->getPriceProductBySize($input['product_id'], $input['size_id']);
         $totalPriceTopping = $this->getTotalPriceToppingByProduct($input['topping']);
@@ -580,7 +600,7 @@ class ProductService extends BaseService
         $orderProduct['quantity'] = $res['product_quantity'] = $input['product_quantity'];
         $orderProduct['size_id'] = $input['size_id'];
         $orderProduct['order_product_comment'] = $input['product_comment'];
-        $orderProduct['product_price'] = $productPrice;
+        $orderProduct['product_price'] = $res['product_price'] = $productPrice;
         $orderProduct['price'] = $productPriceTotal;
         $orderProduct['total_price'] = $totalPrice;
         $orderProduct['total_price_topping'] = $totalPriceTopping;
@@ -604,7 +624,6 @@ class ProductService extends BaseService
         //tao moi record trong bang order_product_option
         $arrayOption = $this->getOptionFromStr($input['option']);
         $groupOption = [];
-        $res['group_option'] = $groupOption;
         foreach ($arrayOption as $optionId => $optionName) {
             $groupOption[$optionId]['option_id'] = $optionId;
             $groupOption[$optionId]['option_name'] = $optionName;
@@ -614,6 +633,7 @@ class ProductService extends BaseService
                 'option_id' => $optionId,
             ]);
         }
+        $res['group_option'] = $this->formatArray2Array($groupOption);
         return $res;
     }
 

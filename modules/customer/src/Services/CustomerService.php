@@ -2,6 +2,7 @@
 namespace APV\Customer\Services;
 
 use APV\Customer\Models\Customer;
+use APV\Customer\Models\CustomerFriend;
 use APV\Base\Services\BaseService;
 use League\Fractal\Resource\Collection;
 use Illuminate\Http\UploadedFile;
@@ -126,5 +127,18 @@ class CustomerService extends BaseService
             return $customer->toArray();
         }
         return null;
+    }
+
+    public function getFriendList($input)
+    {
+        $res = [];
+        $data = CustomerFriend::where('customer_id', $input['customer_id'])->get();
+        foreach ($data as $key => $value) {
+            $res[$key]['friend_id'] = $value->friend_id;
+            $res[$key]['friend_name'] = $value->friend_name;
+            $res[$key]['friend_phone'] = $value->friend_phone;
+            $res[$key]['avatar'] = $value->avatar;
+        }
+        return $res;
     }
 }

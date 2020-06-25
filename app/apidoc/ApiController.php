@@ -1,7 +1,7 @@
 <?php
 
 /**
- * @api {get} /api_customer/product/productList Danh sách tất cả product chưa lọc theo category_id 
+ * @api {get} /api_customer/product/productList Danh sách tất cả product chưa lọc theo category_id
  * @apiName getProductList
  * @apiGroup Product
  *
@@ -11,40 +11,7 @@
  *
  * @apiSuccessExample Success-Response:
  * HTTP/1.1 200 OK
-{
-    "success": true,
-    "response_code": 1000,
-    "data": {
-        "0": {
-            "category_id": 18,
-            "category_name": "Espresso",
-            "special_tag": "Món được ưa thích",
-            "list_product": {
-                "0": {
-                    "product_id": 19,
-                    "product_name": "Espresso Đá",
-                    "product_short_desc": "",
-                    "product_description": "Espresso Đá",
-                    "product_base_price": 45000,
-                    "product_sale_price": 45000,
-                    "product_image_thumbnail": "/uploads/products/19/avatar/espresso_master.jpg"
-                },
-                "1": {
-                    "product_id": 20,
-                    "product_name": "Espresso Nóng",
-                    "product_short_desc": "",
-                    "product_description": "Espresso Nóng",
-                    "product_base_price": 40000,
-                    "product_sale_price": 40000,
-                    "product_image_thumbnail": "/uploads/products/20/avatar/espresso_master.jpg"
-                },
-                "product_count": 2
-            }
-        },
-        "category_count": 1
-    },
-    "message": "success"
-}
+
 */
 
 /**
@@ -62,13 +29,13 @@
 {
     "success": true,
     "response_code": 1000,
-    "data": {
-        "0": {
+    "data": [
+        {
             "category_id": 18,
             "category_name": "Espresso",
             "special_tag": "Món được ưa thích",
-            "list_product": {
-                "0": {
+            "list_product": [
+                {
                     "product_id": 19,
                     "product_name": "Espresso Đá",
                     "product_short_desc": "",
@@ -77,7 +44,7 @@
                     "product_sale_price": 45000,
                     "product_image_thumbnail": "/uploads/products/19/avatar/espresso_master.jpg"
                 },
-                "1": {
+                {
                     "product_id": 20,
                     "product_name": "Espresso Nóng",
                     "product_short_desc": "",
@@ -85,22 +52,17 @@
                     "product_base_price": 40000,
                     "product_sale_price": 40000,
                     "product_image_thumbnail": "/uploads/products/20/avatar/espresso_master.jpg"
-                },
-                "product_count": 2
-            }
-        },
-        "category_count": 1
-    },
+                }
+            ]
+        }
+    ],
     "message": "success"
 }
 */
 
-public function getList(Request $request)
-{
 
-}
 /**
- * @api {get} /api_customer/product/productDetail chi tiết của 1 product 
+ * @api {get} /api_customer/product/productDetail Chi tiết của 1 product
  * @apiName getProductDetail
  * @apiGroup Product
  *
@@ -127,7 +89,7 @@ public function getList(Request $request)
                 "group_option_id": 1,
                 "group_option_name": "Độ ngọt",
                 "group_option_product_type": 2,
-                "group_option_product_type_show": 1,
+                "group_option_product_type_show": 3,
                 "option_list": [
                     {
                         "option_id": 1,
@@ -140,6 +102,18 @@ public function getList(Request $request)
                     {
                         "option_id": 3,
                         "option_name": "Không có"
+                    },
+                    {
+                        "option_id": 7,
+                        "option_name": "Nhiều"
+                    },
+                    {
+                        "option_id": 8,
+                        "option_name": "ít"
+                    },
+                    {
+                        "option_id": 9,
+                        "option_name": "Không có"
                     }
                 ]
             },
@@ -147,7 +121,7 @@ public function getList(Request $request)
                 "group_option_id": 2,
                 "group_option_name": "Độ chua",
                 "group_option_product_type": 1,
-                "group_option_product_type_show": 2,
+                "group_option_product_type_show": 1,
                 "option_list": [
                     {
                         "option_id": 4,
@@ -159,6 +133,18 @@ public function getList(Request $request)
                     },
                     {
                         "option_id": 6,
+                        "option_name": "Không có"
+                    },
+                    {
+                        "option_id": 10,
+                        "option_name": "Nhiều"
+                    },
+                    {
+                        "option_id": 11,
+                        "option_name": "ít"
+                    },
+                    {
+                        "option_id": 12,
                         "option_name": "Không có"
                     }
                 ]
@@ -196,7 +182,87 @@ public function getList(Request $request)
     "message": "Detail success"
 }
 */
-public function getDetail(Request $request)
-{
 
+/**
+ * @api {post} /api_customer/product/addProduct Add product 
+ * @apiName postProductAdd
+ * @apiGroup Product
+ *
+ * @apiParam {Number} product_id id của product(required)
+ * @apiParam {Number} product_quantity số lượng của product(required)
+ * @apiParam {Number} customer_id id của customer(required)
+ * @apiParam {Number} customer_token token của customer(required)
+ * @apiParam {Number} size_id id của size_id khi chọn product(required)
+ * @apiParam {String} option danh sách option lựa chọn của product(là list các id của option khi chọn product và cách nhau bởi dấu ','. Ví dụ: "1,2,3" hoặc "1")
+ * @apiParam {String} topping danh sách topping của product(Tương tự option)
+ * @apiParam {String} product_comment comment của product(required)
+ * @apiParam {Number} order_type_id kiểu type của đơn hàng(required). 1: đặt tại quầy, 2: take away(khách tự mang đi), 3: ship
+ *
+ * @apiSuccessExample Success-Response: 
+ * HTTP/1.1 200 OK
+{
+"success": true,
+"response_code": 1000,
+"data": {
+    "size": {
+        "size_id": 2,
+        "size_price": 50000,
+        "size_name": "M",
+        "weight_number": null
+    },
+    "product_id": "7",
+    "product_quantity": "2",
+    "product_price": "50000",
+    "group_option": [
+        {
+            "option_id": 1,
+            "option_name": "Nhiều"
+        },
+        {
+            "option_id": 4,
+            "option_name": "Nhiều"
+        }
+    ]
+},
+"message": "Detail success"
 }
+ */
+
+/**
+ * @api {get} /api_customer/friend/friendList Danh sách bạn bè
+ * @apiName getCustomerFriend
+ * @apiGroup Product
+ *
+ * @apiParam {Number} customer_id id của customer(required)
+ * @apiParam {Number} customer_token token của customer(required)
+ *
+ * @apiSuccessExample Success-Response: 
+ * HTTP/1.1 200 OK
+{
+    "success": true,
+    "response_code": 1000,
+    "data": [
+        {
+            "friend_id": 1,
+            "friend_name": "cavoisatthu",
+            "friend_phone": "0912957368",
+            "avatar": ""
+        },
+        {
+            "friend_id": 2,
+            "friend_name": "gau me vi dai",
+            "friend_phone": "0943174218",
+            "avatar": ""
+        },
+        {
+            "friend_id": 3,
+            "friend_name": "lon to da man",
+            "friend_phone": "0912190812",
+            "avatar": ""
+        }
+    ],
+    "message": "Success"
+}
+ */
+
+

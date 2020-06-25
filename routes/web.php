@@ -20,6 +20,8 @@ use APV\Product\Models\GroupOptionProduct;
 use APV\Product\Models\Option;
 use APV\Product\Models\OptionProduct;
 use APV\Product\Models\Product;
+use APV\Customer\Models\Customer;
+use APV\Customer\Models\CustomerFriend;
 
 Route::get('/default_group_option', function(){
     $data = ['Độ ngọt', 'Độ chua'];
@@ -72,7 +74,29 @@ Route::get('/default_product_option', function(){
     }
     dd('default_product_option');
 });
-
+Route::get('/default_customer_friend', function(){
+    $data = Customer::all();
+    $arrayName = array(
+        'cavoisatthu', 'gau me vi dai', 'lon to da man'
+    );
+    $arrayPhone = array(
+        '0912957368', '0943174218', '0912190812'
+    );
+    $arrayId = array(1,2,3);
+    foreach ($data as $value) {
+        foreach ($arrayName as $k => $v) {
+            CustomerFriend::create([
+                'customer_id' => $value->id,
+                'customer_phone' => $value->phone,
+                'friend_id' => $arrayId[$k],
+                'friend_name' => $arrayName[$k],
+                'friend_phone' => $arrayPhone[$k],
+                'avatar' => ''
+            ]);
+        }
+    }
+    dd('default_customer_friend');
+});
 
 Route::get('/admin/login', ['uses' => 'AdminController@getLogin', 'as' =>'login']);
 Route::post('/admin/login', ['uses' => 'AdminController@postLogin']);

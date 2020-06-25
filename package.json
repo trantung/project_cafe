@@ -31,7 +31,10 @@
         },
         "order": [
             "getProductList",
-            "getProductListByCategory"
+            "getProductListByCategory",
+            "getProductDetail",
+            "postProductAdd",
+            "getCustomerFriend"
         ],
         "template": {
             "withCompare": true,

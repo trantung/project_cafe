@@ -189,9 +189,15 @@ function getRandomType()
     $v = $array[$k];
     return $v;
 }
-function getRandomTypeShow()
+function getRandomTypeShow($data = null, $key = null)
 {
     $array =[1,2,3];
+    if ($data) {
+        $array = $data;
+        if ($key) {
+            return $data[$key];
+        }
+    }
     $k = array_rand($array);
     $v = $array[$k];
     return $v;

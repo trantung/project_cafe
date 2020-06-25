@@ -11,9 +11,8 @@ use APV\Base\Services\ApiAuth;
 /**
  * Class CustomerApiController
  * @package APV\Customer\Http\Controllers\API
- * @property CustomerService $customerService
  */
-class CustomerApiController extends ApiBaseController
+class CustomerCommonApiController extends ApiBaseController
 {
     public function __construct(CustomerService $customerService, ApiAuth $apiAuth)
     {
@@ -75,11 +74,5 @@ class CustomerApiController extends ApiBaseController
         }
         return $this->sendError(CustomerDataConst::ERROR_CODE_PHONE_EXIST);
     }
-
-    public function getFriendList(Request $request)
-    {
-        $input = $request->all();
-        $data = $this->customerService->getFriendList($input);
-        return $this->sendSuccess($data, 'Success');
-    }
+    
 }
