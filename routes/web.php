@@ -107,6 +107,16 @@ Route::get('/default_product_des', function(){
     }
     dd('default_product_des');
 });
+Route::get('/default_product_short_des', function(){
+    $data = Product::all();
+    $text = 'Giới thiệu ngắn sản phẩm';
+    foreach ($data as $key => $value) {
+        if ($value->short_desc == '') {
+            $value->update(['short_desc' => $text . ' số ' . $value->id]);
+        }
+    }
+    dd('default_product_short_des');
+});
 
 Route::get('/admin/login', ['uses' => 'AdminController@getLogin', 'as' =>'login']);
 Route::post('/admin/login', ['uses' => 'AdminController@postLogin']);
