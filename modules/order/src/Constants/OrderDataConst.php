@@ -36,4 +36,7 @@ class OrderDataConst extends BaseDataConst
     const DEFAULT_CUSTOMER_ID = 1;
     const DEFAULT_CUSTOMER_NAME = 'cavoisatthu';
     const DEFAULT_CUSTOMER_PHONE = '0912957368';
+    //order use
+    const ORDER_USE_IS_SHIP = 2;
+    const ORDER_USE_AT_SHOP = 1;
 }
