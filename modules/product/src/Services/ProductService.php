@@ -370,8 +370,8 @@ class ProductService extends BaseService
     public function customerGetList($input)
     {
         $orderType = $shopLocation = $deliveryAddress = '';
-        if (isset($input['order_type'])) {
-            $orderType = $input['order_type'];
+        if (isset($input['order_use'])) {
+            $orderType = $input['order_use'];
         }
         if (isset($input['location_id'])) {
             $locationId = $input['location_id'];
@@ -474,8 +474,6 @@ class ProductService extends BaseService
             $res['group_option'] = $this->getGroupOptionDetail($product);
             $res['size'] = $this->getSizeProduct($product->id, true);
             $res['product_topping'] = array_merge($this->getToppingOwn($product), $this->getToppingByCategory($product));
-            // $res['product_topping_own'] = $this->getToppingOwn($product);
-            // $res['product_topping_by_category'] = $this->getToppingByCategory($product);
             $res['product_tags'] = $this->getTagByProduct($productId);
             return $res;
         }
@@ -506,7 +504,11 @@ class ProductService extends BaseService
         $order = array_merge($order, $customer);
         $order['comment'] = $this->getValueDefault($input, 'comment', '');
         $order['created_by'] = $input['customer_id'];
-        $order['order_type_id'] = $input['order_type_id'];
+        $order['order_use'] = $input['order_use'];
+        $order['order_type_id'] = OrderDataConst::ORDER_TYPE_SHIP;
+        if ($input['order_use'] == OrderDataConst::ORDER_USE_AT_SHOP) {
+            $order['order_type_id'] = OrderDataConst::ORDER_TYPE_AT_SHOP;
+        }
         $order['ship_price'] = $this->getValueDefault($input, 'ship_price', 0);
         $order['ship_id'] = $this->getValueDefault($input, 'ship_id', 1);
         $order['total_product_price'] = $this->getValueDefault($input, 'total_product_price', 0);
