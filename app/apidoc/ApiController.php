@@ -184,7 +184,7 @@
 */
 
 /**
- * @api {post} /api_customer/product/addProduct Add product 
+ * @api {post} /api_customer/product/addProduct Thêm sản phẩm vào giỏ hàng
  * @apiName postProductAdd
  * @apiGroup Product
  *
@@ -231,10 +231,10 @@
 /**
  * @api {get} /api_customer/friend/friendList Danh sách bạn bè
  * @apiName getCustomerFriend
- * @apiGroup Product
+ * @apiGroup Customer
  *
  * @apiParam {Number} customer_id id của customer(required)
- * @apiParam {Number} customer_token token của customer(required)
+ * @apiParam {String} customer_token token của customer(required)
  *
  * @apiSuccessExample Success-Response: 
  * HTTP/1.1 200 OK
