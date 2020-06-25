@@ -399,7 +399,7 @@ class ProductService extends BaseService
 
     public function getVideoByProduct($product)
     {
-        $res = [];
+        $res = ['https://www.youtube.com/watch?v=K_XmTiNojMg'];
         return $res;
     }
 
