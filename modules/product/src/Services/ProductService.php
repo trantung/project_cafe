@@ -522,11 +522,11 @@ class ProductService extends BaseService
         $order = array_merge($order, $customer);
         $order['comment'] = $this->getValueDefault($input, 'comment', '');
         $order['created_by'] = $input['customer_id'];
-        $order['order_use'] = $input['order_use'];
-        $order['order_type_id'] = OrderDataConst::ORDER_TYPE_SHIP;
-        if ($input['order_use'] == OrderDataConst::ORDER_USE_AT_SHOP) {
-            $order['order_type_id'] = OrderDataConst::ORDER_TYPE_AT_SHOP;
-        }
+        // $order['order_use'] = $input['order_use'];
+        // $order['order_type_id'] = OrderDataConst::ORDER_TYPE_SHIP;
+        // if ($input['order_use'] == OrderDataConst::ORDER_USE_AT_SHOP) {
+        //     $order['order_type_id'] = OrderDataConst::ORDER_TYPE_AT_SHOP;
+        // }
         $order['ship_price'] = $this->getValueDefault($input, 'ship_price', 0);
         $order['ship_id'] = $this->getValueDefault($input, 'ship_id', 1);
         $order['total_product_price'] = $this->getValueDefault($input, 'total_product_price', 0);
