@@ -315,6 +315,60 @@
             "product_name": "Caramel Macchiato Đá",
             "product_quantity": "1",
             "size": {
+                "size_name": "M",
+                "size_id": 2
+            },
+            "topping": [
+                {
+                    "topping_id": 1,
+                    "topping_name": "Espresso (1shot)",
+                    "topping_price": 10000
+                }
+            ],
+            "option": [
+                {
+                    "option_id": 1,
+                    "option_name": "Nhiều"
+                },
+                {
+                    "option_id": 4,
+                    "option_name": "Nhiều"
+                }
+            ]
+        },
+        {
+            "product_id": 7,
+            "product_price": 50000,
+            "product_name": "Caramel Macchiato Đá",
+            "product_quantity": "3",
+            "size": {
+                "size_name": "M",
+                "size_id": 2
+            },
+            "topping": [
+                {
+                    "topping_id": 1,
+                    "topping_name": "Espresso (1shot)",
+                    "topping_price": 10000
+                }
+            ],
+            "option": [
+                {
+                    "option_id": 1,
+                    "option_name": "Nhiều"
+                },
+                {
+                    "option_id": 4,
+                    "option_name": "Nhiều"
+                }
+            ]
+        },
+        {
+            "product_id": 7,
+            "product_price": 50000,
+            "product_name": "Caramel Macchiato Đá",
+            "product_quantity": "1",
+            "size": {
                 "size_name": "S moi",
                 "size_id": 1
             },
@@ -325,43 +379,16 @@
                     "topping_price": 10000
                 }
             ],
-            "option": []
-        },
-        {
-            "product_id": 7,
-            "product_price": 50000,
-            "product_name": "Caramel Macchiato Đá",
-            "product_quantity": "1",
-            "size": {
-                "size_name": "M",
-                "size_id": 2
-            },
-            "topping": [
+            "option": [
                 {
-                    "topping_id": 1,
-                    "topping_name": "Espresso (1shot)",
-                    "topping_price": 10000
-                }
-            ],
-            "option": []
-        },
-        {
-            "product_id": 7,
-            "product_price": 50000,
-            "product_name": "Caramel Macchiato Đá",
-            "product_quantity": "1",
-            "size": {
-                "size_name": "M",
-                "size_id": 2
-            },
-            "topping": [
+                    "option_id": 1,
+                    "option_name": "Nhiều"
+                },
                 {
-                    "topping_id": 1,
-                    "topping_name": "Espresso (1shot)",
-                    "topping_price": 10000
+                    "option_id": 4,
+                    "option_name": "Nhiều"
                 }
-            ],
-            "option": []
+            ]
         },
         {
             "product_id": 7,
@@ -369,8 +396,8 @@
             "product_name": "Caramel Macchiato Đá",
             "product_quantity": "1",
             "size": {
-                "size_name": "M",
-                "size_id": 2
+                "size_name": "L",
+                "size_id": 3
             },
             "topping": [
                 {
