@@ -36,7 +36,9 @@ class OrderDataConst extends BaseDataConst
     const DEFAULT_CUSTOMER_ID = 1;
     const DEFAULT_CUSTOMER_NAME = 'cavoisatthu';
     const DEFAULT_CUSTOMER_PHONE = '0912957368';
-    //order use
-    const ORDER_USE_IS_SHIP = 2;
-    const ORDER_USE_AT_SHOP = 1;
+    //order use: đôi với product_using_at = 1(tại quán) 1:sử dụng tại quán, 2: mang đi, product_using_at = 2(ship tận nơi) 3: Tôi dùng, 4: Mua tặng
+    const ORDER_USE_USING_AT_1_SHOP = 1;
+    const ORDER_USE_USING_AT_2_SHIP = 2;
+    const ORDER_USE_USING_AT_2_OWNER = 3;
+    const ORDER_USE_USING_AT_2_GIFT = 4;
 }

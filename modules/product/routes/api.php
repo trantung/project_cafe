@@ -22,4 +22,8 @@ Route::group([
     Route::get('productDetail', 'CustomerProductApiController@getDetail');
     //add product to cart
     Route::post('addProduct', 'CustomerProductApiController@addProduct');
+    //get list product by customer_id
+    //param: customer_id, customer_token
+    Route::post('cart/list_product', 'CustomerProductApiController@cartListProduct');
+
 });

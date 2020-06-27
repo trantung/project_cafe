@@ -29,7 +29,8 @@ class ProductDataConst extends BaseDataConst
     const SEED_PRODUCT_IMAGE_QUANTITY = 2000;
 
     const PRODUCT_PER_PAGE = 20;
-    //product using_at
+    //product using_atlượng 1: chỉ được dùng ở quầy, 2: có thẻ ship mang đi, 3: tất cả có thể dùng ở quầy hoặc mang đi ....
     const PRODUCT_USING_AT_SHOP = 1;
     const PRODUCT_USING_AT_SHIP = 2;
+    const PRODUCT_USING_AT_ALL = 3;
 }

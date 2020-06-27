@@ -403,7 +403,7 @@ class ProductService extends BaseService
         }
         foreach ($res as $key => $value) {
             foreach ($value['list_product'] as $k => $product) {
-                if ($product['product_using_at'] != $usingAt) {
+                if ($product['product_using_at'] != $usingAt && $product['product_using_at'] != ProductDataConst::PRODUCT_USING_AT_ALL) {
                     unset($value['list_product'][$k]);
                 }
             }
@@ -478,7 +478,17 @@ class ProductService extends BaseService
         }
         return $res;
     }
-
+    public function getInfoDetailProduct($product)
+    {
+        $res = [];
+        $res = $this->getInfoProduct($product);
+        $res['cover_list'] = $this->getCoverListProduct($product);
+        $res['group_option'] = $this->getGroupOptionDetail($product);
+        $res['size'] = $this->getSizeProduct($product->id, true);
+        $res['product_topping'] = array_merge($this->getToppingOwn($product), $this->getToppingByCategory($product));
+        $res['product_tags'] = $this->getTagByProduct($product->id);
+        return $res;
+    }
     public function customerGetDetail($input)
     {
         if (isset($input['product_id'])) {
@@ -487,12 +497,7 @@ class ProductService extends BaseService
             if (!$product) {
                 return [];
             }
-            $res = $this->getInfoProduct($product);
-            $res['cover_list'] = $this->getCoverListProduct($product);
-            $res['group_option'] = $this->getGroupOptionDetail($product);
-            $res['size'] = $this->getSizeProduct($product->id, true);
-            $res['product_topping'] = array_merge($this->getToppingOwn($product), $this->getToppingByCategory($product));
-            $res['product_tags'] = $this->getTagByProduct($productId);
+            $res = $this->getInfoDetailProduct($product);
             return $res;
         }
         return [];
@@ -522,11 +527,6 @@ class ProductService extends BaseService
         $order = array_merge($order, $customer);
         $order['comment'] = $this->getValueDefault($input, 'comment', '');
         $order['created_by'] = $input['customer_id'];
-        // $order['order_use'] = $input['order_use'];
-        // $order['order_type_id'] = OrderDataConst::ORDER_TYPE_SHIP;
-        // if ($input['order_use'] == OrderDataConst::ORDER_USE_AT_SHOP) {
-        //     $order['order_type_id'] = OrderDataConst::ORDER_TYPE_AT_SHOP;
-        // }
         $order['ship_price'] = $this->getValueDefault($input, 'ship_price', 0);
         $order['ship_id'] = $this->getValueDefault($input, 'ship_id', 1);
         $order['total_product_price'] = $this->getValueDefault($input, 'total_product_price', 0);
@@ -647,6 +647,29 @@ class ProductService extends BaseService
         }
         $res['group_option'] = $this->formatArray2Array($groupOption);
         return $res;
+    }
+
+    public function cartListProduct($input)
+    {
+        $customerId = $input['customer_id'];
+        $customerToken = $input['customer_token'];
+        $checkToken = $this->checkCustomerToken($customerToken);
+        if (!$checkToken) {
+            return false;
+        }
+        $order = Order::where('customer_id', $customerId)->first();
+        if (!$order) {
+            return false;
+        }
+        $listProduct = OrderProduct::where('order_id', $order->id)->pluck('product_id');
+        // getInfoDetailProduct
+        $data = Product::whereIn('id', $listProduct)->get();
+        $res = [];
+        foreach ($data as $key => $product) {
+            $res[$key] = $this->getInfoDetailProduct($product);
+        }
+        return $res;
+
     }
 
 }

@@ -53,4 +53,9 @@ class BaseService
         }
         return $res;
     }
+
+    public function checkCustomerToken($token)
+    {
+        return true;
+    }
 }
