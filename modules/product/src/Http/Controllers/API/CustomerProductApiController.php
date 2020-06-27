@@ -42,9 +42,6 @@ class CustomerProductApiController extends ApiBaseController
     {
         $input = $request->all();
         $data = $this->productService->cartListProduct($input);
-        if (!$data) {
-            return $this->sendError(404);
-        }
         return $this->sendSuccess($data, 'Detail success');
     }
 

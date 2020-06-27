@@ -333,10 +333,15 @@ class ProductService extends BaseService
         return '';
     }
     //product to do
-    public function getImportant($productId)
+    public function getFieldProductId($productId, $field)
     {
-        return 1;
+        $product = Product::find($productId);
+        if (!$product) {
+            return null;
+        }
+        return $product->$field;
     }
+
     public function getSpecialTagByCate($categoryId)
     {
         return 'Món được ưa thích';
@@ -589,12 +594,13 @@ class ProductService extends BaseService
     public function customerAddProduct($input)
     {
         $res = [];
-        $order = $this->formatAddProductToCart($input);
-        $orderId = Order::create($order)->id;
-        if (!$orderId) {
-            return $res;
+        $checkOrderExist = Order::where('customer_id', $input['customer_id'])->where('status', OrderDataConst::ORDER_STATUS_CUSTOMER_CREATED)->first();
+        if ($checkOrderExist) {
+            $orderId = $checkOrderExist->id;
+        } else {
+            $order = $this->formatAddProductToCart($input);
+            $orderId = Order::create($order)->id;
         }
-
         $res['size'] = $this->getSizeOrderProduct($input['product_id'], $input['size_id']);
         //tao mới record trong bảng order_product
         $productPrice = $this->getPriceProductBySize($input['product_id'], $input['size_id']);
@@ -640,12 +646,66 @@ class ProductService extends BaseService
             $groupOption[$optionId]['option_id'] = $optionId;
             $groupOption[$optionId]['option_name'] = $optionName;
             OrderProductOption::create([
+                'order_product_id' => $orderProductId,
                 'product_id' => $input['product_id'],
                 'order_id' => $orderId,
                 'option_id' => $optionId,
             ]);
         }
         $res['group_option'] = $this->formatArray2Array($groupOption);
+        return $res;
+    }
+    public function getFieldOfToppingById($toppingId, $field)
+    {
+        $res['topping_name'] = '';
+        $data = Topping::find($toppingId);
+        if (!$data) {
+            return $res;
+        }
+        return $data->$field;
+    }
+    public function getSizeProductOfOrderProduct($orderProduct)
+    {
+        $sizeId = $orderProduct->size_id;
+        $res['size_id'] = $res['size_name'] = '';
+        $size = Size::find($sizeId);
+        if (!$size) {
+            return $res;
+        }
+        $res['size_id'] = $size->id;
+        $res['size_name'] = $size->name;
+        return $res;
+    }
+
+    public function getToppingProductOfOrderProduct($orderProduct)
+    {
+        $res = [];
+        $data = OrderProductTopping::where('order_product_id', $orderProduct->id)->get();
+        foreach ($data as $key => $value) {
+            $res[$key]['topping_id'] = $value->topping_id;
+            $res[$key]['topping_name'] = $this->getFieldOfToppingById($value->topping_id, 'name');
+            $res[$key]['topping_price'] = $value->topping_price;
+        }
+        return $res;
+    }
+
+    public function getNameOption($optionId)
+    {
+        $option = Option::find($optionId);
+        if (!$option) {
+            return '';
+        }
+        return $option->name;
+    }
+
+    public function getOptionProductOfOrderProduct($orderProduct)
+    {
+        $res = [];
+        $data = OrderProductOption::where('order_product_id', $orderProduct->id)->get();
+        foreach ($data as $key => $value) {
+            $res[$key]['option_id'] = $value->option_id;
+            $res[$key]['option_name'] = $this->getNameOption($value->option_id);
+        }
         return $res;
     }
 
@@ -657,16 +717,27 @@ class ProductService extends BaseService
         if (!$checkToken) {
             return false;
         }
-        $order = Order::where('customer_id', $customerId)->first();
+        $order = Order::where('customer_id', $customerId)->where('status', OrderDataConst::ORDER_STATUS_CUSTOMER_CREATED)->first();
         if (!$order) {
             return false;
         }
-        $listProduct = OrderProduct::where('order_id', $order->id)->pluck('product_id');
+        $orderProducts = OrderProduct::where('order_id', $order->id)->get();
         // getInfoDetailProduct
-        $data = Product::whereIn('id', $listProduct)->get();
+        // $data = Product::whereIn('id', $listProduct)->get();
         $res = [];
-        foreach ($data as $key => $product) {
-            $res[$key] = $this->getInfoDetailProduct($product);
+        foreach ($orderProducts as $key => $orderProduct) {
+            $res[$key]['product_id'] = $orderProduct->product_id;
+            $res[$key]['product_price'] = $orderProduct->product_price;
+            $res[$key]['product_name'] = $this->getFieldProductId($orderProduct->product_id, 'name');
+            $res[$key]['product_quantity'] = $orderProduct->quantity;
+            //size
+            $res[$key]['size'] = $this->getSizeProductOfOrderProduct($orderProduct);
+            //topping
+            $res[$key]['topping'] = $this->getToppingProductOfOrderProduct($orderProduct);
+            //option
+            $res[$key]['option'] = $this->getOptionProductOfOrderProduct($orderProduct);
+
+
         }
         return $res;
 

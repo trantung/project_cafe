@@ -310,147 +310,85 @@
     "response_code": 1000,
     "data": [
         {
-            "product_id": 4,
-            "product_name": "Cold brew Cam sả",
-            "product_short_desc": "Giới thiệu ngắn sản phẩm số 4",
-            "product_description": "Cold brew Cam sả",
-            "product_base_price": 50000,
-            "product_sale_price": 50000,
-            "product_image_thumbnail": "/uploads/products/4/avatar/cold_brew_cam_sa.jpg",
-            "product_using_at": 1,
-            "cover_list": [
-                "http://localhost:8000/uploads/products/4/images/cold_brew_cam_sa.jpg",
-                "http://localhost:8000/uploads/products/4/images/cold_brew_cam_sa.png",
-                "https://www.youtube.com/watch?v=K_XmTiNojMg"
-            ],
-            "group_option": [
+            "product_id": 7,
+            "product_price": 50000,
+            "product_name": "Caramel Macchiato Đá",
+            "product_quantity": "1",
+            "size": {
+                "size_name": "S moi",
+                "size_id": 1
+            },
+            "topping": [
                 {
-                    "group_option_id": 1,
-                    "group_option_name": "Độ ngọt",
-                    "group_option_product_type": 1,
-                    "group_option_product_type_show": 2,
-                    "option_list": [
-                        {
-                            "option_id": 1,
-                            "option_name": "Nhiều"
-                        },
-                        {
-                            "option_id": 2,
-                            "option_name": "ít"
-                        },
-                        {
-                            "option_id": 3,
-                            "option_name": "Không có"
-                        }
-                    ]
-                },
-                {
-                    "group_option_id": 2,
-                    "group_option_name": "Độ chua",
-                    "group_option_product_type": 1,
-                    "group_option_product_type_show": 3,
-                    "option_list": [
-                        {
-                            "option_id": 4,
-                            "option_name": "Nhiều"
-                        },
-                        {
-                            "option_id": 5,
-                            "option_name": "ít"
-                        },
-                        {
-                            "option_id": 6,
-                            "option_name": "Không có"
-                        }
-                    ]
+                    "topping_id": 1,
+                    "topping_name": "Espresso (1shot)",
+                    "topping_price": 10000
                 }
             ],
-            "size": [],
-            "product_topping": [],
-            "product_tags": []
+            "option": []
         },
         {
-            "product_id": 5,
-            "product_name": "Cold brew Phúc bồn tử",
-            "product_short_desc": "Giới thiệu ngắn sản phẩm số 5",
-            "product_description": "Cold brew Phúc bồn tử",
-            "product_base_price": 50000,
-            "product_sale_price": 50000,
-            "product_image_thumbnail": "/uploads/products/5/avatar/coldbrew_phuc_bon_tu.png",
-            "product_using_at": 1,
-            "cover_list": [
-                "http://localhost:8000/uploads/products/5/images/coldbrew_phuc_bon_tu.png",
-                "https://www.youtube.com/watch?v=K_XmTiNojMg"
-            ],
-            "group_option": [
+            "product_id": 7,
+            "product_price": 50000,
+            "product_name": "Caramel Macchiato Đá",
+            "product_quantity": "1",
+            "size": {
+                "size_name": "M",
+                "size_id": 2
+            },
+            "topping": [
                 {
-                    "group_option_id": 1,
-                    "group_option_name": "Độ ngọt",
-                    "group_option_product_type": 2,
-                    "group_option_product_type_show": 3,
-                    "option_list": [
-                        {
-                            "option_id": 1,
-                            "option_name": "Nhiều"
-                        },
-                        {
-                            "option_id": 2,
-                            "option_name": "ít"
-                        },
-                        {
-                            "option_id": 3,
-                            "option_name": "Không có"
-                        }
-                    ]
-                },
-                {
-                    "group_option_id": 2,
-                    "group_option_name": "Độ chua",
-                    "group_option_product_type": 1,
-                    "group_option_product_type_show": 2,
-                    "option_list": [
-                        {
-                            "option_id": 4,
-                            "option_name": "Nhiều"
-                        },
-                        {
-                            "option_id": 5,
-                            "option_name": "ít"
-                        },
-                        {
-                            "option_id": 6,
-                            "option_name": "Không có"
-                        }
-                    ]
+                    "topping_id": 1,
+                    "topping_name": "Espresso (1shot)",
+                    "topping_price": 10000
                 }
             ],
-            "size": [
+            "option": []
+        },
+        {
+            "product_id": 7,
+            "product_price": 50000,
+            "product_name": "Caramel Macchiato Đá",
+            "product_quantity": "1",
+            "size": {
+                "size_name": "M",
+                "size_id": 2
+            },
+            "topping": [
                 {
-                    "size_id": 1,
-                    "size_price": 0,
-                    "size_name": "S moi",
-                    "weight_number": null
-                },
-                {
-                    "size_id": 2,
-                    "size_price": 10000,
-                    "size_name": "M",
-                    "weight_number": null
+                    "topping_id": 1,
+                    "topping_name": "Espresso (1shot)",
+                    "topping_price": 10000
                 }
             ],
-            "product_topping": [
+            "option": []
+        },
+        {
+            "product_id": 7,
+            "product_price": 50000,
+            "product_name": "Caramel Macchiato Đá",
+            "product_quantity": "1",
+            "size": {
+                "size_name": "M",
+                "size_id": 2
+            },
+            "topping": [
                 {
-                    "topping_price": "10000",
-                    "topping_name": "Sauce Chocolate",
-                    "topping_id": 2
-                },
-                {
-                    "topping_price": "10000",
-                    "topping_name": "Trân châu trắng",
-                    "topping_id": 3
+                    "topping_id": 1,
+                    "topping_name": "Espresso (1shot)",
+                    "topping_price": 10000
                 }
             ],
-            "product_tags": []
+            "option": [
+                {
+                    "option_id": 1,
+                    "option_name": "Nhiều"
+                },
+                {
+                    "option_id": 4,
+                    "option_name": "Nhiều"
+                }
+            ]
         }
     ],
     "message": "Detail success"
