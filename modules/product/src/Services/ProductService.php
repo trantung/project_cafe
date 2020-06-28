@@ -361,7 +361,7 @@ class ProductService extends BaseService
         $res['product_description'] = $product->description;
         $res['product_base_price'] = $product->price_pay;
         $res['product_sale_price'] = $this->getSalePrice($product);
-        $res['product_image_thumbnail'] = $product->avatar;
+        $res['product_image_thumbnail'] = url($product->avatar);
         $res['product_using_at'] = $product->using_at;
         return $res;
     }
@@ -722,11 +722,18 @@ class ProductService extends BaseService
         // $data = Product::whereIn('id', $listProduct)->get();
         $res = [];
         foreach ($orderProducts as $key => $orderProduct) {
+            $product = Product::find($orderProduct->product_id);
+            if (!$product) {
+                return false;
+            }
+            $res[$key] = $this->getInfoProduct($product);
             $res[$key]['order_product_id'] = $orderProduct->id;
             $res[$key]['product_id'] = $orderProduct->product_id;
-            $res[$key]['product_price'] = $orderProduct->product_price;
-            $res[$key]['product_name'] = $this->getFieldProductId($orderProduct->product_id, 'name');
+            // $res[$key]['product_price'] = $orderProduct->product_price;
+            // $res[$key]['product_name'] = $this->getFieldProductId($orderProduct->product_id, 'name');
             $res[$key]['product_quantity'] = $orderProduct->quantity;
+
+            // $res[$key]['product_quantity'] = $orderProduct->quantity;
             //size
             $res[$key]['size'] = $this->getSizeProductOfOrderProduct($orderProduct);
             //topping
