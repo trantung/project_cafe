@@ -591,7 +591,7 @@ class ProductService extends BaseService
         return false;
     }
 
-    public function customerAddProduct($input)
+    public function customerAddProduct($input, $orderEditId = null)
     {
         $res = [];
         $checkOrderExist = Order::where('customer_id', $input['customer_id'])->where('status', OrderDataConst::ORDER_STATUS_CUSTOMER_CREATED)->first();
@@ -600,6 +600,9 @@ class ProductService extends BaseService
         } else {
             $order = $this->formatAddProductToCart($input);
             $orderId = Order::create($order)->id;
+        }
+        if ($orderEditId) {
+            $orderId = $orderEditId;
         }
         $res['size'] = $this->getSizeOrderProduct($input['product_id'], $input['size_id']);
         //tao mới record trong bảng order_product
@@ -707,12 +710,12 @@ class ProductService extends BaseService
 
     public function cartListProduct($input)
     {
-        $customerId = $input['customer_id'];
         $customerToken = $input['customer_token'];
         $checkToken = $this->checkCustomerToken($customerToken);
-        if (!$checkToken) {
+        if (!$checkToken || !isset($input['customer_id'])) {
             return false;
         }
+        $customerId = $input['customer_id'];
         $order = Order::where('customer_id', $customerId)->where('status', OrderDataConst::ORDER_STATUS_CUSTOMER_CREATED)->first();
         if (!$order) {
             return false;
@@ -738,10 +741,11 @@ class ProductService extends BaseService
             $res[$key]['topping'] = $this->getToppingProductOfOrderProduct($orderProduct);
             //option
             $res[$key]['option'] = $this->getOptionProductOfOrderProduct($orderProduct);
-
-
         }
-        return $res;
+        // product_sale_price
+        $result['list_product'] = $this->formatArray2Array($res);
+        $result['total_price'] = OrderProduct::where('order_id', $order->id)->sum('total_price');
+        return $result;
 
     }
 
@@ -770,18 +774,22 @@ class ProductService extends BaseService
     {
         // product_id, product_quantity, product_comment
         // order_product_id, product_id(required), product_quantity, product_comment, topping, option, size
-        if (!$input['product_id'] || !$input['product_quantity']) {
-            return false;
-        }
-        if (!is_integer($input['product_quantity'])) {
+        if (!$input['customer_id']) {
             return false;
         }
         $productId = $input['product_id'];
-        $productQuantity = $input['product_quantity'];
-        if (isset($input['product_comment'])) {
-            $productComment = $input['product_comment'];
-        }
-
+        $orderProductId = $input['order_product_id'];
+        $orderProduct = OrderProduct::find($orderProductId);
+        $orderId = $orderProduct->order_id;
+        //xoá bảng order_product_option
+        OrderProductOption::where('order_product_id', $orderProductId)->delete();
+        //xoá bảng order_product_topping
+        OrderProductTopping::where('order_product_id', $orderProductId)->delete();
+        //xoá bảng order_product
+        OrderProduct::destroy($orderProductId);
+        //tạo mới cùng với orderId
+        $res = $this->customerAddProduct($input, $orderId);
+        return $res;
     }
 
 }
