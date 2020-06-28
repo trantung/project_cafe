@@ -44,7 +44,7 @@ class CustomerProductApiController extends ApiBaseController
         $data = $this->productService->cartListProduct($input);
         return $this->sendSuccess($data, 'Detail success');
     }
-    
+
     public function cartDetailProduct(Request $request)
     {
         $input = $request->all();
@@ -56,6 +56,13 @@ class CustomerProductApiController extends ApiBaseController
     {
         $input = $request->all();
         $data = $this->productService->cartChangeProduct($input);
+        return $this->sendSuccess($data, 'Detail success');
+    }
+    
+    public function cartChangeUsingAt(Request $request)
+    {
+        $input = $request->all();
+        $data = $this->productService->cartChangeUsingAt($input);
         return $this->sendSuccess($data, 'Detail success');
     }
 

@@ -408,7 +408,7 @@ class ProductService extends BaseService
         }
         foreach ($res as $key => $value) {
             foreach ($value['list_product'] as $k => $product) {
-                if ($product['product_using_at'] != $usingAt && $product['product_using_at'] != ProductDataConst::PRODUCT_USING_AT_ALL) {
+                if ($product['product_using_at'] != $usingAt || $product['product_using_at'] != ProductDataConst::PRODUCT_USING_AT_ALL) {
                     unset($value['list_product'][$k]);
                 }
             }
@@ -790,6 +790,33 @@ class ProductService extends BaseService
         //tạo mới cùng với orderId
         $res = $this->customerAddProduct($input, $orderId);
         return $res;
+    }
+
+    public function checkUsingAtProduct($product, $usingAt)
+    {
+        $productUsingAt = $product->using_at;
+        if ($productUsingAt != ProductDataConst::PRODUCT_USING_AT_ALL) {
+            return false;
+        }
+        return true;
+    }
+
+    public function cartChangeUsingAt($input)
+    {
+        $customerToken = $input['customer_token'];
+        $checkToken = $this->checkCustomerToken($customerToken);
+        if (!$checkToken || !isset($input['customer_id'])) {
+            return false;
+        }
+        $customerId = $input['customer_id'];
+        $listProductId = explode(',', $input['list_product_id']);
+        $usingAt = $input['using_at'];
+        $products = Product::whereIn('id', $listProductId)->get();
+        foreach ($products as $key => $product) {
+            $res[$key]['product_id'] = $product->id;
+            $res[$key]['product_can_change'] = $this->checkUsingAtProduct($product, $usingAt);
+
+        }
     }
 
 }
