@@ -296,14 +296,14 @@
  */
 
 /**
- * @api {get} /api_customer/product/cart/list_product Danh sách product trong giỏ hàng
+ * @api {post} /api_customer/product/cart/list_product Danh sách product trong giỏ hàng
  * @apiName postCartListProduct
  * @apiGroup Product
  *
  * @apiParam {Number} customer_id id của customer(required)
  * @apiParam {String} customer_token token của customer(required)
  *
- * @apiSuccessExample Success-Response: 
+ * @apiSuccessExample Success-Response:
  * HTTP/1.1 200 OK
 {
     "success": true,
