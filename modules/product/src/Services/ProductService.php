@@ -729,8 +729,6 @@ class ProductService extends BaseService
             $res[$key] = $this->getInfoProduct($product);
             $res[$key]['order_product_id'] = $orderProduct->id;
             $res[$key]['product_id'] = $orderProduct->product_id;
-            // $res[$key]['product_price'] = $orderProduct->product_price;
-            // $res[$key]['product_name'] = $this->getFieldProductId($orderProduct->product_id, 'name');
             $res[$key]['product_quantity'] = $orderProduct->quantity;
 
             // $res[$key]['product_quantity'] = $orderProduct->quantity;
@@ -755,10 +753,11 @@ class ProductService extends BaseService
         if (!$orderProduct) {
             return false;
         }
-        $res['product_id'] = $productId;
-        $res['order_product_id'] = $orderProductId;
-        $res['product_name'] = $this->getFieldProductId($orderProduct->product_id, 'name');
-        $res['product_price'] = $orderProduct->product_price;
+        $product = Product::find($productId);
+        $res = $this->getInfoProduct($product);
+        $res['order_product_id'] = $orderProduct->id;
+        $res['product_id'] = $orderProduct->product_id;
+        $res['product_quantity'] = $orderProduct->quantity;
         $res['product_quantity'] = $orderProduct->quantity;
         $res['size'] = $this->getSizeProductOfOrderProduct($orderProduct);
         $res['topping'] = $this->getToppingProductOfOrderProduct($orderProduct);
