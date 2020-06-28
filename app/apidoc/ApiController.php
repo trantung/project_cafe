@@ -224,7 +224,7 @@
  * @apiParam {Number} customer_id id của customer(required)
  * @apiParam {Number} customer_token token của customer(required)
  * @apiParam {Number} size_id id của size_id khi chọn product(required)
- * @apiParam {String} option danh sách option lựa chọn của product(là list các id của option khi chọn product và cách nhau bởi dấu ','. Ví dụ: "1,2,3" hoặc "1")
+ * @apiParam {String} option danh sách option lựa chọn của product(là list các id của option khi chọn product và cách nhau bởi dấu ','. Ví dụ: "1,2,3" hoặc "1", nếu không có thì để empty)
  * @apiParam {String} topping danh sách topping của product(Tương tự option)
  * @apiParam {String} product_comment comment của product(required)
  *
