@@ -383,7 +383,7 @@ class ProductService extends BaseService
         $orderType = $shopLocation = $deliveryAddress = '';
         $usingAt = ProductDataConst::PRODUCT_USING_AT_SHOP;
         if (isset($input['using_at'])) {
-            $usingAt = $input['using_at'];
+            $usingAt = (int)$input['using_at'];
         }
         if (isset($input['location_id'])) {
             $locationId = $input['location_id'];
@@ -408,15 +408,15 @@ class ProductService extends BaseService
         }
         foreach ($res as $key => $value) {
             foreach ($value['list_product'] as $k => $product) {
-                if ($product['product_using_at'] != $usingAt || $product['product_using_at'] != ProductDataConst::PRODUCT_USING_AT_ALL) {
+                if ($product['product_using_at'] != $usingAt && $product['product_using_at'] != ProductDataConst::PRODUCT_USING_AT_ALL) {
                     unset($value['list_product'][$k]);
                 }
             }
             if (count($value['list_product']) == 0) {
                 unset($res[$key]);
             }
-
         }
+        $res = $this->formatArray2Array($res);
         return $res;
     }
 
