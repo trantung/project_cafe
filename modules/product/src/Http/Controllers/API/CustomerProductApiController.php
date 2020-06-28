@@ -44,5 +44,19 @@ class CustomerProductApiController extends ApiBaseController
         $data = $this->productService->cartListProduct($input);
         return $this->sendSuccess($data, 'Detail success');
     }
+    
+    public function cartDetailProduct(Request $request)
+    {
+        $input = $request->all();
+        $data = $this->productService->cartDetailProduct($input);
+        return $this->sendSuccess($data, 'Detail success');
+    }
+
+    public function cartChangeProduct(Request $request)
+    {
+        $input = $request->all();
+        $data = $this->productService->cartChangeProduct($input);
+        return $this->sendSuccess($data, 'Detail success');
+    }
 
 }

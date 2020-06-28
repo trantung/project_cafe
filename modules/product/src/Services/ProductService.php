@@ -626,11 +626,6 @@ class ProductService extends BaseService
         //tao moi record trong bang order_product_topping
         $listTopping = $this->getToppingFromStr($input['topping']);
         foreach ($listTopping as $toppingId => $toppingPrice) {
-            $oPTopping[$toppingId]['order_product_id'] = $orderProductId;
-            $oPTopping[$toppingId]['order_id'] = $orderId;
-            $oPTopping[$toppingId]['product_id'] = $input['product_id'];
-            $oPTopping[$toppingId]['topping_id'] = $toppingId;
-            $oPTopping[$toppingId]['topping_price'] = $toppingPrice;
             OrderProductTopping::create([
                 'order_product_id' => $orderProductId,
                 'order_id' => $orderId,
@@ -653,6 +648,7 @@ class ProductService extends BaseService
             ]);
         }
         $res['group_option'] = $this->formatArray2Array($groupOption);
+        $res['order_product_id'] = $orderProductId;
         return $res;
     }
     public function getFieldOfToppingById($toppingId, $field)
@@ -726,6 +722,7 @@ class ProductService extends BaseService
         // $data = Product::whereIn('id', $listProduct)->get();
         $res = [];
         foreach ($orderProducts as $key => $orderProduct) {
+            $res[$key]['order_product_id'] = $orderProduct->id;
             $res[$key]['product_id'] = $orderProduct->product_id;
             $res[$key]['product_price'] = $orderProduct->product_price;
             $res[$key]['product_name'] = $this->getFieldProductId($orderProduct->product_id, 'name');
@@ -740,6 +737,44 @@ class ProductService extends BaseService
 
         }
         return $res;
+
+    }
+
+    public function cartDetailProduct($input)
+    {
+        $orderProductId = $input['order_product_id'];
+        $productId = $input['product_id'];
+        $orderProduct = OrderProduct::find($orderProductId);
+        if (!$orderProduct) {
+            return false;
+        }
+        $res['product_id'] = $productId;
+        $res['order_product_id'] = $orderProductId;
+        $res['product_name'] = $this->getFieldProductId($orderProduct->product_id, 'name');
+        $res['product_price'] = $orderProduct->product_price;
+        $res['product_quantity'] = $orderProduct->quantity;
+        $res['size'] = $this->getSizeProductOfOrderProduct($orderProduct);
+        $res['topping'] = $this->getToppingProductOfOrderProduct($orderProduct);
+        $res['option'] = $this->getOptionProductOfOrderProduct($orderProduct);
+        return $res;
+
+    }
+
+    public function cartChangeProduct($input)
+    {
+        // product_id, product_quantity, product_comment
+        // order_product_id, product_id(required), product_quantity, product_comment, topping, option, size
+        if (!$input['product_id'] || !$input['product_quantity']) {
+            return false;
+        }
+        if (!is_integer($input['product_quantity'])) {
+            return false;
+        }
+        $productId = $input['product_id'];
+        $productQuantity = $input['product_quantity'];
+        if (isset($input['product_comment'])) {
+            $productComment = $input['product_comment'];
+        }
 
     }
 

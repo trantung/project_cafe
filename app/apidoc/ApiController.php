@@ -422,5 +422,42 @@
 }
  */
 
+/**
+ * @api {post} /api_customer/product/cart/detail_product Xem chi tiết 1 sp trong giỏ hàng
+ * @apiName postCartDetailProduct
+ * @apiGroup Product
+ *
+ * @apiParam {Number} order_product_id  lấy được khi add product hoặc từ danh sách sp trong giỏ(required)
+ * @apiParam {String} product_id id của product(required)
+ *
+ * @apiSuccessExample Success-Response:
+ * HTTP/1.1 200 OK
+{
+    "success": true,
+    "response_code": 1000,
+    "data": {
+        "product_id": "7",
+        "order_product_id": "114",
+        "product_name": "Caramel Macchiato Đá",
+        "product_price": 50000,
+        "product_quantity": "2",
+        "size": {
+            "size_name": "S moi",
+            "size_id": 1
+        },
+        "topping": [],
+        "option": [
+            {
+                "option_id": 1,
+                "option_name": "Nhiều"
+            }
+        ]
+    },
+    "message": "Detail success"
+}
+ */
+
+
+
 
 

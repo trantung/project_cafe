@@ -25,5 +25,11 @@ Route::group([
     //get list product by customer_id
     //param: customer_id, customer_token
     Route::post('cart/list_product', 'CustomerProductApiController@cartListProduct');
+    //xem thong tin 1 san pham trong gio hang
+    //param: order_product_id, product_id
+    Route::post('cart/detail_product', 'CustomerProductApiController@cartDetailProduct');
+    // thay doi số lượng sp trong giỏ hàng
+    //param: order_product_id, product_id(required), product_quantity, product_comment, topping, option, size
+    Route::post('cart/change_product', 'CustomerProductApiController@cartChangeProduct');
 
 });
