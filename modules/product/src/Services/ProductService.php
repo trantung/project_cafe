@@ -412,19 +412,6 @@ class ProductService extends BaseService
             $res[$key]['special_tag'] = $this->getSpecialTagByCate($value);
             $res[$key]['list_product'] = $this->getProductByCategory($value->id, $usingAt);
         }
-        foreach ($res as $key => $value) {
-            foreach ($value['list_product'] as $k => $product) {
-                // dd($k);
-            // unset($value['list_product'][0]);
-            // dd($value['list_product']);
-                if ($product['product_using_at'] != $usingAt && $product['product_using_at'] != ProductDataConst::PRODUCT_USING_AT_ALL) {
-                    unset($value['list_product'][$k]);
-                }
-            }
-            // if (count($value['list_product']) == 0) {
-            //     unset($res[$key]);
-            // }
-        }
         $res = $this->formatArray2Array($res);
         return $res;
     }
@@ -495,7 +482,7 @@ class ProductService extends BaseService
     public function getInfoDetailProduct($product)
     {
         $res = [];
-        $res = $this->getInfoProduct($product);
+        $res = $this->getInfoProduct($product);\
         $res['cover_list'] = $this->getCoverListProduct($product);
         $res['group_option'] = $this->getGroupOptionDetail($product);
         $res['size'] = $this->getSizeProduct($product->id, true);

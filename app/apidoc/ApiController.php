@@ -538,7 +538,7 @@
 /**
  * @api {post} /api_customer/product/cart/update_product Update thông tin thay đổi product trong giỏ hàng
  * @apiName postProductCartUpdateProduct
- * @apiGroup Cart
+ * @apiGroup Product
  *
  * @apiParam {Number} order_product_id lấy được khi add product hoặc từ danh sách sp trong giỏ(required)
  * @apiParam {Number} product_id id của product(required)
@@ -580,7 +580,7 @@
 /**
  * @api {post} /api_customer/product/cart/change_using_at Thay đổi hình thức sử dụng(using_at)
  * @apiName postProductCartChangeUsingAt
- * @apiGroup Product
+ * @apiGroup Cart
  *
  * @apiParam {Number} customer_id id của customer(required)
  * @apiParam {Number} customer_token token của customer(required)
