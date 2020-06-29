@@ -538,7 +538,7 @@
 /**
  * @api {post} /api_customer/product/cart/update_product Update thông tin thay đổi product trong giỏ hàng
  * @apiName postProductCartUpdateProduct
- * @apiGroup Product
+ * @apiGroup Cart
  *
  * @apiParam {Number} order_product_id lấy được khi add product hoặc từ danh sách sp trong giỏ(required)
  * @apiParam {Number} product_id id của product(required)
