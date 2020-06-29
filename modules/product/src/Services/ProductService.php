@@ -366,12 +366,18 @@ class ProductService extends BaseService
         return $res;
     }
 
-    public function getProductByCategory($cateId)
+    public function getProductByCategory($cateId, $usingAt = null)
     {
         $res = [];
         $listCategory = $this->categoryService->getListCategoryByRoot($cateId);
-        $listProduct = Product::whereIn('category_id', $listCategory)->get();
-//        $res['product_count'] = count($listProduct);
+        if ($usingAt) {
+            $arrayUsingAt = [$usingAt, ProductDataConst::PRODUCT_USING_AT_ALL];
+            $listProduct = Product::whereIn('category_id', $listCategory)
+                ->whereIn('using_at', $arrayUsingAt)
+                ->get();
+        } else {
+            $listProduct = Product::whereIn('category_id', $listCategory)->get();
+        }
         foreach ($listProduct as $key => $value) {
             $res[$key] = $this->getInfoProduct($value);
         }
@@ -404,17 +410,20 @@ class ProductService extends BaseService
             $res[$key]['category_id'] = $value->id;
             $res[$key]['category_name'] = $value->name;
             $res[$key]['special_tag'] = $this->getSpecialTagByCate($value);
-            $res[$key]['list_product'] = $this->getProductByCategory($value->id);
+            $res[$key]['list_product'] = $this->getProductByCategory($value->id, $usingAt);
         }
         foreach ($res as $key => $value) {
             foreach ($value['list_product'] as $k => $product) {
+                // dd($k);
+            // unset($value['list_product'][0]);
+            // dd($value['list_product']);
                 if ($product['product_using_at'] != $usingAt && $product['product_using_at'] != ProductDataConst::PRODUCT_USING_AT_ALL) {
                     unset($value['list_product'][$k]);
                 }
             }
-            if (count($value['list_product']) == 0) {
-                unset($res[$key]);
-            }
+            // if (count($value['list_product']) == 0) {
+            //     unset($res[$key]);
+            // }
         }
         $res = $this->formatArray2Array($res);
         return $res;
@@ -663,12 +672,29 @@ class ProductService extends BaseService
         }
         return $data->$field;
     }
-    public function getSizeProductOfOrderProduct($orderProduct)
+
+    public function checkActive($data, $value)
+    {
+        if ($data == $value) {
+            return true;
+        }
+        return false;
+    }
+    public function getSizeProductOfOrderProduct($orderProduct, $active = null)
     {
         $sizeId = $orderProduct->size_id;
-        $res['size_id'] = $res['size_name'] = '';
         $size = Size::find($sizeId);
         if (!$size) {
+            return $res;
+        }
+        if ($active) {
+            $sizeProduct = $this->getSizeProduct($orderProduct->product_id, true);
+            foreach ($sizeProduct as $key => $value) {
+                $res[$key]['size_id'] = $value['size_id'];
+                $res[$key]['size_name'] = $value['size_name'];
+                $res[$key]['size_price'] = $value['size_price'];
+                $res[$key]['active'] = $this->checkActive($value['size_id'], $sizeId);
+            }
             return $res;
         }
         $res['size_id'] = $size->id;
@@ -676,9 +702,27 @@ class ProductService extends BaseService
         return $res;
     }
 
-    public function getToppingProductOfOrderProduct($orderProduct)
+    public function getToppingProductOfOrderProduct($orderProduct, $active = null)
     {
         $res = [];
+        if ($active) {
+            // $listTopping = Topping::all();
+            $product = Product::find($orderProduct->product_id);
+            $listTopping = array_merge($this->getToppingOwn($product), $this->getToppingByCategory($product));
+            $listToppingActiveId = OrderProductTopping::where('order_product_id', $orderProduct->id)->pluck('topping_id');
+            foreach ($listTopping as $key => $value) {
+                $res[$key]['topping_id'] = $value['topping_id'];
+                $res[$key]['topping_name'] = $value['topping_name'];
+                $res[$key]['topping_price'] = $value['topping_price'];
+                if (in_array($value['topping_id'], $listToppingActiveId->toArray())) {
+                    $res[$key]['active'] = true;
+                } else {
+                    $res[$key]['active'] = false;
+                }
+            }
+            return $res;
+        }
+
         $data = OrderProductTopping::where('order_product_id', $orderProduct->id)->get();
         foreach ($data as $key => $value) {
             $res[$key]['topping_id'] = $value->topping_id;
@@ -697,9 +741,25 @@ class ProductService extends BaseService
         return $option->name;
     }
 
-    public function getOptionProductOfOrderProduct($orderProduct)
+    public function getOptionProductOfOrderProduct($orderProduct, $active = null)
     {
         $res = [];
+        if ($active) {
+            // $listTopping = Topping::all();
+            $product = Product::find($orderProduct->product_id);
+            $listOptions = Option::all();
+            $listOptionsActiveId = OrderProductOption::where('order_product_id', $orderProduct->id)->pluck('option_id');
+            foreach ($listOptions as $key => $value) {
+                $res[$key]['option_id'] = $value->id;
+                $res[$key]['option_name'] = $value->name;
+                if (in_array($value->id, $listOptionsActiveId->toArray())) {
+                    $res[$key]['active'] = true;
+                } else {
+                    $res[$key]['active'] = false;
+                }
+            }
+            return $res;
+        }
         $data = OrderProductOption::where('order_product_id', $orderProduct->id)->get();
         foreach ($data as $key => $value) {
             $res[$key]['option_id'] = $value->option_id;
@@ -749,7 +809,7 @@ class ProductService extends BaseService
 
     }
 
-    public function cartDetailProduct($input)
+    public function cartEditProduct($input)
     {
         $orderProductId = $input['order_product_id'];
         $productId = $input['product_id'];
@@ -763,14 +823,15 @@ class ProductService extends BaseService
         $res['product_id'] = $orderProduct->product_id;
         $res['product_quantity'] = $orderProduct->quantity;
         $res['product_quantity'] = $orderProduct->quantity;
-        $res['size'] = $this->getSizeProductOfOrderProduct($orderProduct);
-        $res['topping'] = $this->getToppingProductOfOrderProduct($orderProduct);
-        $res['option'] = $this->getOptionProductOfOrderProduct($orderProduct);
+        $res['size'] = $this->getSizeProductOfOrderProduct($orderProduct, true);
+        $res['topping'] = $this->getToppingProductOfOrderProduct($orderProduct, true);
+        $res['option'] = $this->getOptionProductOfOrderProduct($orderProduct, true);
+        $res['product_comment'] = $orderProduct->order_product_comment;
         return $res;
 
     }
 
-    public function cartChangeProduct($input)
+    public function cartUpdateProduct($input)
     {
         // product_id, product_quantity, product_comment
         // order_product_id, product_id(required), product_quantity, product_comment, topping, option, size
@@ -794,8 +855,7 @@ class ProductService extends BaseService
 
     public function checkUsingAtProduct($product, $usingAt)
     {
-        $productUsingAt = $product->using_at;
-        if ($productUsingAt != ProductDataConst::PRODUCT_USING_AT_ALL) {
+        if ($product->using_at != $usingAt && $product->using_at != ProductDataConst::PRODUCT_USING_AT_ALL) {
             return false;
         }
         return true;
@@ -817,6 +877,7 @@ class ProductService extends BaseService
             $res[$key]['product_can_change'] = $this->checkUsingAtProduct($product, $usingAt);
 
         }
+        return $res;
     }
 
 }

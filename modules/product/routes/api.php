@@ -27,10 +27,10 @@ Route::group([
     Route::post('cart/list_product', 'CustomerProductApiController@cartListProduct');
     //xem thong tin 1 san pham trong gio hang
     //param: order_product_id, product_id
-    Route::post('cart/detail_product', 'CustomerProductApiController@cartDetailProduct');
+    Route::post('cart/edit_product', 'CustomerProductApiController@cartEditProduct');
     // thay doi số lượng sp trong giỏ hàng
     //param: order_product_id, product_id(required), product_quantity, product_comment, topping, option, size
-    Route::post('cart/change_product', 'CustomerProductApiController@cartChangeProduct');
+    Route::post('cart/update_product', 'CustomerProductApiController@cartUpdateProduct');
     // Thay đổi hình thức sử dụng(using_at) ví dụ using_at = 1(tại quầy) thành using_at = 2(ship tận nơi) thì cần trả về các sản phẩm đang có trong giỏ hàng kèm theo thuộc tính có thể ship tận nơi sản phẩm đấy ko
     //param: using_at, customer_id, customer_token, product=string product_id(1,2,3)
     Route::post('cart/change_using_at', 'CustomerProductApiController@cartChangeUsingAt');

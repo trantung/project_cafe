@@ -446,8 +446,8 @@
  */
 
 /**
- * @api {post} /api_customer/product/cart/detail_product Xem chi tiết 1 sp trong giỏ hàng
- * @apiName postCartDetailProduct
+ * @api {post} /api_customer/product/cart/edit_product Edit 1 product trong giỏ hàng
+ * @apiName postCartEditProduct
  * @apiGroup Product
  *
  * @apiParam {Number} order_product_id  lấy được khi add product hoặc từ danh sách sp trong giỏ(required)
@@ -459,30 +459,85 @@
     "success": true,
     "response_code": 1000,
     "data": {
-        "product_id": "7",
-        "order_product_id": "114",
+        "product_id": 7,
         "product_name": "Caramel Macchiato Đá",
-        "product_price": 50000,
-        "product_quantity": "2",
-        "size": {
-            "size_name": "S moi",
-            "size_id": 1
-        },
-        "topping": [],
+        "product_short_desc": "Giới thiệu ngắn sản phẩm số 7",
+        "product_description": "Caramel Macchiato Đá",
+        "product_base_price": 50000,
+        "product_sale_price": 50000,
+        "product_image_thumbnail": "http://localhost:8000/uploads/products/7/avatar/caramel_macchiato.jpg",
+        "product_using_at": 3,
+        "order_product_id": 110,
+        "product_quantity": "1",
+        "size": [
+            {
+                "size_id": 1,
+                "size_name": "S moi",
+                "size_price": 50000,
+                "active": false
+            },
+            {
+                "size_id": 2,
+                "size_name": "M",
+                "size_price": 50000,
+                "active": true
+            },
+            {
+                "size_id": 3,
+                "size_name": "L",
+                "size_price": 50000,
+                "active": false
+            }
+        ],
+        "topping": [
+            {
+                "topping_id": 1,
+                "topping_name": "Espresso (1shot)",
+                "topping_price": "10000",
+                "active": true
+            }
+        ],
         "option": [
             {
                 "option_id": 1,
-                "option_name": "Nhiều"
+                "option_name": "Nhiều",
+                "active": true
+            },
+            {
+                "option_id": 2,
+                "option_name": "ít",
+                "active": false
+            },
+            {
+                "option_id": 3,
+                "option_name": "Không có",
+                "active": false
+            },
+            {
+                "option_id": 4,
+                "option_name": "Nhiều",
+                "active": true
+            },
+            {
+                "option_id": 5,
+                "option_name": "ít",
+                "active": false
+            },
+            {
+                "option_id": 6,
+                "option_name": "Không có",
+                "active": false
             }
-        ]
+        ],
+        "product_comment": "comment cho product 7"
     },
     "message": "Detail success"
 }
  */
 
 /**
- * @api {post} /api_customer/product/cart/change_product Thay đổi thông tin sản phẩm vào giỏ hàng
- * @apiName postProductCartChangeProduct
+ * @api {post} /api_customer/product/cart/update_product Update thông tin thay đổi product trong giỏ hàng
+ * @apiName postProductCartUpdateProduct
  * @apiGroup Product
  *
  * @apiParam {Number} order_product_id lấy được khi add product hoặc từ danh sách sp trong giỏ(required)
@@ -521,6 +576,45 @@
     "message": "Detail success"
 }
  */
+
+/**
+ * @api {post} /api_customer/product/cart/change_using_at Thay đổi hình thức sử dụng(using_at)
+ * @apiName postProductCartChangeUsingAt
+ * @apiGroup Product
+ *
+ * @apiParam {Number} customer_id id của customer(required)
+ * @apiParam {Number} customer_token token của customer(required)
+ * @apiParam {Number} using_at hình thức sử dụng:1(tại quầy), 2(ship tận nơi)(required)
+ * @apiParam {String} list_product_id danh sách product_id có trong giỏ hàng(Ví dụ: "1,2,3" hoặc "1", nếu không có thì để empty)
+ *
+ * @apiSuccessExample Success-Response: 
+ * HTTP/1.1 200 OK
+{
+    "success": true,
+    "response_code": 1000,
+    "data": [
+        {
+            "product_id": 7,
+            "product_can_change": true
+        },
+        {
+            "product_id": 8,
+            "product_can_change": true
+        },
+        {
+            "product_id": 9,
+            "product_can_change": false
+        },
+        {
+            "product_id": 10,
+            "product_can_change": true
+        }
+    ],
+    "message": "Detail success"
+}
+ */
+
+
 
 
 
