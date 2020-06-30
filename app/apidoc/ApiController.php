@@ -468,6 +468,11 @@
         "product_image_thumbnail": "http://localhost:8000/uploads/products/7/avatar/caramel_macchiato.jpg",
         "product_using_at": 3,
         "order_product_id": 110,
+        "cover_list": [
+            "http://localhost:8000/uploads/products/7/images/caramel_macchiato.jpg",
+            "https://www.youtube.com/watch?v=K_XmTiNojMg"
+        ],
+        "product_tags": [],
         "product_quantity": "1",
         "size": [
             {
@@ -489,7 +494,7 @@
                 "active": false
             }
         ],
-        "topping": [
+        "product_topping": [
             {
                 "topping_id": 1,
                 "topping_name": "Espresso (1shot)",
@@ -497,36 +502,82 @@
                 "active": true
             }
         ],
-        "option": [
+        "group_option": [
             {
-                "option_id": 1,
-                "option_name": "Nhiều",
-                "active": true
+                "group_option_id": 1,
+                "group_option_name": "Độ ngọt",
+                "group_option_product_type": 1,
+                "group_option_product_type_show": 2,
+                "option_list": [
+                    {
+                        "option_id": 1,
+                        "option_name": "Nhiều",
+                        "active": true
+                    },
+                    {
+                        "option_id": 2,
+                        "option_name": "ít",
+                        "active": false
+                    },
+                    {
+                        "option_id": 3,
+                        "option_name": "Không có",
+                        "active": false
+                    },
+                    {
+                        "option_id": 4,
+                        "option_name": "Nhiều",
+                        "active": true
+                    },
+                    {
+                        "option_id": 5,
+                        "option_name": "ít",
+                        "active": false
+                    },
+                    {
+                        "option_id": 6,
+                        "option_name": "Không có",
+                        "active": false
+                    }
+                ]
             },
             {
-                "option_id": 2,
-                "option_name": "ít",
-                "active": false
-            },
-            {
-                "option_id": 3,
-                "option_name": "Không có",
-                "active": false
-            },
-            {
-                "option_id": 4,
-                "option_name": "Nhiều",
-                "active": true
-            },
-            {
-                "option_id": 5,
-                "option_name": "ít",
-                "active": false
-            },
-            {
-                "option_id": 6,
-                "option_name": "Không có",
-                "active": false
+                "group_option_id": 2,
+                "group_option_name": "Độ chua",
+                "group_option_product_type": 2,
+                "group_option_product_type_show": 3,
+                "option_list": [
+                    {
+                        "option_id": 1,
+                        "option_name": "Nhiều",
+                        "active": true
+                    },
+                    {
+                        "option_id": 2,
+                        "option_name": "ít",
+                        "active": false
+                    },
+                    {
+                        "option_id": 3,
+                        "option_name": "Không có",
+                        "active": false
+                    },
+                    {
+                        "option_id": 4,
+                        "option_name": "Nhiều",
+                        "active": true
+                    },
+                    {
+                        "option_id": 5,
+                        "option_name": "ít",
+                        "active": false
+                    },
+                    {
+                        "option_id": 6,
+                        "option_name": "Không có",
+                        "active": false
+                    }
+                ]
             }
         ],
         "product_comment": "comment cho product 7"
