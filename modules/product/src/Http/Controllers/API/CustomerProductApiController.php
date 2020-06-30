@@ -58,7 +58,7 @@ class CustomerProductApiController extends ApiBaseController
         $data = $this->productService->cartUpdateProduct($input);
         return $this->sendSuccess($data, 'Detail success');
     }
-    
+
     public function cartChangeUsingAt(Request $request)
     {
         $input = $request->all();

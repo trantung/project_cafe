@@ -453,7 +453,7 @@ class ProductService extends BaseService
         return $res;
     }
 
-    public function getGroupOptionDetail($product)
+    public function getGroupOptionDetail($product, $orderProduct = null)
     {
         $res = [];
         $data = GroupOptionProduct::where('product_id', $product->id)->get();
@@ -462,7 +462,12 @@ class ProductService extends BaseService
             $res[$key]['group_option_name'] = $this->getGroupOptionName($value->group_option_id);
             $res[$key]['group_option_product_type'] = $value->type;
             $res[$key]['group_option_product_type_show'] = $value->type_show;
-            $res[$key]['option_list'] = $this->getOptionProduct($product, $value->group_option_id);
+            if ($orderProduct) {
+                $res[$key]['option_list'] = $this->getOptionProductOfOrderProduct($orderProduct, true);
+            } else {
+                $res[$key]['option_list'] = $this->getOptionProduct($product, $value->group_option_id);
+            }
+            
         }
         return $res;
     }
@@ -482,7 +487,7 @@ class ProductService extends BaseService
     public function getInfoDetailProduct($product)
     {
         $res = [];
-        $res = $this->getInfoProduct($product);\
+        $res = $this->getInfoProduct($product);
         $res['cover_list'] = $this->getCoverListProduct($product);
         $res['group_option'] = $this->getGroupOptionDetail($product);
         $res['size'] = $this->getSizeProduct($product->id, true);
@@ -805,14 +810,23 @@ class ProductService extends BaseService
             return false;
         }
         $product = Product::find($productId);
+        // $res = $this->getInfoProduct($product);
+
+        // $res['cover_list'] = $this->getCoverListProduct($product);
+        // $res['group_option'] = $this->getGroupOptionDetail($product);
+        // $res['size'] = $this->getSizeProduct($product->id, true);
+        // $res['product_topping'] = array_merge($this->getToppingOwn($product), $this->getToppingByCategory($product));
+        
+
         $res = $this->getInfoProduct($product);
         $res['order_product_id'] = $orderProduct->id;
-        $res['product_id'] = $orderProduct->product_id;
-        $res['product_quantity'] = $orderProduct->quantity;
+        $res['cover_list'] = $this->getCoverListProduct($product);
+        $res['product_tags'] = $this->getTagByProduct($product->id);
         $res['product_quantity'] = $orderProduct->quantity;
         $res['size'] = $this->getSizeProductOfOrderProduct($orderProduct, true);
-        $res['topping'] = $this->getToppingProductOfOrderProduct($orderProduct, true);
-        $res['option'] = $this->getOptionProductOfOrderProduct($orderProduct, true);
+        $res['product_topping'] = $this->getToppingProductOfOrderProduct($orderProduct, true);
+        // $res['option'] = $this->getOptionProductOfOrderProduct($orderProduct, true);
+        $res['group_option'] = $this->getGroupOptionDetail($product, $orderProduct);
         $res['product_comment'] = $orderProduct->order_product_comment;
         return $res;
 
