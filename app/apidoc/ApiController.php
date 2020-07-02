@@ -847,6 +847,119 @@
 }
  */
 
+/**
+ * @api {get} /api_customer/voucher/list Danh sách các voucher
+ * @apiName getVoucherList
+ * @apiGroup Voucher
+ *
+ * @apiParam {Number} customer_id id của customer(required)
+ * @apiParam {Number} customer_token token của customer(required)
+ *
+ * @apiSuccessExample Success-Response: 
+ * HTTP/1.1 200 OK
+{
+    "success": true,
+    "response_code": 1000,
+    "data": [
+        {
+            "voucher_name": "voucher test",
+            "voucher_start_time": "2020-07-01",
+            "voucher_end_time": "2021-07-01",
+            "voucher_money_promotion": "0",
+            "voucher_percent_promotion": 10,
+            "voucher_quantity": 1000,
+            "voucher_code": "MEGUU1"
+        }
+    ],
+    "message": "success"
+}
+ */
 
+/**
+ * @api {get} /api_customer/voucher/detail Chi tiết 1 voucher
+ * @apiName getVoucherDetail
+ * @apiGroup Voucher
+ *
+ * @apiParam {Number} customer_id id của customer(required)
+ * @apiParam {Number} customer_token token của customer(required)
+ * @apiParam {Number} voucher_id id của voucher(required)
+ *
+ * @apiSuccessExample Success-Response: voucher_status(1: Đã được sử dụng, 0: Chưa được sử dụng)
+ * HTTP/1.1 200 OK
+{
+    "success": true,
+    "response_code": 1000,
+    "data": {
+        "voucher_id": 1,
+        "voucher_name": "voucher test",
+        "voucher_start_time": "2020-07-01",
+        "voucher_end_time": "2021-07-01",
+        "voucher_money_promotion": "0",
+        "voucher_percent_promotion": 10,
+        "voucher_quantity": 1000,
+        "voucher_code": "MEGUU1",
+        "voucher_status": 1
+    },
+    "message": "success"
+}
+ */
+
+/**
+ * @api {post} /api_customer/voucher/check_code Kiểm tra voucher_code
+ * @apiName getVoucherCheckCode
+ * @apiGroup Voucher
+ *
+ * @apiParam {Number} customer_id id của customer(required)
+ * @apiParam {Number} customer_token token của customer(required)
+ * @apiParam {Number} voucher_code code của voucher(required)
+ *
+ * @apiSuccessExample Success-Response:
+ * HTTP/1.1 200 OK
+{
+    "success": true,
+    "response_code": 1000,
+    "data": {
+        "voucher_id": 1,
+        "voucher_name": "voucher test",
+        "voucher_start_time": "2020-07-01",
+        "voucher_end_time": "2021-07-01",
+        "voucher_money_promotion": "0",
+        "voucher_percent_promotion": 10,
+        "voucher_quantity": 1000,
+        "voucher_code": "MEGUU1",
+        "voucher_status": 1
+    },
+    "message": "success"
+}
+ */
+
+/**
+ * @api {post} /api_customer/voucher/apply_code Áp dụng voucher
+ * @apiName getVoucherApplyCode
+ * @apiGroup Voucher
+ *
+ * @apiParam {Number} customer_id id của customer(required)
+ * @apiParam {Number} customer_token token của customer(required)
+ * @apiParam {Number} voucher_code code của voucher(required)
+ *
+ * @apiSuccessExample Success-Response:
+ * HTTP/1.1 200 OK
+{
+    "success": true,
+    "response_code": 1000,
+    "data": {
+        "voucher_id": 1,
+        "voucher_name": "voucher test",
+        "voucher_start_time": "2020-07-01",
+        "voucher_end_time": "2021-07-01",
+        "voucher_money_promotion": "0",
+        "voucher_percent_promotion": 10,
+        "voucher_quantity": 999,
+        "voucher_code": "MEGUU1",
+        "voucher_status": 1
+    },
+    "message": "success"
+}
+ */
 
 

@@ -58,4 +58,23 @@ class BaseService
     {
         return true;
     }
+
+    public function checkCustomerLogin($input, $field = null)
+    {
+        if (!isset($input['customer_token'])) {
+            return false;
+        }
+        $customerToken = $input['customer_token'];
+        $checkToken = $this->checkCustomerToken($customerToken);
+        if (!$checkToken || !isset($input['customer_id'])) {
+            return false;
+        }
+        if ($field) {
+            if (!isset($input[$field])) {
+                return false;
+            }
+        }
+        return true;
+    }
+
 }
