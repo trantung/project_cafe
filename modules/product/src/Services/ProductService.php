@@ -810,10 +810,10 @@ class ProductService extends BaseService
     }
     public function getStatusProductCanel($orderProductStatus)
     {
-        if ($orderProductStatus == ORDER_STATUS_CUSTOMER_CREATED) {
+        if ($orderProductStatus == OrderDataConst::ORDER_STATUS_CUSTOMER_CREATED) {
             return ProductDataConst::PRODUCT_CANCEL_BY_CUSTOMER_FALSE;
         }
-        if ($orderProductStatus == ORDER_STATUS_CUSTOMER_CANCEL) {
+        if ($orderProductStatus == OrderDataConst::ORDER_STATUS_CUSTOMER_CREATED) {
             return ProductDataConst::PRODUCT_CANCEL_BY_CUSTOMER_TRUE;
         }
     }
