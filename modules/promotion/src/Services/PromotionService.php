@@ -72,6 +72,7 @@ class PromotionService extends BaseService
         $data = Voucher::all();
         $res = [];
         foreach ($data as $key => $voucher) {
+            $res[$key]['voucher_id'] = $voucher->id;
             $res[$key]['voucher_name'] = $voucher->name;
             $res[$key]['voucher_start_time'] = $voucher->start_time;
             $res[$key]['voucher_end_time'] = $voucher->end_time;
