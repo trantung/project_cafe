@@ -33,4 +33,9 @@ class ProductDataConst extends BaseDataConst
     const PRODUCT_USING_AT_SHOP = 1;
     const PRODUCT_USING_AT_SHIP = 2;
     const PRODUCT_USING_AT_ALL = 3;
+
+    const PRODUCT_CANCEL_BY_CUSTOMER_TRUE = 1;
+    const PRODUCT_CANCEL_BY_CUSTOMER_FALSE = 0;
+    //xoa sp khoi gio hang
+    const PRODUCT_REMOVE_CART = 1;
 }
