@@ -22,6 +22,7 @@ use APV\Product\Models\OptionProduct;
 use APV\Product\Models\Product;
 use APV\Customer\Models\Customer;
 use APV\Customer\Models\CustomerFriend;
+use APV\Promotion\Models\Voucher;
 
 Route::get('/default_group_option', function(){
     $data = ['Độ ngọt', 'Độ chua'];
@@ -116,6 +117,21 @@ Route::get('/default_product_short_des', function(){
         }
     }
     dd('default_product_short_des');
+});
+
+Route::get('/default_voucher', function(){
+    $data = [
+        'name' => 'voucher test',
+        'status' => 1,
+        'start_time' => '2020-07-01',
+        'end_time' => '2021-07-01',
+        'money_promotion' => 0,
+        'percent_promotion' => 10,
+        'code' => 'MEGUU1',
+        'quantity' => 1000,
+    ];
+    $id = Voucher::create($data)->id;
+    dd($id);
 });
 
 Route::get('/admin/login', ['uses' => 'AdminController@getLogin', 'as' =>'login']);

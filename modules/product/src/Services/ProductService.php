@@ -30,6 +30,7 @@ use APV\Size\Models\Step;
 use APV\Material\Models\Material;
 use APV\Base\Services\BaseService;
 use APV\Category\Services\CategoryService;
+use APV\Promotion\Models\Voucher;
 //use League\Fractal\Resource\Collection;
 use Illuminate\Database\Eloquent\Collection as Collect;
 use Illuminate\Support\Facades\Storage;
@@ -592,6 +593,48 @@ class ProductService extends BaseService
         return false;
     }
 
+    public function checkVoucher($voucherCode = null)
+    {
+        $percentPromotion = 0;
+        //check voucher
+        // neu voucher giam gia theo %. vi du: giam gia 10%
+        if ($voucherCode) {
+            $voucher = Voucher::where('code', $voucherCode)->first();
+            if (!$voucher) {
+                return false;
+            }
+            if ($voucher) {
+                $percentPromotion = $voucher->percent_promotion;
+            } 
+        }
+        return $percentPromotion;
+    }
+
+    public function getAmountOrderAfterPromotion($orderId, $voucherCode = null)
+    {
+        $percentPromotion = $this->checkVoucher($voucherCode);
+        $total_product_price = OrderProduct::where('order_id', $orderId)->where('status', OrderDataConst::ORDER_STATUS_CUSTOMER_CREATED)->sum('total_price');
+        $promotionPrice = $total_product_price * $percentPromotion/100;
+        $res = $total_product_price - $promotionPrice;
+        return $res;
+    }
+    public function updateOrderCommon($orderId, $voucherCode = null)
+    {
+        $orderUp = Order::find($orderId);
+        $amount_after_promotion = $this->getAmountOrderAfterPromotion($orderId, $voucherCode);
+        $total_product_price = OrderProduct::where('order_id', $orderId)
+            ->where('status', OrderDataConst::ORDER_STATUS_CUSTOMER_CREATED)
+            ->sum('total_price');
+        $total_price_topping = OrderProduct::where('order_id', $orderId)
+            ->where('status', OrderDataConst::ORDER_STATUS_CUSTOMER_CREATED)
+            ->sum('total_price_topping');
+        $orderUp->update([
+            'total_product_price' => $total_product_price,
+            'total_price_topping' => $total_price_topping,
+            'amount_after_promotion' => $amount_after_promotion,
+        ]);
+        return true;
+    }
     public function customerAddProduct($input, $orderEditId = null)
     {
         $res = [];
@@ -611,6 +654,8 @@ class ProductService extends BaseService
         $totalPriceTopping = $this->getTotalPriceToppingByProduct($input['topping']);
         $productPriceTotal = $productPrice * $input['product_quantity'];
         $totalPrice = $productPriceTotal + $totalPriceTopping;
+
+
         $orderProduct['order_id'] = $orderId;
         $orderProduct['status'] = OrderDataConst::ORDER_STATUS_CUSTOMER_CREATED;
         $orderProduct['customer_id'] = $input['customer_id'];
@@ -626,7 +671,10 @@ class ProductService extends BaseService
         $orderProduct['price'] = $productPriceTotal;
         $orderProduct['total_price'] = $totalPrice;
         $orderProduct['total_price_topping'] = $totalPriceTopping;
+        // $orderProduct['amount_after_promotion'] = $amountAfterPromotion;
         $orderProductId = OrderProduct::create($orderProduct)->id;
+        //update order cung voi amount_after_promotion, total_product_price, total_topping_price
+        $this->updateOrderCommon($orderId);
         //tao moi record trong bang order_product_topping
         $listTopping = $this->getToppingFromStr($input['topping']);
         foreach ($listTopping as $toppingId => $toppingPrice) {
@@ -676,6 +724,7 @@ class ProductService extends BaseService
     {
         $sizeId = $orderProduct->size_id;
         $size = Size::find($sizeId);
+        $res = [];
         if (!$size) {
             return $res;
         }
@@ -759,6 +808,15 @@ class ProductService extends BaseService
         }
         return $res;
     }
+    public function getStatusProductCanel($orderProductStatus)
+    {
+        if ($orderProductStatus == ORDER_STATUS_CUSTOMER_CREATED) {
+            return ProductDataConst::PRODUCT_CANCEL_BY_CUSTOMER_FALSE;
+        }
+        if ($orderProductStatus == ORDER_STATUS_CUSTOMER_CANCEL) {
+            return ProductDataConst::PRODUCT_CANCEL_BY_CUSTOMER_TRUE;
+        }
+    }
 
     public function cartListProduct($input)
     {
@@ -784,6 +842,7 @@ class ProductService extends BaseService
             $res[$key] = $this->getInfoProduct($product);
             $res[$key]['order_product_id'] = $orderProduct->id;
             $res[$key]['product_id'] = $orderProduct->product_id;
+            $res[$key]['product_cancel'] = $this->getStatusProductCanel($orderProduct->status);
             $res[$key]['product_quantity'] = $orderProduct->quantity;
 
             // $res[$key]['product_quantity'] = $orderProduct->quantity;
@@ -809,6 +868,8 @@ class ProductService extends BaseService
         if (!$orderProduct) {
             return false;
         }
+        $res = [];
+        
         $product = Product::find($productId);
         // $res = $this->getInfoProduct($product);
 
@@ -839,6 +900,7 @@ class ProductService extends BaseService
         if (!$input['customer_id']) {
             return false;
         }
+        $res = [];
         $productId = $input['product_id'];
         $orderProductId = $input['order_product_id'];
         $orderProduct = OrderProduct::find($orderProductId);
@@ -849,6 +911,15 @@ class ProductService extends BaseService
         OrderProductTopping::where('order_product_id', $orderProductId)->delete();
         //xoá bảng order_product
         OrderProduct::destroy($orderProductId);
+        //xoa san pham khoi gio hang
+        if ($input['product_quantity'] == 0) {
+            return $res;
+        }
+        if (isset($input['product_delete'])) {
+            if ($input['product_delete'] == ProductDataConst::PRODUCT_REMOVE_CART) {
+                return $res;
+            }
+        }
         //tạo mới cùng với orderId
         $res = $this->customerAddProduct($input, $orderId);
         return $res;
@@ -880,5 +951,47 @@ class ProductService extends BaseService
         }
         return $res;
     }
+    public function cartCancelProduct($input)
+    {
+        $orderProductId = $input['order_product_id'];
+        $orderProduct = OrderProduct::find($orderProductId);
+        $orderId = $orderProduct->order_id;
+        $res = [];
+        if ($input['cancel_product'] == ProductDataConst::PRODUCT_CANCEL_BY_CUSTOMER_TRUE) {
+            $orderProduct->update(['status' => OrderDataConst::ORDER_STATUS_CUSTOMER_CANCEL]);
+        }
+        if ($input['cancel_product'] == ProductDataConst::PRODUCT_CANCEL_BY_CUSTOMER_FALSE) {
+            $orderProduct->update(['status' => OrderDataConst::ORDER_STATUS_CUSTOMER_CREATED]);
+        }
+        $this->updateOrderCommon($orderId);
+        return $this->cartListProduct($input);
+    }
 
+    public function cartFinish($input)
+    {
+        $customerToken = $input['customer_token'];
+        $checkToken = $this->checkCustomerToken($customerToken);
+        if (!$checkToken || !isset($input['customer_id'])) {
+            return false;
+        }
+        $customerId = $input['customer_id'];
+        $res = [];
+        //update order
+        $order = Order::where('customer_id', $customerId)->where('status', OrderDataConst::ORDER_STATUS_CUSTOMER_CREATED)->first();
+        if (!$order) {
+            return false;
+        }
+        $orderId = $order->id;
+        $voucherCode = null;
+        if (isset($input['voucher_code'])) {
+            $voucherCode = $input['voucher_code'];
+        }
+        $data = $this->updateOrderCommon($orderId, $voucherCode);
+        if (!$data) {
+            return false;
+        }
+        $res['order_code'] = $orderCode = renderCode();
+        $order->update(['code' => $orderCode]);
+        return $res;
+    }
 }

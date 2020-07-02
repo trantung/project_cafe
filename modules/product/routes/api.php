@@ -34,5 +34,11 @@ Route::group([
     // Thay đổi hình thức sử dụng(using_at) ví dụ using_at = 1(tại quầy) thành using_at = 2(ship tận nơi) thì cần trả về các sản phẩm đang có trong giỏ hàng kèm theo thuộc tính có thể ship tận nơi sản phẩm đấy ko
     //param: using_at, customer_id, customer_token, product=string product_id(1,2,3)
     Route::post('cart/change_using_at', 'CustomerProductApiController@cartChangeUsingAt');
+    //thay doi chon va khong chon sp khi thanh toan don
+    //param: customer_id, customer_token, order_product_id, product_id, cancel_product(1: huy, 0: khong huy)
+    Route::post('cart/cancel', 'CustomerProductApiController@cartCancelProduct');
+    //order finish
+    //param: customer_id, customer_token, voucher_code
+    Route::post('cart/finish', 'CustomerProductApiController@cartFinish');
 
 });

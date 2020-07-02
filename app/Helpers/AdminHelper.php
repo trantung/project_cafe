@@ -202,3 +202,10 @@ function getRandomTypeShow($data = null, $key = null)
     $v = $array[$k];
     return $v;
 }
+
+function renderCode($str = null)
+{
+    $length = 6;
+    $randstring = substr(str_shuffle(str_repeat($x='0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ', ceil($length/strlen($x)) )),1,$length);
+    return $randstring;
+}
