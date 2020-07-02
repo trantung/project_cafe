@@ -633,6 +633,7 @@ class ProductService extends BaseService
             'total_price_topping' => $total_price_topping,
             'amount_after_promotion' => $amount_after_promotion,
         ]);
+//        dd(Order::find($orderId));
         return true;
     }
     public function customerAddProduct($input, $orderEditId = null)
@@ -813,7 +814,7 @@ class ProductService extends BaseService
         if ($orderProductStatus == OrderDataConst::ORDER_STATUS_CUSTOMER_CREATED) {
             return ProductDataConst::PRODUCT_CANCEL_BY_CUSTOMER_FALSE;
         }
-        if ($orderProductStatus == OrderDataConst::ORDER_STATUS_CUSTOMER_CREATED) {
+        if ($orderProductStatus == OrderDataConst::ORDER_STATUS_CUSTOMER_CANCEL) {
             return ProductDataConst::PRODUCT_CANCEL_BY_CUSTOMER_TRUE;
         }
     }
@@ -840,6 +841,7 @@ class ProductService extends BaseService
                 return false;
             }
             $res[$key] = $this->getInfoProduct($product);
+            $res[$key]['product_size_price'] = $this->getPriceProductBySize($orderProduct->product_id, $orderProduct->size_id);
             $res[$key]['order_product_id'] = $orderProduct->id;
             $res[$key]['product_id'] = $orderProduct->product_id;
             $res[$key]['product_cancel'] = $this->getStatusProductCanel($orderProduct->status);
@@ -855,7 +857,9 @@ class ProductService extends BaseService
         }
         // product_sale_price
         $result['list_product'] = $this->formatArray2Array($res);
-        $result['total_price'] = OrderProduct::where('order_id', $order->id)->sum('total_price');
+        $result['total_price'] = OrderProduct::where('order_id', $order->id)
+            ->where('status', OrderDataConst::ORDER_STATUS_CUSTOMER_CREATED)
+            ->sum('total_price');
         return $result;
 
     }

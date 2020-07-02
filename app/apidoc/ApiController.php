@@ -313,89 +313,19 @@
             {
                 "product_id": 7,
                 "product_name": "Caramel Macchiato Đá",
-                "product_short_desc": "Giới thiệu ngắn sản phẩm số 7",
+                "product_short_desc": "",
                 "product_description": "Caramel Macchiato Đá",
                 "product_base_price": 50000,
                 "product_sale_price": 50000,
                 "product_image_thumbnail": "http://localhost:8000/uploads/products/7/avatar/caramel_macchiato.jpg",
                 "product_using_at": 1,
-                "order_product_id": 106,
+                "product_size_price": "50000",
+                "order_product_id": 1,
+                "product_cancel": 0,
                 "product_quantity": "1",
                 "size": {
-                    "size_name": "S moi",
-                    "size_id": 1
-                },
-                "topping": [
-                    {
-                        "topping_id": 1,
-                        "topping_name": "Espresso (1shot)",
-                        "topping_price": 10000
-                    }
-                ],
-                "option": []
-            },
-            {
-                "product_id": 7,
-                "product_name": "Caramel Macchiato Đá",
-                "product_short_desc": "Giới thiệu ngắn sản phẩm số 7",
-                "product_description": "Caramel Macchiato Đá",
-                "product_base_price": 50000,
-                "product_sale_price": 50000,
-                "product_image_thumbnail": "http://localhost:8000/uploads/products/7/avatar/caramel_macchiato.jpg",
-                "product_using_at": 1,
-                "order_product_id": 107,
-                "product_quantity": "1",
-                "size": {
-                    "size_name": "M",
-                    "size_id": 2
-                },
-                "topping": [
-                    {
-                        "topping_id": 1,
-                        "topping_name": "Espresso (1shot)",
-                        "topping_price": 10000
-                    }
-                ],
-                "option": []
-            },
-            {
-                "product_id": 7,
-                "product_name": "Caramel Macchiato Đá",
-                "product_short_desc": "Giới thiệu ngắn sản phẩm số 7",
-                "product_description": "Caramel Macchiato Đá",
-                "product_base_price": 50000,
-                "product_sale_price": 50000,
-                "product_image_thumbnail": "http://localhost:8000/uploads/products/7/avatar/caramel_macchiato.jpg",
-                "product_using_at": 1,
-                "order_product_id": 108,
-                "product_quantity": "1",
-                "size": {
-                    "size_name": "M",
-                    "size_id": 2
-                },
-                "topping": [
-                    {
-                        "topping_id": 1,
-                        "topping_name": "Espresso (1shot)",
-                        "topping_price": 10000
-                    }
-                ],
-                "option": []
-            },
-            {
-                "product_id": 7,
-                "product_name": "Caramel Macchiato Đá",
-                "product_short_desc": "Giới thiệu ngắn sản phẩm số 7",
-                "product_description": "Caramel Macchiato Đá",
-                "product_base_price": 50000,
-                "product_sale_price": 50000,
-                "product_image_thumbnail": "http://localhost:8000/uploads/products/7/avatar/caramel_macchiato.jpg",
-                "product_using_at": 1,
-                "order_product_id": 110,
-                "product_quantity": "1",
-                "size": {
-                    "size_name": "M",
-                    "size_id": 2
+                    "size_id": 2,
+                    "size_name": "M"
                 },
                 "topping": [
                     {
@@ -416,30 +346,59 @@
                 ]
             },
             {
-                "product_id": 7,
-                "product_name": "Caramel Macchiato Đá",
-                "product_short_desc": "Giới thiệu ngắn sản phẩm số 7",
-                "product_description": "Caramel Macchiato Đá",
+                "product_id": 8,
+                "product_name": "Caramel Macchiato Nóng",
+                "product_short_desc": "",
+                "product_description": "Caramel Macchiato Nóng",
                 "product_base_price": 50000,
                 "product_sale_price": 50000,
-                "product_image_thumbnail": "http://localhost:8000/uploads/products/7/avatar/caramel_macchiato.jpg",
+                "product_image_thumbnail": "http://localhost:8000/uploads/products/8/avatar/caramel_macchiato.jpg",
                 "product_using_at": 1,
-                "order_product_id": 114,
-                "product_quantity": "2",
+                "product_size_price": "50000",
+                "order_product_id": 2,
+                "product_cancel": 0,
+                "product_quantity": "1",
                 "size": {
-                    "size_name": "S moi",
-                    "size_id": 1
+                    "size_id": 2,
+                    "size_name": "M"
                 },
-                "topping": [],
-                "option": [
+                "topping": [
                     {
-                        "option_id": 1,
-                        "option_name": "Nhiều"
+                        "topping_id": 1,
+                        "topping_name": "Espresso (1shot)",
+                        "topping_price": 10000
                     }
-                ]
+                ],
+                "option": []
+            },
+            {
+                "product_id": 9,
+                "product_name": "Cà phê sữa Đá",
+                "product_short_desc": "",
+                "product_description": "Cà phê sữa Đá",
+                "product_base_price": 29000,
+                "product_sale_price": 29000,
+                "product_image_thumbnail": "http://localhost:8000/uploads/products/9/avatar/caramel_macchiato.jpg",
+                "product_using_at": 1,
+                "product_size_price": "20000",
+                "order_product_id": 4,
+                "product_cancel": 1,
+                "product_quantity": "1",
+                "size": {
+                    "size_id": 3,
+                    "size_name": "L"
+                },
+                "topping": [
+                    {
+                        "topping_id": 1,
+                        "topping_name": "Espresso (1shot)",
+                        "topping_price": 10000
+                    }
+                ],
+                "option": []
             }
         ],
-        "total_price": 340000
+        "total_price": 120000
     },
     "message": "Detail success"
 }
@@ -665,7 +624,228 @@
 }
  */
 
+/**
+ * @api {post} /api_customer/product/cart/update_product Xóa sản phẩm khỏi giở hàng hoàn toàn
+ * @apiName postProductCartUpdateProductRemove
+ * @apiGroup Cart
+ *
+ * @apiParam {Number} customer_id id của customer(required)
+ * @apiParam {Number} customer_token token của customer(required)
+ * @apiParam {Number} order_product_id lấy được khi add product hoặc từ danh sách sp trong giỏ(required)
+ * @apiParam {Number} product_delete required and value is 1
+ *
+ * @apiSuccessExample Success-Response: 
+ * HTTP/1.1 200 OK
+{
+    "success": true,
+    "response_code": 1000,
+    "data": {
+        "list_product": [
+            {
+                "product_id": 7,
+                "product_name": "Caramel Macchiato Đá",
+                "product_short_desc": "",
+                "product_description": "Caramel Macchiato Đá",
+                "product_base_price": 50000,
+                "product_sale_price": 50000,
+                "product_image_thumbnail": "http://localhost:8000/uploads/products/7/avatar/caramel_macchiato.jpg",
+                "product_using_at": 1,
+                "product_size_price": "50000",
+                "order_product_id": 1,
+                "product_cancel": 0,
+                "product_quantity": "1",
+                "size": {
+                    "size_id": 2,
+                    "size_name": "M"
+                },
+                "topping": [
+                    {
+                        "topping_id": 1,
+                        "topping_name": "Espresso (1shot)",
+                        "topping_price": 10000
+                    }
+                ],
+                "option": [
+                    {
+                        "option_id": 1,
+                        "option_name": "Nhiều"
+                    },
+                    {
+                        "option_id": 4,
+                        "option_name": "Nhiều"
+                    }
+                ]
+            },
+            {
+                "product_id": 8,
+                "product_name": "Caramel Macchiato Nóng",
+                "product_short_desc": "",
+                "product_description": "Caramel Macchiato Nóng",
+                "product_base_price": 50000,
+                "product_sale_price": 50000,
+                "product_image_thumbnail": "http://localhost:8000/uploads/products/8/avatar/caramel_macchiato.jpg",
+                "product_using_at": 1,
+                "product_size_price": "50000",
+                "order_product_id": 2,
+                "product_cancel": 0,
+                "product_quantity": "1",
+                "size": {
+                    "size_id": 2,
+                    "size_name": "M"
+                },
+                "topping": [
+                    {
+                        "topping_id": 1,
+                        "topping_name": "Espresso (1shot)",
+                        "topping_price": 10000
+                    }
+                ],
+                "option": []
+            },
+            {
+                "product_id": 9,
+                "product_name": "Cà phê sữa Đá",
+                "product_short_desc": "",
+                "product_description": "Cà phê sữa Đá",
+                "product_base_price": 29000,
+                "product_sale_price": 29000,
+                "product_image_thumbnail": "http://localhost:8000/uploads/products/9/avatar/caramel_macchiato.jpg",
+                "product_using_at": 1,
+                "product_size_price": "20000",
+                "order_product_id": 4,
+                "product_cancel": 1,
+                "product_quantity": "1",
+                "size": {
+                    "size_id": 3,
+                    "size_name": "L"
+                },
+                "topping": [
+                    {
+                        "topping_id": 1,
+                        "topping_name": "Espresso (1shot)",
+                        "topping_price": 10000
+                    }
+                ],
+                "option": []
+            }
+        ],
+        "total_price": 120000
+    },
+    "message": "Detail success"
+}
+ */
 
+/**
+ * @api {post} /api_customer/product/cart/cancel Không thanh toán sản phẩm trong giỏ hàng nhưng vẫn giữ sản phẩm lại trong giỏ
+ * @apiName postProductCartCancel
+ * @apiGroup Cart
+ *
+ * @apiParam {Number} customer_id id của customer(required)
+ * @apiParam {Number} customer_token token của customer(required)
+ * @apiParam {Number} order_product_id lấy được khi add product hoặc từ danh sách sp trong giỏ(required)
+ * @apiParam {Number} product_id id của product
+ * @apiParam {Number} cancel_product giá trị thanh toán hay hủy thanh toán(0:vẫn giữ sản phẩm, 1: hủy thanh toán sản phẩm)
+ *
+ * @apiSuccessExample Success-Response: 
+ * HTTP/1.1 200 OK
+{
+    "success": true,
+    "response_code": 1000,
+    "data": {
+        "list_product": [
+            {
+                "product_id": 7,
+                "product_name": "Caramel Macchiato Đá",
+                "product_short_desc": "",
+                "product_description": "Caramel Macchiato Đá",
+                "product_base_price": 50000,
+                "product_sale_price": 50000,
+                "product_image_thumbnail": "http://localhost:8000/uploads/products/7/avatar/caramel_macchiato.jpg",
+                "product_using_at": 1,
+                "product_size_price": "50000",
+                "order_product_id": 1,
+                "product_cancel": 1,
+                "product_quantity": "1",
+                "size": {
+                    "size_id": 2,
+                    "size_name": "M"
+                },
+                "topping": [
+                    {
+                        "topping_id": 1,
+                        "topping_name": "Espresso (1shot)",
+                        "topping_price": 10000
+                    }
+                ],
+                "option": [
+                    {
+                        "option_id": 1,
+                        "option_name": "Nhiều"
+                    },
+                    {
+                        "option_id": 4,
+                        "option_name": "Nhiều"
+                    }
+                ]
+            },
+            {
+                "product_id": 8,
+                "product_name": "Caramel Macchiato Nóng",
+                "product_short_desc": "",
+                "product_description": "Caramel Macchiato Nóng",
+                "product_base_price": 50000,
+                "product_sale_price": 50000,
+                "product_image_thumbnail": "http://localhost:8000/uploads/products/8/avatar/caramel_macchiato.jpg",
+                "product_using_at": 1,
+                "product_size_price": "50000",
+                "order_product_id": 2,
+                "product_cancel": 0,
+                "product_quantity": "1",
+                "size": {
+                    "size_id": 2,
+                    "size_name": "M"
+                },
+                "topping": [
+                    {
+                        "topping_id": 1,
+                        "topping_name": "Espresso (1shot)",
+                        "topping_price": 10000
+                    }
+                ],
+                "option": []
+            },
+            {
+                "product_id": 9,
+                "product_name": "Cà phê sữa Đá",
+                "product_short_desc": "",
+                "product_description": "Cà phê sữa Đá",
+                "product_base_price": 29000,
+                "product_sale_price": 29000,
+                "product_image_thumbnail": "http://localhost:8000/uploads/products/9/avatar/caramel_macchiato.jpg",
+                "product_using_at": 1,
+                "product_size_price": "20000",
+                "order_product_id": 4,
+                "product_cancel": 1,
+                "product_quantity": "1",
+                "size": {
+                    "size_id": 3,
+                    "size_name": "L"
+                },
+                "topping": [
+                    {
+                        "topping_id": 1,
+                        "topping_name": "Espresso (1shot)",
+                        "topping_price": 10000
+                    }
+                ],
+                "option": []
+            }
+        ],
+        "total_price": 60000
+    },
+    "message": "Detail success"
+}
+ */
 
 
 
