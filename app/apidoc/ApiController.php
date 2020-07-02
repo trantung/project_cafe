@@ -303,7 +303,7 @@
  * @apiParam {Number} customer_id id của customer(required)
  * @apiParam {String} customer_token token của customer(required)
  *
- * @apiSuccessExample Success-Response:
+ * @apiSuccessExample Success-Response: product_size_price: gía tiền của sản phẩm theo size, product_base_price: giá cơ bả của 1 sản phẩm để hiển thị ra ngoài, product_size_price: giá bán của 1 sản phẩm hiển thị ra ngoài
  * HTTP/1.1 200 OK
 {
     "success": true,
