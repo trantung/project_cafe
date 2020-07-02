@@ -39,6 +39,7 @@ use Illuminate\Http\UploadedFile;
 /**
  * Class ProductService
  * @package APV\Product\Services
+ * @property CategoryService categoryService
  */
 
 class ProductService extends BaseService
@@ -387,16 +388,9 @@ class ProductService extends BaseService
 
     public function customerGetList($input)
     {
-        $orderType = $shopLocation = $deliveryAddress = '';
         $usingAt = ProductDataConst::PRODUCT_USING_AT_SHOP;
         if (isset($input['using_at'])) {
             $usingAt = (int)$input['using_at'];
-        }
-        if (isset($input['location_id'])) {
-            $locationId = $input['location_id'];
-        }
-        if (isset($input['delivery_address'])) {
-            $deliveryAddress = $input['delivery_address'];
         }
         $res = [];
         $listCate = null;
@@ -944,7 +938,7 @@ class ProductService extends BaseService
         if (!$checkToken || !isset($input['customer_id'])) {
             return false;
         }
-        $customerId = $input['customer_id'];
+        $res = [];
         $listProductId = explode(',', $input['list_product_id']);
         $usingAt = $input['using_at'];
         $products = Product::whereIn('id', $listProductId)->get();
@@ -960,7 +954,6 @@ class ProductService extends BaseService
         $orderProductId = $input['order_product_id'];
         $orderProduct = OrderProduct::find($orderProductId);
         $orderId = $orderProduct->order_id;
-        $res = [];
         if ($input['cancel_product'] == ProductDataConst::PRODUCT_CANCEL_BY_CUSTOMER_TRUE) {
             $orderProduct->update(['status' => OrderDataConst::ORDER_STATUS_CUSTOMER_CANCEL]);
         }
@@ -973,9 +966,8 @@ class ProductService extends BaseService
 
     public function cartFinish($input)
     {
-        $customerToken = $input['customer_token'];
-        $checkToken = $this->checkCustomerToken($customerToken);
-        if (!$checkToken || !isset($input['customer_id'])) {
+        $check = $this->checkCustomerLogin($input);
+        if (!$check) {
             return false;
         }
         $customerId = $input['customer_id'];
