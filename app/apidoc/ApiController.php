@@ -855,20 +855,33 @@
  * @apiParam {Number} customer_id id của customer(required)
  * @apiParam {Number} customer_token token của customer(required)
  *
- * @apiSuccessExample Success-Response: 
+ * @apiSuccessExample Success-Response: voucher_is_use:voucher có thể được sử dụng hay ko(0: hết hạn-không được sử dụng, 1: được sử dụng-áp dụng) voucher_status: voucher đã dùng hay chưa dùng bao giờ(0: chưa dùng bao giờ, 1: đã được áp dụng ít nhất 1 lần rồi)
  * HTTP/1.1 200 OK
 {
     "success": true,
     "response_code": 1000,
     "data": [
         {
+            "voucher_id": 1,
             "voucher_name": "voucher test",
             "voucher_start_time": "2020-07-01",
             "voucher_end_time": "2021-07-01",
             "voucher_money_promotion": "0",
             "voucher_percent_promotion": 10,
+            "voucher_quantity": 999,
+            "voucher_code": "MEGUU1",
+            "voucher_is_use": 1
+        },
+        {
+            "voucher_id": 2,
+            "voucher_name": "voucher test hết hạn",
+            "voucher_start_time": "2020-07-01 15:00:00",
+            "voucher_end_time": "2020-07-02 16:00:00",
+            "voucher_money_promotion": "0",
+            "voucher_percent_promotion": 10,
             "voucher_quantity": 1000,
-            "voucher_code": "MEGUU1"
+            "voucher_code": "MEGUU_EXPIRED",
+            "voucher_is_use": 0
         }
     ],
     "message": "success"

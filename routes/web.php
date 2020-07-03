@@ -121,13 +121,13 @@ Route::get('/default_product_short_des', function(){
 
 Route::get('/default_voucher', function(){
     $data = [
-        'name' => 'voucher test',
-        'status' => 1,
-        'start_time' => '2020-07-01',
-        'end_time' => '2021-07-01',
+        'name' => 'voucher test hết hạn',
+        'status' => 0,
+        'start_time' => '2020-07-01 15:00:00',
+        'end_time' => '2020-07-02 16:00:00',
         'money_promotion' => 0,
         'percent_promotion' => 10,
-        'code' => 'MEGUU1',
+        'code' => 'MEGUU_EXPIRED',
         'quantity' => 1000,
     ];
     $id = Voucher::create($data)->id;
