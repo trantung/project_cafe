@@ -5,6 +5,7 @@ namespace APV\Base\Http\Controllers\API;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\JsonResponse;
 use APV\Base\Constants\BaseResponseCode;
+use APV\Base\Constants\BaseDataConst;
 
 class ApiBaseController extends Controller
 {
@@ -61,5 +62,10 @@ class ApiBaseController extends Controller
         }
 
         return response()->json($response, 400);
+    }
+
+    public function getMeguuFee()
+    {
+        return BaseDataConst::MEGUU_FEE;
     }
 }
