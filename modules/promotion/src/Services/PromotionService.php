@@ -80,11 +80,11 @@ class PromotionService extends BaseService
             $res[$key]['voucher_percent_promotion'] = $voucher->percent_promotion;
             $res[$key]['voucher_quantity'] = $voucher->quantity;
             $res[$key]['voucher_code'] = $voucher->code;
-            $res[$key]['voucher_status'] = $voucher->status;
+            $res[$key]['voucher_is_use'] = $this->commonCheckVoucherActive($voucher);
         }
         return $res;
     }
-    
+
     public function voucherGetDetail($input)
     {
         $check = $this->checkCustomerLogin($input, 'voucher_id');
@@ -105,20 +105,37 @@ class PromotionService extends BaseService
         $res['voucher_percent_promotion'] = $voucher->percent_promotion;
         $res['voucher_quantity'] = $voucher->quantity;
         $res['voucher_code'] = $voucher->code;
-        $res['voucher_status'] = $voucher->status;
+        $res['voucher_is_use'] = $this->commonCheckVoucherActive($voucher);
         return $res;
     }
-
+    public function commonCheckVoucherActive($voucher)
+    {
+        $checkVoucherExpired = $this->checkVoucherExpired($voucher);
+        $checkVoucherCount = $this->checkVoucherCount($voucher);
+        $checkVoucherNotUsed = $this->checkVoucherNotUsed($voucher);
+        if (!$checkVoucherExpired || !$checkVoucherCount || !$checkVoucherNotUsed) {
+            return PromotionDataConst::VOUCHER_IS_INACTIVE;
+        }
+        return PromotionDataConst::VOUCHER_IS_ACTIVE;
+    }
     //to-do
     public function checkVoucherExpired($voucher)
     {
+        $now = date('Y-m-d H:i:s');
+        $endTime = $voucher->end_time;
+        if (strtotime($now) > strtotime($endTime)) {
+            return false;
+        }
         return true;
     }
     public function checkVoucherCount($voucher)
     {
+        if ($voucher->quantity < 1) {
+            return false;
+        }
         return true;
     }
-    public function checkVoucherNotUsed ($voucher)
+    public function checkVoucherNotUsed($voucher)
     {
         return true;
     }
@@ -136,6 +153,7 @@ class PromotionService extends BaseService
         $checkVoucherExpired = $this->checkVoucherExpired($voucher);
         if (!$checkVoucherExpired) {
             $res['voucher_code'] = $voucher->code;
+            $res['voucher_is_use'] = PromotionDataConst::VOUCHER_IS_INACTIVE;
             $res['voucher_end_time'] = $voucher->end_time;
             $res['voucher_expired'] = PromotionDataConst::VOUCHER_EXPIRED;
             return $res;
@@ -144,6 +162,7 @@ class PromotionService extends BaseService
         $checkVoucherCount = $this->checkVoucherCount($voucher);
         if (!$checkVoucherCount) {
             $res['voucher_code'] = $voucher->code;
+            $res['voucher_is_use'] = PromotionDataConst::VOUCHER_IS_INACTIVE;
             $res['voucher_quantity'] = $voucher->quantity;
             return $res;
         }
@@ -151,7 +170,8 @@ class PromotionService extends BaseService
         $checkVoucherNotUsed = $this->checkVoucherNotUsed($voucher);
         if (!$checkVoucherNotUsed) {
             $res['voucher_code'] = $voucher->code;
-            $res['voucher_used'] =PromotionDataConst::VOUCHER_STATUS_USED;
+            $res['voucher_is_use'] = PromotionDataConst::VOUCHER_IS_INACTIVE;
+            $res['voucher_used'] = PromotionDataConst::VOUCHER_STATUS_USED;
             return $res;
         }
         $res = [];
@@ -166,18 +186,21 @@ class PromotionService extends BaseService
         $res['voucher_status'] = $voucher->status;
         return $res;
     }
-    
+
     public function voucherApplyCode($input)
     {
         $check = $this->checkCustomerLogin($input, 'voucher_code');
         if (!$check) {
             return false;
         }
-        $res = $this->voucherCheckCode($input);
+        $voucher = Voucher::where('code', $input['voucher_code'])->first();
+        if (!$voucher) {
+            return false;
+        }
+        $res = $this->voucherApplyCode($input);
         if (!$res) {
             return false;
         }
-        $voucher = Voucher::where('code', $input['voucher_code'])->first();
         //giảm số lượng hiện tại trong voucher
         $voucher->update(['quantity' => $voucher->quantity - 1]);
         //update status voucher
@@ -189,7 +212,7 @@ class PromotionService extends BaseService
         $res['voucher_percent_promotion'] = $voucher->percent_promotion;
         return $res;
     }
-    
-    
-    
+
+
+
 }
