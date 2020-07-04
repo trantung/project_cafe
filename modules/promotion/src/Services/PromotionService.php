@@ -194,13 +194,6 @@ class PromotionService extends BaseService
             return false;
         }
         $voucher = Voucher::where('code', $input['voucher_code'])->first();
-        if (!$voucher) {
-            return false;
-        }
-        $res = $this->voucherApplyCode($input);
-        if (!$res) {
-            return false;
-        }
         //giảm số lượng hiện tại trong voucher
         $voucher->update(['quantity' => $voucher->quantity - 1]);
         //update status voucher
