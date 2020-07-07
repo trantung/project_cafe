@@ -23,6 +23,7 @@ use APV\Product\Models\Product;
 use APV\Customer\Models\Customer;
 use APV\Customer\Models\CustomerFriend;
 use APV\Promotion\Models\Voucher;
+use APV\Size\Models\SizeProduct;
 
 Route::get('/default_group_option', function(){
     $data = ['Độ ngọt', 'Độ chua'];
@@ -132,6 +133,28 @@ Route::get('/default_voucher', function(){
     ];
     $id = Voucher::create($data)->id;
     dd($id);
+});
+Route::get('/product_size_active_default', function(){
+    $products = Product::all();
+    foreach ($products as $product) {
+        $check = SizeProduct::where('product_id', $product->id)->first();
+        if (!$check) {
+            SizeProduct::create([
+                'product_id' => $product->id,
+                'size_id' => 1,
+                'price' => 30000,
+                'active' => 1,
+                'weight_number' => 1,
+            ]);
+        }
+        $sizeProduct = SizeProduct::where('product_id', $product->id)->whereNotNull('price')->first();
+        if ($sizeProduct) {
+            $sizeProduct->update(['active' => 1]);
+        } else {
+            SizeProduct::where('product_id', $product->id)->update(['price' => '40000']);
+        }
+    }
+    dd('product_size_active_default');
 });
 
 Route::get('/admin/login', ['uses' => 'AdminController@getLogin', 'as' =>'login']);

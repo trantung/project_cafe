@@ -140,6 +140,10 @@ class ProductService extends BaseService
             $data[$key]['size_price'] = (int)$this->getSizeProductDetail($productId, $sizeId, 'price');
             $data[$key]['size_name'] = $value->name;
             $data[$key]['weight_number'] = $this->getSizeProductDetail($productId, $sizeId, 'weight_number');
+            if ($material) {
+                $data[$key]['product_base_price'] = $this->getBasePriceSizeProduct($productId, $sizeId);
+                $data[$key]['product_sale_price'] = $this->getPromotionPriceProductBySize($productId, $sizeId);
+            }
             if ($material == null) {
                 $data[$key]['material'] = $this->getMaterialProduct($productId, $value->id);
             }
@@ -334,7 +338,6 @@ class ProductService extends BaseService
         }
         return '';
     }
-    //product to do
     public function getFieldProductId($productId, $field)
     {
         $product = Product::find($productId);
@@ -348,21 +351,56 @@ class ProductService extends BaseService
     {
         return 'Món được ưa thích';
     }
-    //end to do
-    public function getSalePrice($product)
+
+    public function getBasePriceSizeProduct($productId, $sizeId)
     {
-        return $product->price_pay;
+        $basePriceSizeProduct = $this->getSizeProductDetail($productId, $sizeId, 'price');
+        return $basePriceSizeProduct;
     }
 
-    public function getInfoProduct($product)
+    public function getBasePriceByProduct($product, $orderProductId = null)
+    {
+        if ($orderProductId) {
+            $orderProduct = OrderProduct::find($orderProductId);
+            if (!$orderProduct) {
+                return 'order_product_id = ' . $orderProductId . ' không tìm thấy cùng với product_id = ' . $product->id;
+            }
+            return $this->getBasePriceSizeProduct($product->id, $orderProduct->size_id);
+        }
+        $productSize = SizeProduct::where('product_id', $product->id)->where('active', ProductDataConst::PRODUCT_SIZE_PRICE_DEFAULT_ACTIVE)
+            ->first();
+        if (!$productSize) {
+            return 'product_id = ' . $product->id . ' thieu product_size_price default cho order_product_id = ' . $orderProductId;
+        }
+        return $productSize->price;
+    }
+
+    public function getSalePriceByProduct($product, $orderProductId = null)
+    {
+        if ($orderProductId) {
+            $orderProduct = OrderProduct::find($orderProductId);
+            if (!$orderProduct) {
+                return 'không có order_product_id = ' . $orderProductId;
+            }
+            return $this->getPromotionPriceProductBySize($product->id, $orderProduct->size_id);
+        }
+        $productSize = SizeProduct::where('product_id', $product->id)->where('active', ProductDataConst::PRODUCT_SIZE_PRICE_DEFAULT_ACTIVE)
+            ->first();
+        if (!$productSize) {
+            return 'product_id = ' . $product->id . ' thieu product_size_price default cho order_product_id = ' . $orderProductId;
+        }
+        return $this->getPromotionPriceProductBySize($product->id, $productSize->size_id);
+    }
+
+    public function getInfoProduct($product, $orderProductId = null)
     {
         $res = [];
         $res['product_id'] = $product->id;
         $res['product_name'] = $product->name;
         $res['product_short_desc'] = $product->short_desc;
         $res['product_description'] = $product->description;
-        $res['product_base_price'] = $product->price_pay;
-        $res['product_sale_price'] = $this->getSalePrice($product);
+        $res['product_base_price'] = $this->getBasePriceByProduct($product, $orderProductId);
+        $res['product_sale_price'] = $this->getSalePriceByProduct($product,$orderProductId);
         $res['product_image_thumbnail'] = url($product->avatar);
         $res['product_using_at'] = $product->using_at;
         return $res;
@@ -481,7 +519,6 @@ class ProductService extends BaseService
     }
     public function getInfoDetailProduct($product)
     {
-        $res = [];
         $res = $this->getInfoProduct($product);
         $res['cover_list'] = $this->getCoverListProduct($product);
         $res['group_option'] = $this->getGroupOptionDetail($product);
@@ -540,9 +577,9 @@ class ProductService extends BaseService
         return $price;
     }
 
-    public function getPriceProductBySize($productId, $sizeId)
+    public function getPromotionPriceProductBySize($productId, $sizeId)
     {
-        $priceBeforePromotion = $this->getSizeProductDetail($productId, $sizeId, 'price');
+        $priceBeforePromotion = $this->getBasePriceSizeProduct($productId, $sizeId);
         $priceAfterPromotion = $this->getPriceAfterPromotion($priceBeforePromotion);
         return $priceAfterPromotion;
     }
@@ -589,7 +626,7 @@ class ProductService extends BaseService
 
     public function checkVoucher($voucherCode = null)
     {
-        $percentPromotion = 0;
+        $default_promotion = 0;
         //check voucher
         // neu voucher giam gia theo %. vi du: giam gia 10%
         if ($voucherCode) {
@@ -597,25 +634,49 @@ class ProductService extends BaseService
             if (!$voucher) {
                 return false;
             }
-            if ($voucher) {
-                $percentPromotion = $voucher->percent_promotion;
-            } 
+            if ($voucher->percent_promotion > 0) {
+                return [
+                    'percent_promotion' => $voucher->percent_promotion,
+                ];
+            }
+            if ($voucher->money_promotion > 0) {
+                return [
+                    'money_promotion' => $voucher->percent_promotion,
+                ];
+            }
         }
-        return $percentPromotion;
+        return ['default_promotion' => $default_promotion];
     }
 
     public function getAmountOrderAfterPromotion($orderId, $voucherCode = null)
     {
-        $percentPromotion = $this->checkVoucher($voucherCode);
+        $voucher = $this->checkVoucher($voucherCode);
         $total_product_price = OrderProduct::where('order_id', $orderId)->where('status', OrderDataConst::ORDER_STATUS_CUSTOMER_CREATED)->sum('total_price');
-        $promotionPrice = $total_product_price * $percentPromotion/100;
-        $res = $total_product_price - $promotionPrice;
-        return $res;
+        if (!$voucher) {
+            return $total_product_price;
+        }
+        if (isset($voucher['default_promotion'])) {
+            return $total_product_price;
+        }
+        if (isset($voucher['percent_promotion'])) {
+            $percentPromotion = $voucher['percent_promotion'];
+            $promotionPrice = $total_product_price * $percentPromotion/100;
+            $res = $total_product_price - $promotionPrice;
+            return $res;
+        }
+        if (isset($voucher['money_promotion'])) {
+            return $total_product_price - $voucher['money_promotion'];
+        }
+        return false;
     }
+
     public function updateOrderCommon($orderId, $voucherCode = null)
     {
         $orderUp = Order::find($orderId);
         $amount_after_promotion = $this->getAmountOrderAfterPromotion($orderId, $voucherCode);
+        if (!$amount_after_promotion) {
+            dd('sai order_id = ' . $orderId . ' and voucher_code = ' . $voucherCode);
+        }
         $total_product_price = OrderProduct::where('order_id', $orderId)
             ->where('status', OrderDataConst::ORDER_STATUS_CUSTOMER_CREATED)
             ->sum('total_price');
@@ -645,12 +706,17 @@ class ProductService extends BaseService
         }
         $res['size'] = $this->getSizeOrderProduct($input['product_id'], $input['size_id']);
         //tao mới record trong bảng order_product
-        $productPrice = $this->getPriceProductBySize($input['product_id'], $input['size_id']);
-        $totalPriceTopping = $this->getTotalPriceToppingByProduct($input['topping']);
-        $productPriceTotal = $productPrice * $input['product_quantity'];
-        $totalPrice = $productPriceTotal + $totalPriceTopping;
-
-
+        //giá tiền trước khi giảm giá: order_product.product_price
+        //giá tiền sau khi giảm giá:order_product.promotion_price,
+        //tổng tiền sản phẩm chưa có topping sau khi giảm giá: order_product.price
+        //tổng tiền của sản phẩm bao gồm cả topping: order_product.total_price
+        //tổng tiền của sản phẩm bao gồm topping trước khi giảm giá: order_product.total_before_promotion
+        $baseProductSizePrice = $this->getBasePriceSizeProduct($input['product_id'], $input['size_id']);
+        $productPriceAfterPromotion = $this->getPromotionPriceProductBySize($input['product_id'], $input['size_id']);
+        $totalPriceAfterPromotion = $productPriceAfterPromotion * $input['product_quantity'];
+        $totalPriceTopping = $input['product_quantity'] * $this->getTotalPriceToppingByProduct($input['topping']);
+        $totalPrice = $totalPriceAfterPromotion + $totalPriceTopping;
+        $totalBeforePromotion = $baseProductSizePrice * $input['product_quantity'] + $totalPriceTopping;
         $orderProduct['order_id'] = $orderId;
         $orderProduct['status'] = OrderDataConst::ORDER_STATUS_CUSTOMER_CREATED;
         $orderProduct['customer_id'] = $input['customer_id'];
@@ -662,8 +728,10 @@ class ProductService extends BaseService
         $orderProduct['quantity'] = $res['product_quantity'] = $input['product_quantity'];
         $orderProduct['size_id'] = $input['size_id'];
         $orderProduct['order_product_comment'] = $input['product_comment'];
-        $orderProduct['product_price'] = $res['product_price'] = $productPrice;
-        $orderProduct['price'] = $productPriceTotal;
+        $orderProduct['product_price'] = $res['product_base_price'] = $baseProductSizePrice;
+        $orderProduct['price'] = $totalPriceAfterPromotion;
+        $orderProduct['promotion_price'] = $res['product_sale_price'] = $productPriceAfterPromotion;
+        $orderProduct['total_before_promotion'] = $totalBeforePromotion;
         $orderProduct['total_price'] = $totalPrice;
         $orderProduct['total_price_topping'] = $totalPriceTopping;
         // $orderProduct['amount_after_promotion'] = $amountAfterPromotion;
@@ -729,6 +797,8 @@ class ProductService extends BaseService
                 $res[$key]['size_id'] = $value['size_id'];
                 $res[$key]['size_name'] = $value['size_name'];
                 $res[$key]['size_price'] = $value['size_price'];
+                $data[$key]['product_base_price'] = $this->getBasePriceSizeProduct($orderProduct->product_id, $sizeId);
+                $data[$key]['product_sale_price'] = $this->getPromotionPriceProductBySize($orderProduct->product_id, $sizeId);
                 $res[$key]['active'] = $this->checkActive($value['size_id'], $sizeId);
             }
             return $res;
@@ -834,8 +904,8 @@ class ProductService extends BaseService
             if (!$product) {
                 return false;
             }
-            $res[$key] = $this->getInfoProduct($product);
-            $res[$key]['product_size_price'] = $this->getPriceProductBySize($orderProduct->product_id, $orderProduct->size_id);
+            $res[$key] = $this->getInfoProduct($product, $orderProduct->id);
+            $res[$key]['product_size_price'] = $this->getPromotionPriceProductBySize($orderProduct->product_id, $orderProduct->size_id);
             $res[$key]['order_product_id'] = $orderProduct->id;
             $res[$key]['product_id'] = $orderProduct->product_id;
             $res[$key]['product_cancel'] = $this->getStatusProductCanel($orderProduct->status);
@@ -854,6 +924,10 @@ class ProductService extends BaseService
         $result['total_price'] = OrderProduct::where('order_id', $order->id)
             ->where('status', OrderDataConst::ORDER_STATUS_CUSTOMER_CREATED)
             ->sum('total_price');
+        //tổng tiền trước khi giảm giá
+        $result['total_price_base'] = OrderProduct::where('order_id', $order->id)
+            ->where('status', OrderDataConst::ORDER_STATUS_CUSTOMER_CREATED)
+            ->sum('total_before_promotion');
         return $result;
 
     }
@@ -866,8 +940,6 @@ class ProductService extends BaseService
         if (!$orderProduct) {
             return false;
         }
-        $res = [];
-        
         $product = Product::find($productId);
         // $res = $this->getInfoProduct($product);
 
@@ -891,6 +963,18 @@ class ProductService extends BaseService
 
     }
 
+    public function commonDeleteProduct($orderProductId)
+    {
+        //xoá bảng order_product_option
+        OrderProductOption::where('order_product_id', $orderProductId)->delete();
+        //xoá bảng order_product_topping
+        OrderProductTopping::where('order_product_id', $orderProductId)->delete();
+        //xoá bảng order_product
+        OrderProduct::destroy($orderProductId);
+        //xoa san pham khoi gio hang
+        return true;
+    }
+
     public function cartUpdateProduct($input)
     {
         // product_id, product_quantity, product_comment
@@ -903,13 +987,28 @@ class ProductService extends BaseService
         $orderProductId = $input['order_product_id'];
         $orderProduct = OrderProduct::find($orderProductId);
         $orderId = $orderProduct->order_id;
-        //xoá bảng order_product_option
-        OrderProductOption::where('order_product_id', $orderProductId)->delete();
-        //xoá bảng order_product_topping
-        OrderProductTopping::where('order_product_id', $orderProductId)->delete();
-        //xoá bảng order_product
-        OrderProduct::destroy($orderProductId);
-        //xoa san pham khoi gio hang
+        //chỉ update số lượng sản phẩm. Param: customer_id, customer_token, order_product_id, product_id, product_update = 1
+        if (isset($input['product_update'])) {
+            //lấy danh sách topping
+            $listTopping = OrderProductTopping::where('product_id', $productId)
+                ->where('order_product_id', $orderProductId)
+                ->where('order_id', $orderId)
+                ->pluck('topping_id');
+            $input['topping'] = implode(',', $listTopping->toArray());
+            //lấy danh sách option
+            $listOptions = OrderProductOption::where('product_id', $productId)
+                ->where('order_product_id', $orderProductId)
+                ->where('order_id', $orderId)
+                ->pluck('option_id');
+            $input['option'] = implode(',', $listOptions->toArray());
+            //lấy thông tin size
+            $input['size_id'] = $orderProduct->size_id;
+            //lấy thông tin product(comment)
+            $input['product_comment'] = $orderProduct->order_product_comment;
+            $this->commonDeleteProduct($orderProductId);
+            return $res = $this->customerAddProduct($input, $orderId);
+        }
+        $this->commonDeleteProduct($orderProductId);
         if ($input['product_quantity'] == 0) {
             return $res;
         }

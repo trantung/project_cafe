@@ -38,4 +38,6 @@ class ProductDataConst extends BaseDataConst
     const PRODUCT_CANCEL_BY_CUSTOMER_FALSE = 0;
     //xoa sp khoi gio hang
     const PRODUCT_REMOVE_CART = 1;
+    //product size price default
+    const PRODUCT_SIZE_PRICE_DEFAULT_ACTIVE = 1;
 }
