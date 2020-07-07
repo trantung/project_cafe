@@ -24,6 +24,8 @@ use APV\Customer\Models\Customer;
 use APV\Customer\Models\CustomerFriend;
 use APV\Promotion\Models\Voucher;
 use APV\Size\Models\SizeProduct;
+use APV\Topping\Models\Topping;
+use APV\Product\Models\ProductTopping;
 
 Route::get('/default_group_option', function(){
     $data = ['Độ ngọt', 'Độ chua'];
@@ -33,12 +35,21 @@ Route::get('/default_group_option', function(){
     dd('group option');
 });
 Route::get('/default_option', function(){
-    $data = ['Nhiều', 'ít', 'Không có'];
-    $group = GroupOption::all();
-    foreach ($group as $key => $value) {
-        foreach ($data as $k => $v) {
-            Option::create(['name' => $v,'group_option_id' => $value->id, 'status' => 1]);
-        }
+    $data1 = ['Nhiều đường', 'ít đường', 'Không có đường'];
+    $data2 = ['Chua nhiều', 'chua ít', 'Không chua'];
+    foreach ($data1 as $key => $value) {
+        Option::create([
+            'group_option_id' => 1,
+            'name' => $value,
+            'status' => 1,
+        ]);
+    }
+    foreach ($data2 as $key1 => $value1) {
+        Option::create([
+            'group_option_id' => 2,
+            'name' => $value1,
+            'status' => 1,
+        ]);
     }
     dd('option');
 });
@@ -136,26 +147,49 @@ Route::get('/default_voucher', function(){
 });
 Route::get('/product_size_active_default', function(){
     $products = Product::all();
-    foreach ($products as $product) {
-        $check = SizeProduct::where('product_id', $product->id)->first();
-        if (!$check) {
-            SizeProduct::create([
-                'product_id' => $product->id,
-                'size_id' => 1,
-                'price' => 30000,
-                'active' => 1,
-                'weight_number' => 1,
-            ]);
-        }
-        $sizeProduct = SizeProduct::where('product_id', $product->id)->whereNotNull('price')->first();
-        if ($sizeProduct) {
-            $sizeProduct->update(['active' => 1]);
-        } else {
-            SizeProduct::where('product_id', $product->id)->update(['price' => '40000']);
-        }
+    foreach ($products as $key => $value) {
+        SizeProduct::create([
+            'product_id' => $value->id,
+            'size_id' => 1,
+            'price' => 10000,
+            'active' => 1,
+            'weight_number' => 1
+        ]);
+        SizeProduct::create([
+            'product_id' => $value->id,
+            'size_id' => 2,
+            'price' => 20000,
+            'active' => 0,
+            'weight_number' => 2
+        ]);
+        SizeProduct::create([
+            'product_id' => $value->id,
+            'size_id' => 3,
+            'price' => 30000,
+            'active' => 0,
+            'weight_number' => 3
+        ]);
+
     }
     dd('product_size_active_default');
 });
+//fake product_topping
+Route::get('/product_topping_fake', function(){
+    $products = Product::all();
+    $toppings = Topping::all();
+    foreach ($products as $product) {
+        foreach ($toppings as $topping) {
+            ProductTopping::create([
+                'product_id' => $product->id,
+                'topping_id' => $topping->id,
+                'status' => 1,
+                'source' => 0,
+            ]);
+        }
+    }
+    dd('product_topping_fake');
+});
+
 
 Route::get('/admin/login', ['uses' => 'AdminController@getLogin', 'as' =>'login']);
 Route::post('/admin/login', ['uses' => 'AdminController@postLogin']);

@@ -13,7 +13,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  */
 class SizeProduct extends Model
 {
-    use SoftDeletes;
+    // use SoftDeletes;
 
     /**
      * @var string
@@ -23,7 +23,7 @@ class SizeProduct extends Model
     /**
      * @var array
      */
-    protected $dates = ['deleted_at'];
+    // protected $dates = ['deleted_at'];
 
     /**
      * The attributes that are mass assignable.
