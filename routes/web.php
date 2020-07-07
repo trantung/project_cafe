@@ -189,7 +189,14 @@ Route::get('/product_topping_fake', function(){
     }
     dd('product_topping_fake');
 });
-
+//random using_at for product
+Route::get('/product_using_at_fake', function(){
+    $products = Product::all();
+    foreach ($products as $product) {
+        $product->update(['using_at' => getRandomTypeShow()]);
+    }
+    dd('product_using_at_fake');
+});
 
 Route::get('/admin/login', ['uses' => 'AdminController@getLogin', 'as' =>'login']);
 Route::post('/admin/login', ['uses' => 'AdminController@postLogin']);
