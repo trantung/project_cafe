@@ -22,7 +22,8 @@ class CustomerProductApiController extends ApiBaseController
     {
         $input = $request->all();
         $data['data_detail'] = $this->productService->customerGetList($input);
-        $data['meguu_fee'] = $this->getMeguuFee();
+        $data['meguu_fee'] = $this->getMeguuFee($input);
+        $data['customer_action'] = $this->getCustomerAction();
         return $this->sendSuccess($data, 'success');
     }
 
@@ -30,7 +31,8 @@ class CustomerProductApiController extends ApiBaseController
     {
         $input = $request->all();
         $data['data_detail'] = $this->productService->customerGetDetail($input);
-        $data['meguu_fee'] = $this->getMeguuFee();
+        $data['meguu_fee'] = $this->getMeguuFee($input);
+        $data['customer_action'] = $this->getCustomerAction();
         return $this->sendSuccess($data, 'Detail success');
     }
 
@@ -38,7 +40,8 @@ class CustomerProductApiController extends ApiBaseController
     {
         $input = $request->all();
         $data['data_detail'] = $this->productService->customerAddProduct($input);
-        $data['meguu_fee'] = $this->getMeguuFee();
+        $data['meguu_fee'] = $this->getMeguuFee($input);
+        $data['customer_action'] = $this->getCustomerAction();
         return $this->sendSuccess($data, 'Detail success');
     }
 
@@ -46,7 +49,8 @@ class CustomerProductApiController extends ApiBaseController
     {
         $input = $request->all();
         $data['data_detail'] = $this->productService->cartListProduct($input);
-        $data['meguu_fee'] = $this->getMeguuFee();
+        $data['meguu_fee'] = $this->getMeguuFee($input);
+        $data['customer_action'] = $this->getCustomerAction();
         return $this->sendSuccess($data, 'Detail success');
     }
 
@@ -54,7 +58,8 @@ class CustomerProductApiController extends ApiBaseController
     {
         $input = $request->all();
         $data['data_detail'] = $this->productService->cartEditProduct($input);
-        $data['meguu_fee'] = $this->getMeguuFee();
+        $data['meguu_fee'] = $this->getMeguuFee($input);
+        $data['customer_action'] = $this->getCustomerAction();
         return $this->sendSuccess($data, 'Detail success');
     }
 
@@ -62,7 +67,8 @@ class CustomerProductApiController extends ApiBaseController
     {
         $input = $request->all();
         $data['data_detail'] = $this->productService->cartUpdateProduct($input);
-        $data['meguu_fee'] = $this->getMeguuFee();
+        $data['meguu_fee'] = $this->getMeguuFee($input);
+        $data['customer_action'] = $this->getCustomerAction();
         return $this->sendSuccess($data, 'Detail success');
     }
 
@@ -70,7 +76,8 @@ class CustomerProductApiController extends ApiBaseController
     {
         $input = $request->all();
         $data['data_detail'] = $this->productService->cartChangeUsingAt($input);
-        $data['meguu_fee'] = $this->getMeguuFee();
+        $data['meguu_fee'] = $this->getMeguuFee($input);
+        $data['customer_action'] = $this->getCustomerAction();
         return $this->sendSuccess($data, 'Detail success');
     }
     
@@ -78,7 +85,8 @@ class CustomerProductApiController extends ApiBaseController
     {
         $input = $request->all();
         $data['data_detail'] = $this->productService->cartCancelProduct($input);
-        $data['meguu_fee'] = $this->getMeguuFee();
+        $data['meguu_fee'] = $this->getMeguuFee($input);
+        $data['customer_action'] = $this->getCustomerAction();
         return $this->sendSuccess($data, 'Detail success');
     }
 
@@ -86,7 +94,8 @@ class CustomerProductApiController extends ApiBaseController
     {
         $input = $request->all();
         $data['data_detail'] = $this->productService->cartFinish($input);
-        $data['meguu_fee'] = $this->getMeguuFee();
+        $data['meguu_fee'] = $this->getMeguuFee($input);
+        $data['customer_action'] = $this->getCustomerAction();
         return $this->sendSuccess($data, 'Detail success');
     }
 

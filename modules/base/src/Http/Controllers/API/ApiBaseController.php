@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\JsonResponse;
 use APV\Base\Constants\BaseResponseCode;
 use APV\Base\Constants\BaseDataConst;
+use APV\Product\Constants\ProductDataConst;
 
 class ApiBaseController extends Controller
 {
@@ -64,8 +65,56 @@ class ApiBaseController extends Controller
         return response()->json($response, 400);
     }
 
-    public function getMeguuFee()
+    public function getMeguuFee($input = null)
     {
-        return BaseDataConst::MEGUU_FEE;
+        if (isset($input['using_at'])) {
+            $usingAt = $input['using_at'];
+            if ($usingAt == ProductDataConst::PRODUCT_USING_AT_SHOP) {
+                return BaseDataConst::MEGUU_FEE_AT_SHOP;
+            }
+            if ($usingAt == ProductDataConst::PRODUCT_USING_AT_SHIP) {
+                return BaseDataConst::MEGUU_FEE_AT_SHIP;
+            }
+        }
+        return BaseDataConst::MEGUU_FEE_DEFAULT;
+    }
+
+    public function getCustomerAction()
+    {
+        //using_at = 1, customer co 2 option: 1: dùng tại quán, 2: Mang đi
+        //using_at = 2, customer có 2 option: 3: Tôi dùng, 4: Mua tặng
+        $res = [
+            [
+                'using_at' => ProductDataConst::PRODUCT_USING_AT_SHOP,
+                'customer_option_chosse' => [
+                    [
+                        'customer_option_chosse_id' => BaseDataConst::CUSTOMER_ACTION_USING_AT_SHOP_USE_SHOP,
+                        'customer_option_chosse_name' => 'Tại quán',
+                        'active' => 1,
+                    ],
+                    [
+                        'customer_option_chosse_id' => BaseDataConst::CUSTOMER_ACTION_USING_AT_SHOP_TAKE_AWAY,
+                        'customer_option_chosse_name' => 'Mang đi',
+                        'active' => 0,
+                    ],
+                ],
+            ],
+            [
+                'using_at' => ProductDataConst::PRODUCT_USING_AT_SHIP,
+                'customer_option_chosse' => [
+                    [
+                        'customer_option_chosse_id' => BaseDataConst::CUSTOMER_ACTION_USING_AT_SHIP_OWNER,
+                        'customer_option_chosse_name' => 'Tôi dùng',
+                        'active' => 1,
+                    ],
+                    [
+                        'customer_option_chosse_id' => BaseDataConst::CUSTOMER_ACTION_USING_AT_SHIP_GIFT,
+                        'customer_option_chosse_name' => 'Mua tặng',
+                        'active' => 0,
+                    ],
+                ],
+            ]
+        ];
+        return $res;
     }
 }
