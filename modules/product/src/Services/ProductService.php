@@ -717,6 +717,7 @@ class ProductService extends BaseService
         $totalPriceTopping = $input['product_quantity'] * $this->getTotalPriceToppingByProduct($input['topping']);
         $totalPrice = $totalPriceAfterPromotion + $totalPriceTopping;
         $totalBeforePromotion = $baseProductSizePrice * $input['product_quantity'] + $totalPriceTopping;
+        // dd($totalBeforePromotion);
         $orderProduct['order_id'] = $orderId;
         $orderProduct['status'] = OrderDataConst::ORDER_STATUS_CUSTOMER_CREATED;
         $orderProduct['customer_id'] = $input['customer_id'];
@@ -797,6 +798,7 @@ class ProductService extends BaseService
                 $res[$key]['size_id'] = $value['size_id'];
                 $res[$key]['size_name'] = $value['size_name'];
                 $res[$key]['size_price'] = $value['size_price'];
+                $res[$key]['size_weight_number'] = $value['weight_number'];
                 $data[$key]['product_base_price'] = $this->getBasePriceSizeProduct($orderProduct->product_id, $sizeId);
                 $data[$key]['product_sale_price'] = $this->getPromotionPriceProductBySize($orderProduct->product_id, $sizeId);
                 $res[$key]['active'] = $this->checkActive($value['size_id'], $sizeId);
@@ -905,7 +907,7 @@ class ProductService extends BaseService
                 return false;
             }
             $res[$key] = $this->getInfoProduct($product, $orderProduct->id);
-            $res[$key]['product_size_price'] = $this->getPromotionPriceProductBySize($orderProduct->product_id, $orderProduct->size_id);
+            // $res[$key]['product_size_price'] = $this->getPromotionPriceProductBySize($orderProduct->product_id, $orderProduct->size_id);
             $res[$key]['order_product_id'] = $orderProduct->id;
             $res[$key]['product_id'] = $orderProduct->product_id;
             $res[$key]['product_cancel'] = $this->getStatusProductCanel($orderProduct->status);
