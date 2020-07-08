@@ -35,6 +35,6 @@ class Voucher extends Model
     //start_time: thoi gian bat dau
     //end_time: thoi gian ket thuc khuyen mai
     protected $fillable = [
-        'name', 'status', 'start_time', 'end_time', 'money_promotion', 'percent_promotion', 'code', 'quantity'
+        'name', 'status', 'start_time', 'end_time', 'money_promotion', 'percent_promotion', 'code', 'quantity', 'description', 'avatar'
     ];
 }

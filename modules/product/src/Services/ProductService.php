@@ -2,7 +2,6 @@
 
 namespace APV\Product\Services;
 
-use APV\Shop\Models\Shop;
 use APV\Category\Models\Category;
 use APV\Topping\Models\Topping;
 use APV\Product\Models\Product;
@@ -10,13 +9,11 @@ use APV\Product\Models\GroupOption;
 use APV\Product\Models\GroupOptionProduct;
 use APV\Product\Models\Option;
 use APV\Product\Models\OptionProduct;
-use APV\Customer\Models\Customer;
 use APV\Order\Constants\OrderDataConst;
 use APV\Order\Models\Order;
 use APV\Order\Models\OrderProduct;
 use APV\Order\Models\OrderProductTopping;
 use APV\Order\Models\OrderProductOption;
-use APV\Product\Models\CommonStep;
 use APV\Topping\Models\ToppingCategory;
 use APV\Product\Models\ProductTopping;
 use APV\Product\Constants\ProductDataConst;
@@ -31,10 +28,8 @@ use APV\Material\Models\Material;
 use APV\Base\Services\BaseService;
 use APV\Category\Services\CategoryService;
 use APV\Promotion\Models\Voucher;
-//use League\Fractal\Resource\Collection;
-use Illuminate\Database\Eloquent\Collection as Collect;
-use Illuminate\Support\Facades\Storage;
-use Illuminate\Http\UploadedFile;
+use APV\Customer\Models\Customer;
+use APV\Customer\Models\CustomerAddress;
 
 /**
  * Class ProductService
@@ -438,7 +433,6 @@ class ProductService extends BaseService
         } else {
             $listCate = Category::all();
         }
-//        $res['category_count'] = count($listCate);
         foreach ($listCate as $key => $value) {
             $res[$key]['category_id'] = $value->id;
             $res[$key]['category_name'] = $value->name;
@@ -517,13 +511,28 @@ class ProductService extends BaseService
         }
         return $res;
     }
+
+    public function getListToppingProduct($product)
+    {
+        $data = array_merge($this->getToppingOwn($product), $this->getToppingByCategory($product));
+        $check = [];
+        foreach ($data as $key => $value) {
+            if (!in_array($value['topping_id'], $check)) {
+                $check[] = $value['topping_id'];
+            } else {
+                unset($data[$key]);
+            }
+        }
+        return $data;
+    }
+
     public function getInfoDetailProduct($product)
     {
         $res = $this->getInfoProduct($product);
         $res['cover_list'] = $this->getCoverListProduct($product);
         $res['group_option'] = $this->getGroupOptionDetail($product);
         $res['size'] = $this->getSizeProduct($product->id, true);
-        $res['product_topping'] = array_merge($this->getToppingOwn($product), $this->getToppingByCategory($product));
+        $res['product_topping'] = $this->getListToppingProduct($product);
         $res['product_tags'] = $this->getTagByProduct($product->id);
         return $res;
     }
@@ -569,7 +578,6 @@ class ProductService extends BaseService
         $order['ship_id'] = $this->getValueDefault($input, 'ship_id', 1);
         $order['total_product_price'] = $this->getValueDefault($input, 'total_product_price', 0);
         $order['total_topping_price'] = $this->getValueDefault($input, 'total_topping_price', 0);
-//        $order['amount'] = $this->getMoneyAmountByProduct($input);
         return $order;
     }
     public function getPriceAfterPromotion($price)
@@ -627,7 +635,6 @@ class ProductService extends BaseService
     public function checkVoucher($voucherCode = null)
     {
         $default_promotion = 0;
-        //check voucher
         // neu voucher giam gia theo %. vi du: giam gia 10%
         if ($voucherCode) {
             $voucher = Voucher::where('code', $voucherCode)->first();
@@ -667,30 +674,33 @@ class ProductService extends BaseService
         if (isset($voucher['money_promotion'])) {
             return $total_product_price - $voucher['money_promotion'];
         }
-        return false;
+        return 0;
     }
 
     public function updateOrderCommon($orderId, $voucherCode = null)
     {
         $orderUp = Order::find($orderId);
+        //tổng tiền đơn hàng sau khi giảm giá bao gồm cả voucher
         $amount_after_promotion = $this->getAmountOrderAfterPromotion($orderId, $voucherCode);
-        if (!$amount_after_promotion) {
-            dd('sai order_id = ' . $orderId . ' and voucher_code = ' . $voucherCode);
-        }
+
+        //tổng tiền đơn hàng(order) trước khi giảm giá
         $total_product_price = OrderProduct::where('order_id', $orderId)
             ->where('status', OrderDataConst::ORDER_STATUS_CUSTOMER_CREATED)
-            ->sum('total_price');
+            ->sum('total_before_promotion');
+
+        //tổng tiền topping
         $total_price_topping = OrderProduct::where('order_id', $orderId)
             ->where('status', OrderDataConst::ORDER_STATUS_CUSTOMER_CREATED)
             ->sum('total_price_topping');
+
         $orderUp->update([
             'total_product_price' => $total_product_price,
-            'total_price_topping' => $total_price_topping,
+            'total_topping_price' => $total_price_topping,
             'amount_after_promotion' => $amount_after_promotion,
         ]);
-//        dd(Order::find($orderId));
         return true;
     }
+
     public function customerAddProduct($input, $orderEditId = null)
     {
         $res = [];
@@ -735,7 +745,6 @@ class ProductService extends BaseService
         $orderProduct['total_before_promotion'] = $totalBeforePromotion;
         $orderProduct['total_price'] = $totalPrice;
         $orderProduct['total_price_topping'] = $totalPriceTopping;
-        // $orderProduct['amount_after_promotion'] = $amountAfterPromotion;
         $orderProductId = OrderProduct::create($orderProduct)->id;
         //update order cung voi amount_after_promotion, total_product_price, total_topping_price
         $this->updateOrderCommon($orderId);
@@ -799,8 +808,8 @@ class ProductService extends BaseService
                 $res[$key]['size_name'] = $value['size_name'];
                 $res[$key]['size_price'] = $value['size_price'];
                 $res[$key]['size_weight_number'] = $value['weight_number'];
-                $data[$key]['product_base_price'] = $this->getBasePriceSizeProduct($orderProduct->product_id, $sizeId);
-                $data[$key]['product_sale_price'] = $this->getPromotionPriceProductBySize($orderProduct->product_id, $sizeId);
+                $res[$key]['product_base_price'] = $this->getBasePriceSizeProduct($orderProduct->product_id, $sizeId);
+                $res[$key]['product_sale_price'] = $this->getPromotionPriceProductBySize($orderProduct->product_id, $sizeId);
                 $res[$key]['active'] = $this->checkActive($value['size_id'], $sizeId);
             }
             return $res;
@@ -816,7 +825,7 @@ class ProductService extends BaseService
         if ($active) {
             // $listTopping = Topping::all();
             $product = Product::find($orderProduct->product_id);
-            $listTopping = array_merge($this->getToppingOwn($product), $this->getToppingByCategory($product));
+            $listTopping = $this->getListToppingProduct($product);
             $listToppingActiveId = OrderProductTopping::where('order_product_id', $orderProduct->id)->pluck('topping_id');
             foreach ($listTopping as $key => $value) {
                 $res[$key]['topping_id'] = $value['topping_id'];
@@ -943,14 +952,6 @@ class ProductService extends BaseService
             return false;
         }
         $product = Product::find($productId);
-        // $res = $this->getInfoProduct($product);
-
-        // $res['cover_list'] = $this->getCoverListProduct($product);
-        // $res['group_option'] = $this->getGroupOptionDetail($product);
-        // $res['size'] = $this->getSizeProduct($product->id, true);
-        // $res['product_topping'] = array_merge($this->getToppingOwn($product), $this->getToppingByCategory($product));
-        
-
         $res = $this->getInfoProduct($product);
         $res['order_product_id'] = $orderProduct->id;
         $res['cover_list'] = $this->getCoverListProduct($product);
@@ -958,11 +959,9 @@ class ProductService extends BaseService
         $res['product_quantity'] = $orderProduct->quantity;
         $res['size'] = $this->getSizeProductOfOrderProduct($orderProduct, true);
         $res['product_topping'] = $this->getToppingProductOfOrderProduct($orderProduct, true);
-        // $res['option'] = $this->getOptionProductOfOrderProduct($orderProduct, true);
         $res['group_option'] = $this->getGroupOptionDetail($product, $orderProduct);
         $res['product_comment'] = $orderProduct->order_product_comment;
         return $res;
-
     }
 
     public function commonDeleteProduct($orderProductId)
@@ -989,8 +988,12 @@ class ProductService extends BaseService
         $orderProductId = $input['order_product_id'];
         $orderProduct = OrderProduct::find($orderProductId);
         $orderId = $orderProduct->order_id;
+        if (!$orderProduct) {
+            return 'order_product_id = ' . $orderProductId . ' is wrong';
+        }
+
         //chỉ update số lượng sản phẩm. Param: customer_id, customer_token, order_product_id, product_id, product_update = 1
-        if (isset($input['product_update'])) {
+        if (isset($input['product_update']) && $input['product_quantity'] > 0 ) {
             //lấy danh sách topping
             $listTopping = OrderProductTopping::where('product_id', $productId)
                 ->where('order_product_id', $orderProductId)
@@ -1008,8 +1011,10 @@ class ProductService extends BaseService
             //lấy thông tin product(comment)
             $input['product_comment'] = $orderProduct->order_product_comment;
             $this->commonDeleteProduct($orderProductId);
-            return $res = $this->customerAddProduct($input, $orderId);
+            $this->customerAddProduct($input, $orderId);
+            return $this->cartListProduct($input);
         }
+
         $this->commonDeleteProduct($orderProductId);
         if ($input['product_quantity'] == 0) {
             return $res;
@@ -1020,8 +1025,8 @@ class ProductService extends BaseService
             }
         }
         //tạo mới cùng với orderId
-        $res = $this->customerAddProduct($input, $orderId);
-        return $res;
+        $this->customerAddProduct($input, $orderId);
+        return $this->cartListProduct($input);
     }
 
     public function checkUsingAtProduct($product, $usingAt)
@@ -1071,6 +1076,7 @@ class ProductService extends BaseService
         if (!$check) {
             return false;
         }
+        //customer_id, customer_token, voucher_code, customer_friend_id, address, location_lat, location_long, customer_option_chosse_id, using_at, order_comment
         $customerId = $input['customer_id'];
         $res = [];
         //update order
@@ -1083,12 +1089,48 @@ class ProductService extends BaseService
         if (isset($input['voucher_code'])) {
             $voucherCode = $input['voucher_code'];
         }
+
         $data = $this->updateOrderCommon($orderId, $voucherCode);
         if (!$data) {
             return false;
         }
-        $res['order_code'] = $orderCode = renderCode();
-        $order->update(['code' => $orderCode]);
+        $res['order_code'] = $orderCode = $customerId . generateRandomString(10);
+        //update order
+        $amount = $order->total_product_price - $order->total_topping_price;
+        $customer_phone = $customer_name = '';
+        $customer = Customer::find($customerId);
+        if ($customer) {
+            $customer_phone = $customer->phone;
+            $customer_name = $customer->name;
+        }
+        $orderUpdate['code'] = $orderCode;
+        $orderUpdate['customer_id'] = $customerId;
+        $orderUpdate['amount'] = $amount;
+        $orderUpdate['customer_phone'] = $customer_phone;
+        $orderUpdate['customer_name'] = $customer_name;
+        $orderUpdate['table_id'] = $this->getValueDefault($input, 'table_id');
+        $orderUpdate['level_id'] = $this->getValueDefault($input, 'level_id');
+        $orderUpdate['ship_id'] = $this->getValueDefault($input, 'ship_id');
+        $orderUpdate['ship_price'] = $this->getValueDefault($input, 'ship_price');
+        $orderUpdate['order_type_id'] = OrderDataConst::ORDER_TYPE_CUSTOMER_APP;
+        $orderUpdate['comment'] = $this->getValueDefault($input, 'order_comment');
+        $orderUpdate['status'] = OrderDataConst::ORDER_STATUS_CUSTOMER_FINISH;
+        $orderUpdate['order_use'] = $this->getValueDefault($input, 'order_use');
+        $order->update($orderUpdate);
+        //tạo mới record trong bảng customer_address
+        $customer_address['location_lat'] = $this->getValueDefault($input, 'location_lat');
+        $customer_address['location_long'] = $this->getValueDefault($input, 'location_long');
+        $customer_address['address'] = $this->getValueDefault($input, 'address');
+        $customer_address['favorite'] = $this->getValueDefault($input, 'favorite');
+        $customer_address['voucher_code'] = $this->getValueDefault($input, 'voucher_code');
+        $customer_address['customer_id'] = $this->getValueDefault($input, 'customer_id');
+        $customer_address['customer_friend_id'] = $this->getValueDefault($input, 'customer_friend_id');
+        $customer_address['using_at'] = $this->getValueDefault($input, 'using_at');
+        $customer_address['customer_option_chosse_id'] = $this->getValueDefault($input, 'customer_option_chosse_id');
+        CustomerAddress::create($customer_address);
+        //update order_product where status = OrderDataConst::ORDER_STATUS_CUSTOMER_CREATED to OrderDataConst::ORDER_STATUS_CUSTOMER_FINISH;
+        OrderProduct::where('order_id', $orderId)->update(['status' => OrderDataConst::ORDER_STATUS_CUSTOMER_FINISH]);
+
         return $res;
     }
 }

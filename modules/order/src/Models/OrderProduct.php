@@ -1,11 +1,8 @@
 <?php
 namespace APV\Order\Models;
 
-use APV\Product\Models\Product;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\Relations\HasMany;
-// use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 /**
  * Class Order
@@ -13,13 +10,13 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
  */
 class OrderProduct extends Model
 {
-    // use SoftDeletes;
+     use SoftDeletes;
 
     /**
      * @var string
      */
     protected $table = 'order_product';
-
+    protected $dates = ['deleted_at'];
     /**
      * @var array
      */

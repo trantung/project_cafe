@@ -145,6 +145,7 @@ Route::get('/default_voucher', function(){
     $id = Voucher::create($data)->id;
     dd($id);
 });
+
 Route::get('/product_size_active_default', function(){
     $products = Product::all();
     foreach ($products as $key => $value) {
@@ -197,6 +198,21 @@ Route::get('/product_using_at_fake', function(){
     }
     dd('product_using_at_fake');
 });
+
+Route::get('/voucher_des', function(){
+    $data = Voucher::all();
+    $avatar = '/uploads/img/default.jpg';
+    foreach ($data as $value) {
+        $value->update([
+            'description' => 'Giới thiệu voucher id số ' . $value->id,
+            'avatar' => $avatar,
+        ]);
+    }
+    dd('voucher_des');
+});
+
+
+
 
 Route::get('/admin/login', ['uses' => 'AdminController@getLogin', 'as' =>'login']);
 Route::post('/admin/login', ['uses' => 'AdminController@postLogin']);

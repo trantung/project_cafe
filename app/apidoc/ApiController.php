@@ -1467,6 +1467,35 @@
  */
 
 /**
+ * @api {post} /api_customer/product/cart/finish Thanh toán đơn hàng
+ * @apiName postProductCartFinish
+ * @apiGroup Cart
+ *
+ * @apiParam {Number} customer_id id của customer(required)
+ * @apiParam {String} customer_token token của customer(required)
+ * @apiParam {String} voucher_code mã voucher có thể empty(required)
+ * @apiParam {Number} customer_friend_id id của customer_friend có thể empty(required)
+ * @apiParam {String} address Tên địa chỉ có thể empty(required)
+ * @apiParam {String} location_lat latitude có thể empty(required)
+ * @apiParam {String} location_long longitude có thể empty(required)
+ * @apiParam {Number} customer_option_chosse_id id lựa chọn khách hàng(required. Ví dụ:1: Tại quán, 2: Mang đi, 3: Tôi dùng, 4: Mua tặng)
+ * @apiParam {Number} using_at hình thức sử dụng:1(tại quầy), 2(ship tận nơi)(required)
+ * @apiParam {String} order_comment Comment thêm cho order có thể empty(required)
+ 
+ *
+ * @apiSuccessExample Success-Response: 
+ * HTTP/1.1 200 OK
+{
+    "success": true,
+    "response_code": 1000,
+    "data": {
+        "order_code": "1zJTw8pvo0N"
+    },
+    "message": "Detail success"
+}
+ */
+
+/**
  * @api {get} /api_customer/voucher/list Danh sách các voucher
  * @apiName getVoucherList
  * @apiGroup Voucher

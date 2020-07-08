@@ -29,10 +29,12 @@ class OrderDataConst extends BaseDataConst
     const ORDER_STATUS_CUSTOMER_CREATED = 5;
     const ORDER_STATUS_CUSTOMER_FINISH = 6;
     const ORDER_STATUS_CUSTOMER_CANCEL = 7;
-    //order_type_id: 1:tai shop, 2: take away, 3: ship
+    //order_type_id: 1:tai shop, 2: take away, 3: ship, 4: khách hàng(customer) đặt qua app
     const ORDER_TYPE_AT_SHOP = 1;
     const ORDER_TYPE_TAKE_AWAY = 2;
     const ORDER_TYPE_SHIP = 3;
+    const ORDER_TYPE_CUSTOMER_APP = 4;
+    //
     const NO_ORDER = 'Have no order';
     const ORDER_NUMBER_WAITTING = 'number_waitting';
     //customer default for order

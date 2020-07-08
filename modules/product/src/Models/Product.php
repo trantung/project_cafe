@@ -1,12 +1,13 @@
 <?php
-  
-  namespace APV\Product\Models;
-  
-  use Illuminate\Database\Eloquent\Model;
-   
+
+namespace APV\Product\Models;
+
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
+
 class Product extends Model
 {
-    
+    use SoftDeletes;
     protected $fillable = [
         "duration_time",
         "close_time",
@@ -30,6 +31,8 @@ class Product extends Model
         'short_desc',
         'using_at'
     ];
+    protected $dates = ['deleted_at'];
+
     public function parentProduct()
     {
         return $this->belongsTo(Product::class, 'parent_id');

@@ -38,7 +38,7 @@ Route::group([
     //param: customer_id, customer_token, order_product_id, product_id, cancel_product(1: huy, 0: khong huy)
     Route::post('cart/cancel', 'CustomerProductApiController@cartCancelProduct');
     //order finish
-    //param: customer_id, customer_token, voucher_code
+    //param: customer_id, customer_token, voucher_code, customer_friend_id, address, location_lat, location_long, customer_option_chosse_id, using_at, order_comment
     Route::post('cart/finish', 'CustomerProductApiController@cartFinish');
 
 });
