@@ -63,22 +63,6 @@ class PromotionService extends BaseService
         return true;
     }
 
-    public function getInfoVoucher($voucher)
-    {
-        $res['voucher_id'] = $voucher->id;
-        $res['voucher_name'] = $voucher->name;
-        $res['voucher_avatar'] = url($voucher->avatar);
-        $res['voucher_description'] = $voucher->description;
-        $res['voucher_start_time'] = $voucher->start_time;
-        $res['voucher_end_time'] = $voucher->end_time;
-        $res['voucher_money_promotion'] = $voucher->money_promotion;
-        $res['voucher_percent_promotion'] = $voucher->percent_promotion;
-        $res['voucher_quantity'] = $voucher->quantity;
-        $res['voucher_code'] = $voucher->code;
-        $res['voucher_is_use'] = $this->commonCheckVoucherActive($voucher);
-        return $res;
-    }
-
     public function voucherGetList($input)
     {
         $check = $this->checkCustomerLogin($input);
@@ -88,7 +72,15 @@ class PromotionService extends BaseService
         $data = Voucher::all();
         $res = [];
         foreach ($data as $key => $voucher) {
-            $res[$key] = $this->getInfoVoucher($voucher);
+            $res[$key]['voucher_id'] = $voucher->id;
+            $res[$key]['voucher_name'] = $voucher->name;
+            $res[$key]['voucher_start_time'] = $voucher->start_time;
+            $res[$key]['voucher_end_time'] = $voucher->end_time;
+            $res[$key]['voucher_money_promotion'] = $voucher->money_promotion;
+            $res[$key]['voucher_percent_promotion'] = $voucher->percent_promotion;
+            $res[$key]['voucher_quantity'] = $voucher->quantity;
+            $res[$key]['voucher_code'] = $voucher->code;
+            $res[$key]['voucher_is_use'] = $this->commonCheckVoucherActive($voucher);
         }
         return $res;
     }
@@ -104,7 +96,17 @@ class PromotionService extends BaseService
         if (!$voucher) {
             return false;
         }
-        return $this->getInfoVoucher($voucher);
+        $res = [];
+        $res['voucher_id'] = $voucher->id;
+        $res['voucher_name'] = $voucher->name;
+        $res['voucher_start_time'] = $voucher->start_time;
+        $res['voucher_end_time'] = $voucher->end_time;
+        $res['voucher_money_promotion'] = $voucher->money_promotion;
+        $res['voucher_percent_promotion'] = $voucher->percent_promotion;
+        $res['voucher_quantity'] = $voucher->quantity;
+        $res['voucher_code'] = $voucher->code;
+        $res['voucher_is_use'] = $this->commonCheckVoucherActive($voucher);
+        return $res;
     }
     public function commonCheckVoucherActive($voucher)
     {
@@ -168,32 +170,53 @@ class PromotionService extends BaseService
         $checkVoucherNotUsed = $this->checkVoucherNotUsed($voucher);
         if (!$checkVoucherNotUsed) {
             $res['voucher_code'] = $voucher->code;
-            //voucher_is_use: được sử dụng
-            //voucher_used: voucher đã sử dụng rồi
             $res['voucher_is_use'] = PromotionDataConst::VOUCHER_IS_INACTIVE;
             $res['voucher_used'] = PromotionDataConst::VOUCHER_STATUS_USED;
             return $res;
         }
-        return $this->getInfoVoucher($voucher);
+        $res = [];
+        $res['voucher_id'] = $voucher->id;
+        $res['voucher_name'] = $voucher->name;
+        $res['voucher_start_time'] = $voucher->start_time;
+        $res['voucher_end_time'] = $voucher->end_time;
+        $res['voucher_money_promotion'] = $voucher->money_promotion;
+        $res['voucher_percent_promotion'] = $voucher->percent_promotion;
+        $res['voucher_quantity'] = $voucher->quantity;
+        $res['voucher_code'] = $voucher->code;
+        $res['voucher_status'] = $voucher->status;
+        return $res;
     }
-
+    //param: voucher_code, amount_after_promotion. res: trả về tổng tiền sau khi ap dung voucher
     public function voucherApplyCode($input)
     {
         $check = $this->checkCustomerLogin($input, 'voucher_code');
         if (!$check) {
             return false;
         }
+        $amount_after_promotion = $input['amount_after_promotion'];
         $voucher = Voucher::where('code', $input['voucher_code'])->first();
         //giảm số lượng hiện tại trong voucher
         $voucher->update(['quantity' => $voucher->quantity - 1]);
         //update status voucher
         $voucher->update(['status' => PromotionDataConst::VOUCHER_STATUS_USED]);
+
+        if (isset($voucher['percent_promotion'])) {
+            $percentPromotion = $voucher['percent_promotion'];
+            $promotionPrice = $amount_after_promotion * $percentPromotion/100;
+            $res['amount_after_promotion'] = $amount_after_promotion - $promotionPrice;
+            return $res;
+        }
+        if (isset($voucher['money_promotion'])) {
+            return $res['amount_after_promotion'] = $amount_after_promotion - $voucher['money_promotion'];
+        }
+
         $res['voucher_id'] = $voucher->id;
         $res['voucher_code'] = $voucher->code;
         $res['voucher_name'] = $voucher->name;
-        $res['voucher_money_promotion'] = $voucher->money_promotion;
-        $res['voucher_percent_promotion'] = $voucher->percent_promotion;
+        $res['error'] = 'error';
         return $res;
     }
+
+
 
 }
