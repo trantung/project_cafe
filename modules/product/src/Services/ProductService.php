@@ -387,15 +387,19 @@ class ProductService extends BaseService
         return $this->getPromotionPriceProductBySize($product->id, $productSize->size_id);
     }
 
-    public function getInfoProduct($product, $orderProductId = null)
+    public function getInfoProduct($product, $orderProductId = null, $productToppingPrice = null)
     {
         $res = [];
         $res['product_id'] = $product->id;
         $res['product_name'] = $product->name;
         $res['product_short_desc'] = $product->short_desc;
         $res['product_description'] = $product->description;
-        $res['product_base_price'] = $this->getBasePriceByProduct($product, $orderProductId);
-        $res['product_sale_price'] = $this->getSalePriceByProduct($product,$orderProductId);
+        $toppingPrice = 0;
+        if ($productToppingPrice) {
+            $toppingPrice = $productToppingPrice;
+        }
+        $res['product_base_price'] = $toppingPrice + $this->getBasePriceByProduct($product, $orderProductId);
+        $res['product_sale_price'] = $toppingPrice + $this->getSalePriceByProduct($product,$orderProductId);
         $res['product_image_thumbnail'] = url($product->avatar);
         $res['product_using_at'] = $product->using_at;
         return $res;
@@ -912,10 +916,17 @@ class ProductService extends BaseService
         $res = [];
         foreach ($orderProducts as $key => $orderProduct) {
             $product = Product::find($orderProduct->product_id);
+            $productTopping = OrderProductTopping::where('product_id', $orderProduct->product_id)
+                ->where('order_product_id', $orderProduct->id)
+                ->first();
+            if ($productTopping) {
+                return 'sai cartListProduct at order_product_id' . $orderProduct->id;
+            }
             if (!$product) {
                 return false;
             }
-            $res[$key] = $this->getInfoProduct($product, $orderProduct->id);
+            $productToppingPrice = Topping::find($productTopping->topping_id)->price;
+            $res[$key] = $this->getInfoProduct($product, $orderProduct->id, $productToppingPrice);
             // $res[$key]['product_size_price'] = $this->getPromotionPriceProductBySize($orderProduct->product_id, $orderProduct->size_id);
             $res[$key]['order_product_id'] = $orderProduct->id;
             $res[$key]['product_id'] = $orderProduct->product_id;
