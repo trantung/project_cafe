@@ -916,21 +916,13 @@ class ProductService extends BaseService
         $res = [];
         foreach ($orderProducts as $key => $orderProduct) {
             $product = Product::find($orderProduct->product_id);
-            $productTopping = OrderProductTopping::where('product_id', $orderProduct->product_id)
+            $productToppingPrice = OrderProductTopping::where('product_id', $orderProduct->product_id)
                 ->where('order_product_id', $orderProduct->id)
-                ->first();
+                ->sum('topping_price');
             if (!$product) {
                 return false;
             }
-            if (!$productTopping) {
-                $productToppingPrice = 0;
-            } else {
-                $productToppingData = Topping::find($productTopping->topping_id);
-                if (!$productToppingData) {
-                    return 'sai productToppingData at order_product_id = '. $orderProduct->id . 'and product_id = ' . $orderProduct->product_id;
-                }
-                $productToppingPrice = $productToppingData->price;
-            }
+            
             $res[$key] = $this->getInfoProduct($product, $orderProduct->id, $productToppingPrice);
             // $res[$key]['product_size_price'] = $this->getPromotionPriceProductBySize($orderProduct->product_id, $orderProduct->size_id);
             $res[$key]['order_product_id'] = $orderProduct->id;
