@@ -919,7 +919,7 @@ class ProductService extends BaseService
             $productTopping = OrderProductTopping::where('product_id', $orderProduct->product_id)
                 ->where('order_product_id', $orderProduct->id)
                 ->first();
-            if ($productTopping) {
+            if (!$productTopping) {
                 return 'sai cartListProduct at order_product_id' . $orderProduct->id;
             }
             if (!$product) {
