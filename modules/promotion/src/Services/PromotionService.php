@@ -193,6 +193,9 @@ class PromotionService extends BaseService
         if (!$check) {
             return false;
         }
+        if (!isset($input['amount_after_promotion'])) {
+            return 'amount_after_promotion is must have';
+        }
         $amount_after_promotion = $input['amount_after_promotion'];
         $voucher = Voucher::where('code', $input['voucher_code'])->first();
         //giảm số lượng hiện tại trong voucher

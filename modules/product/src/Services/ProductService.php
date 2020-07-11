@@ -1082,7 +1082,7 @@ class ProductService extends BaseService
         //update order
         $order = Order::where('customer_id', $customerId)->where('status', OrderDataConst::ORDER_STATUS_CUSTOMER_CREATED)->first();
         if (!$order) {
-            return false;
+            return 'sai order';
         }
         $orderId = $order->id;
         $voucherCode = null;
@@ -1092,9 +1092,8 @@ class ProductService extends BaseService
 
         $data = $this->updateOrderCommon($orderId, $voucherCode);
         if (!$data) {
-            return false;
+            return 'sai update order';
         }
-        $res['order_code'] = $orderCode = $customerId . generateRandomString(10);
         //update order
         $amount = $order->total_product_price - $order->total_topping_price;
         $customer_phone = $customer_name = '';
@@ -1130,7 +1129,7 @@ class ProductService extends BaseService
         CustomerAddress::create($customer_address);
         //update order_product where status = OrderDataConst::ORDER_STATUS_CUSTOMER_CREATED to OrderDataConst::ORDER_STATUS_CUSTOMER_FINISH;
         OrderProduct::where('order_id', $orderId)->update(['status' => OrderDataConst::ORDER_STATUS_CUSTOMER_FINISH]);
-
+        $res['order_code'] = $orderCode = $customerId . generateRandomString(10);
         return $res;
     }
 }
