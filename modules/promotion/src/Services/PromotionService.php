@@ -193,10 +193,10 @@ class PromotionService extends BaseService
         if (!$check) {
             return false;
         }
-        if (!isset($input['amount_after_promotion'])) {
-            return 'amount_after_promotion is must have';
+        if (!isset($input['total_product_price'])) {
+            return 'total_product_price is must have';
         }
-        $amount_after_promotion = $input['amount_after_promotion'];
+        $total_product_price = $input['total_product_price'];
         $voucher = Voucher::where('code', $input['voucher_code'])->first();
         //giảm số lượng hiện tại trong voucher
         $voucher->update(['quantity' => $voucher->quantity - 1]);
@@ -205,12 +205,15 @@ class PromotionService extends BaseService
 
         if (isset($voucher['percent_promotion'])) {
             $percentPromotion = $voucher['percent_promotion'];
-            $promotionPrice = $amount_after_promotion * $percentPromotion/100;
-            $res['amount_after_promotion'] = $amount_after_promotion - $promotionPrice;
+            $promotionPrice = $total_product_price * $percentPromotion/100;
+            $res['total_product_price'] = $total_product_price;
+            $res['amount_after_promotion'] = $total_product_price - $promotionPrice;
             return $res;
         }
         if (isset($voucher['money_promotion'])) {
-            return $res['amount_after_promotion'] = $amount_after_promotion - $voucher['money_promotion'];
+            $res['total_product_price'] = $total_product_price;
+            $res['amount_after_promotion'] = $total_product_price - $voucher['money_promotion'];
+            return $res;
         }
 
         $res['voucher_id'] = $voucher->id;
@@ -219,7 +222,5 @@ class PromotionService extends BaseService
         $res['error'] = 'error';
         return $res;
     }
-
-
 
 }

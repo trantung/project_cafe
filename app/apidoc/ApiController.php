@@ -1602,6 +1602,7 @@
  * @apiParam {Number} customer_id id của customer(required)
  * @apiParam {Number} customer_token token của customer(required)
  * @apiParam {Number} voucher_code code của voucher(required)
+ * @apiParam {Number} total_product_price  Tổng tiền đơn hàng trước khi áp dụng voucher(required)
  *
  * @apiSuccessExample Success-Response:
  * HTTP/1.1 200 OK
@@ -1609,15 +1610,8 @@
     "success": true,
     "response_code": 1000,
     "data": {
-        "voucher_id": 1,
-        "voucher_name": "voucher test",
-        "voucher_start_time": "2020-07-01",
-        "voucher_end_time": "2021-07-01",
-        "voucher_money_promotion": "0",
-        "voucher_percent_promotion": 10,
-        "voucher_quantity": 999,
-        "voucher_code": "MEGUU1",
-        "voucher_status": 1
+        "total_product_price": 100000,
+        "amount_after_promotion": 80000,
     },
     "message": "success"
 }

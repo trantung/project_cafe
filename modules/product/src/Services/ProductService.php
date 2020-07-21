@@ -708,15 +708,21 @@ class ProductService extends BaseService
     public function customerAddProduct($input, $orderEditId = null)
     {
         $res = [];
+        $weightNumber = 1;
         $checkOrderExist = Order::where('customer_id', $input['customer_id'])->where('status', OrderDataConst::ORDER_STATUS_CUSTOMER_CREATED)->first();
         if ($checkOrderExist) {
             $orderId = $checkOrderExist->id;
+            $number = OrderProduct::where('order_id', $orderId)->orderBy('weight_number', 'desc')->first();
+            $weightNumber = $number->weight_number + $weightNumber;
         } else {
             $order = $this->formatAddProductToCart($input);
             $orderId = Order::create($order)->id;
         }
         if ($orderEditId) {
             $orderId = $orderEditId;
+            if (isset($input['weight_number'])) {
+                $weightNumber = $input['weight_number'];
+            }
         }
         $res['size'] = $this->getSizeOrderProduct($input['product_id'], $input['size_id']);
         //tao mới record trong bảng order_product
@@ -749,6 +755,7 @@ class ProductService extends BaseService
         $orderProduct['total_before_promotion'] = $totalBeforePromotion;
         $orderProduct['total_price'] = $totalPrice;
         $orderProduct['total_price_topping'] = $totalPriceTopping;
+        $orderProduct['weight_number'] = $weightNumber;
         $orderProductId = OrderProduct::create($orderProduct)->id;
         //update order cung voi amount_after_promotion, total_product_price, total_topping_price
         $this->updateOrderCommon($orderId);
@@ -910,7 +917,9 @@ class ProductService extends BaseService
         if (!$order) {
             return false;
         }
-        $orderProducts = OrderProduct::where('order_id', $order->id)->get();
+        $orderProducts = OrderProduct::where('order_id', $order->id)
+            ->orderBy('weight_number', 'asc')
+            ->get();
         // getInfoDetailProduct
         // $data = Product::whereIn('id', $listProduct)->get();
         $res = [];
@@ -999,7 +1008,7 @@ class ProductService extends BaseService
         if (!$orderProduct) {
             return 'order_product_id = ' . $orderProductId . ' is wrong';
         }
-
+        $input['weight_number'] = $orderProduct->weight_number;
         //chỉ update số lượng sản phẩm. Param: customer_id, customer_token, order_product_id, product_id, product_update = 1
         if (isset($input['product_update']) && $input['product_quantity'] > 0 ) {
             //lấy danh sách topping
@@ -1048,6 +1057,7 @@ class ProductService extends BaseService
     public function cartChangeUsingAt($input)
     {
         $customerToken = $input['customer_token'];
+        $customerId = $input['customer_id'];
         $checkToken = $this->checkCustomerToken($customerToken);
         if (!$checkToken || !isset($input['customer_id'])) {
             return false;
@@ -1056,13 +1066,30 @@ class ProductService extends BaseService
         $listProductId = explode(',', $input['list_product_id']);
         $usingAt = $input['using_at'];
         $products = Product::whereIn('id', $listProductId)->get();
+        $productIdUsingAt = [];
+        $arrayUsingAt = [$usingAt, ProductDataConst::PRODUCT_USING_AT_ALL];
         foreach ($products as $key => $product) {
+            if (in_array($product->using_at, $arrayUsingAt)) {
+                $productIdUsingAt[] = $product->id;
+            }
             $res[$key]['product_id'] = $product->id;
             $res[$key]['product_can_change'] = $this->checkUsingAtProduct($product, $usingAt);
-
         }
-        return $res;
+        $order = Order::where('customer_id', $customerId)->where('status', OrderDataConst::ORDER_STATUS_CUSTOMER_CREATED)->first();
+        if (!$order) {
+            return 'customer_id = ' . $customerId . 'khong co order';
+        }
+        //danh sách sản phẩm có using_at = $usingAt
+
+        $total_product_price = OrderProduct::where('order_id', $order->id)
+            ->where('status', OrderDataConst::ORDER_STATUS_CUSTOMER_CREATED)
+            ->whereIn('product_id', $productIdUsingAt)
+            ->sum('total_price');
+        $result['total_product_price'] = $total_product_price;
+        $result['list_product'] = $res;
+        return $result;
     }
+
     public function cartCancelProduct($input)
     {
         $orderProductId = $input['order_product_id'];
@@ -1110,6 +1137,7 @@ class ProductService extends BaseService
             $customer_phone = $customer->phone;
             $customer_name = $customer->name;
         }
+        $orderCode = $order->id . generateRandomString(32);
         $orderUpdate['code'] = $orderCode;
         $orderUpdate['customer_id'] = $customerId;
         $orderUpdate['amount'] = $amount;
