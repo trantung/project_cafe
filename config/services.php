@@ -38,4 +38,13 @@ return [
             'tolerance' => env('STRIPE_WEBHOOK_TOLERANCE', 300),
         ],
     ],
+    'firebase' => [
+        'database_url' => env('FIREBASE_DATABASE_URL', ''),
+        'project_id' => env('FIREBASE_PROJECT_ID', 'meegucoffee'),
+        'private_key_id' => env('FIREBASE_PRIVATE_KEY_ID', '58dbc0e39205404becae4c09a6577d3b86f0446a'),
+        'private_key' => str_replace("\\n", "\n", env('FIREBASE_PRIVATE_KEY', '')),
+        'client_email' => env('FIREBASE_CLIENT_EMAIL', 'firebase-adminsdk-nb0nz@meegucoffee.iam.gserviceaccount.com'),
+        'client_id' => env('FIREBASE_CLIENT_ID', '113559719768478558700'),
+        'client_x509_cert_url' => env('FIREBASE_CLIENT_x509_CERT_URL', 'https://www.googleapis.com/robot/v1/metadata/x509/firebase-adminsdk-nb0nz%40meegucoffee.iam.gserviceaccount.com'),
+    ],
 ];
