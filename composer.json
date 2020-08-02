@@ -11,6 +11,7 @@
         "php": "^7.3",
         "barryvdh/laravel-debugbar": "^3.2",
         "fideloper/proxy": "^4.0",
+        "kreait/firebase-php": "4.0",
         "laravel/framework": "5.7.*",
         "laravel/passport": "^7.3",
         "laravel/tinker": "^1.0",
@@ -32,6 +33,20 @@
     "extra": {
         "laravel": {
             "dont-discover": []
+        }
+    },
+    "laravel": {
+        "providers": [
+            "Kreait\\Laravel\\Firebase\\ServiceProvider"
+        ],
+        "aliases": {
+            "FirebaseAuth": "Kreait\\Laravel\\Firebase\\Facades\\FirebaseAuth",
+            "FirebaseDatabase": "Kreait\\Laravel\\Firebase\\Facades\\FirebaseDatabase",
+            "FirebaseDynamicLinks": "Kreait\\Laravel\\Firebase\\Facades\\FirebaseDynamicLinks",
+            "FirebaseFirestore": "Kreait\\Laravel\\Firebase\\Facades\\FirebaseFirestore",
+            "FirebaseMessaging": "Kreait\\Laravel\\Firebase\\Facades\\FirebaseMessaging",
+            "FirebaseRemoteConfig": "Kreait\\Laravel\\Firebase\\Facades\\FirebaseRemoteConfig",
+            "FirebaseStorage": "Kreait\\Laravel\\Firebase\\Facades\\FirebaseStorage"
         }
     },
     "autoload": {

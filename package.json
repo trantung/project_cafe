@@ -42,6 +42,7 @@
         }
     },
     "dependencies": {
-        "bootstrap-colorpicker": "^3.2.0"
+        "bootstrap-colorpicker": "^3.2.0",
+        "firebase": "^7.17.1"
     }
 }

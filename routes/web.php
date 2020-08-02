@@ -27,6 +27,11 @@ use APV\Size\Models\SizeProduct;
 use APV\Topping\Models\Topping;
 use APV\Product\Models\ProductTopping;
 
+Route::get('/firebase','FireBaseController@index');
+Route::get('/testFire', function () {
+    return view('test');
+});
+
 Route::get('/default_group_option', function(){
     $data = ['Độ ngọt', 'Độ chua'];
     foreach ($data as $key => $value) {
@@ -210,7 +215,6 @@ Route::get('/voucher_des', function(){
     }
     dd('voucher_des');
 });
-
 
 
 
