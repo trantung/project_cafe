@@ -32,14 +32,14 @@
     export default {
         data () {
             return {
-                customer_tokens: [] // mảng users chứa thông tin của các user lấy từ firebase về
+                customer_tokens: [] // mảng customer_tokens chứa thông tin của các user lấy từ firebase về
             }
         },
         mounted() {
             firebase.initializeApp(window.firebaseConfig);
             // Khởi tạo firebase realtime database.
             firebase.database().ref('customer_tokens/').on('value', (snapshot) => {
-                this.users = snapshot.val(); // Mỗi khi dữ liệu của users trên Firebase thay đổi, sẽ cập nhật vào mảng users.
+                this.users = snapshot.val(); // Mỗi khi dữ liệu của users trên Firebase thay đổi, sẽ cập nhật vào mảng customer_tokens.
             });
         }
     }
