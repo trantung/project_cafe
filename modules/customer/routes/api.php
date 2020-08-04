@@ -16,8 +16,9 @@ Route::group([
 });
 
 Route::group([
-    'prefix' => 'api_customer/friend/',
+    'prefix' => 'api_customer/',
     'namespace' => 'APV\Customer\Http\Controllers\API',
 ], function () {
-    Route::get('friendList', 'CustomerApiController@getFriendList');
+    Route::get('friend/friendList', 'CustomerApiController@getFriendList');
+    Route::get('register', 'CustomerApiController@postRegister');
 });

@@ -82,4 +82,29 @@ class CustomerApiController extends ApiBaseController
         $data = $this->customerService->getFriendList($input);
         return $this->sendSuccess($data, 'Success');
     }
+
+    public function postRegister(Request $request)
+    {   
+        $input = $request->all();
+        // dd($input);
+        $url = 'https://www.googleapis.com/identitytoolkit/v3/relyingparty/verifyPhoneNumber?key=' . API_KEY;
+        $urlVerify = 'https://www.googleapis.com/identitytoolkit/v3/relyingparty/sendVerificationCode?key=' . API_KEY;
+
+        $data = array('key' => , 'code' => $input['customer_code']);
+        $data = http_build_query($data);
+        // use key 'http' even if you send the request to https://...
+        // $data = json_encode($data);
+
+        $options = array(
+            'http' => array(
+                'header'  => "Content-type: application/x-www-form-urlencoded\r\n",
+                'method'  => 'POST',
+                'content' => $data
+            )
+        );
+        $context  = stream_context_create($options);
+        // $result = file_get_contents($url, false, $context);
+        $resultVerfiy = file_get_contents($urlVerify, false, $context);
+        dd($resultVerfiy);
+    }
 }
