@@ -21,4 +21,6 @@ Route::group([
 ], function () {
     Route::get('friend/friendList', 'CustomerApiController@getFriendList');
     Route::post('register', 'CustomerApiController@postRegister');
+    //update profile: sex, height, weight, birthday. param: customer_id, customer_token
+    Route::post('update_profile', 'CustomerApiController@postUpdateProfile');
 });

@@ -37,7 +37,11 @@ class Customer extends Model
         'phone',
         'username',
         'password',
-        'active'
+        'active',
+        'sex',
+        'birthday',
+        'height',
+        'weight',
     ];
     protected $hidden = ['password', 'remember_token'];
 }

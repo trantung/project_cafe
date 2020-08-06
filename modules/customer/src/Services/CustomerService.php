@@ -142,11 +142,38 @@ class CustomerService extends BaseService
         return $res;
     }
 
+    public function checkCustomerExist($phone)
+    {
+        $customer = Customer::where('phone', $phone)->first();
+        $res = [];
+        if (!$customer) {
+            return $res;
+        }
+        $customerId = $customer->id;
+        $customerToken = CustomerToken::where('customer_id', $customerId)->first();
+        if (!$customerToken) {
+            return $res;
+        }
+        $res['customer_id'] = $customerId;
+        $res['customer_token'] = $customerToken->customer_token;
+        if ($customer->birthday) {
+            $res['is_login'] = LOGIN_SUCCESS_UPDATE;
+        } else {
+            $res['is_login'] = LOGIN_SUCCESS_NOT_UPDATE;
+        }
+        return $res;
+    }
+
     public function createNewCustomer($input)
     {
         $res = [];
-        //create new customer with phone
         $phone = $input['customer_phone'];
+        //check customer da ton tai chua va da update thong tin chua
+        $checkExist = $this->checkCustomerExist($phone);
+        if (!empty($checkExist)) {
+            return $checkExist;
+        }
+        //create new customer with phone
         $customerId = Customer::create([
             'phone' => $phone,
             'username' => $phone,
@@ -177,6 +204,30 @@ class CustomerService extends BaseService
             dd('token');
         }
         $res['customer_token'] = $customerToken;
+        $res['is_login'] = LOGIN_FAIL;
+        return $res;
+    }
+
+    public function postUpdateProfile($input)
+    {
+        //update profile: sex, height, weight, birthday
+        $check = $this->checkCustomerLogin($input);
+        if (!$check) {
+            return 'sai customer_id va customer_token';
+        }
+        $customerId = $input['customer_id'];
+        $customer = Customer::find($customerId);
+        if (!$customer) {
+            return 'khong co customer: ' . $customerId;
+        }
+        $customer->update([
+            'sex' => $input['sex'],
+            'birthday' => $input['birthday'],
+            'height' => $input['height'],
+            'weight' => $input['weight'],
+        ]);
+        $res['customer_id'] = $customerId;
+        $res['customer_token'] = $input['customer_token'];
         return $res;
     }
 }

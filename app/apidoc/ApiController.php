@@ -1629,7 +1629,33 @@
  * @apiParam {String} device_token device_token của thiết bị(required)
  * @apiParam {Number} os Hệ điều hành của thiết bị(required. Default: 1: IOS, 2: ANDROID, 3: Hệ điều hành khác)
  *
- * @apiSuccessExample Success-Response:
+ * @apiSuccessExample Success-Response: is_login: 0 là chưa login và chưa có tài khoản, 1: đã có tài khoản nhưng chưa update thông tin, 2: có tài khoản và đã update thông tin
+ * HTTP/1.1 200 OK
+    {
+        "success": true,
+        "response_code": 1000,
+        "data": {
+        "customer_id": 123,
+        "customer_token": 'AIzaSyAaoRvXXCxKIJzjseA0GbEC58bckEtKLxE',
+        "is_login": 0,
+        },
+        "message": "success"
+    }
+ */
+
+/**
+ * @api {post} /api_customer/update_profile Update thông tin user
+ * @apiName postCustomerUpdateProfile
+ * @apiGroup Customer
+ *
+ * @apiParam {Number} customer_id id của customer(required)
+ * @apiParam {String} customer_token token của customer(required)
+ * @apiParam {Number} sex giới tính của customer(required)
+ * @apiParam {Number} birthday  Ngày tháng năm sinh của customer(required)
+ * @apiParam {Number} height chiều cao của customer(required)
+ * @apiParam {Number} weight cân nặng của customer(required)
+ *
+ * @apiSuccessExample Success-Response: is_login: 0 là chưa login và chưa có tài khoản, 1: đã có tài khoản nhưng chưa update thông tin, 2: có tài khoản và đã update thông tin
  * HTTP/1.1 200 OK
     {
         "success": true,
@@ -1641,5 +1667,4 @@
         "message": "success"
     }
  */
-
 

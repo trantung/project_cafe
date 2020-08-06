@@ -82,6 +82,13 @@ class CustomerApiController extends ApiBaseController
         $data = $this->customerService->getFriendList($input);
         return $this->sendSuccess($data, 'Success');
     }
+    
+    public function postUpdateProfile(Request $request)
+    {
+        $input = $request->all();
+        $data = $this->customerService->postUpdateProfile($input);
+        return $this->sendSuccess($data, 'Success');
+    }
 
     public function postRegister(Request $request)
     {   
