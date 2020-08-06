@@ -86,7 +86,7 @@ class CustomerApiController extends ApiBaseController
     public function postRegister(Request $request)
     {   
         $input = $request->all();
-        dd('https://www.googleapis.com/identitytoolkit/v3/relyingparty/verifyPhoneNumber?key=' . API_KEY);
+        // dd('https://www.googleapis.com/identitytoolkit/v3/relyingparty/verifyPhoneNumber?key=' . API_KEY);
         if (!isset($input['customer_code']) || !isset($input['customer_phone']) || !isset($input['verify_id']) || !isset($input['device_id']) || !isset($input['device_token'])) {
             return $this->sendSuccess(false, 'Thiếu field');
         }
@@ -104,9 +104,14 @@ class CustomerApiController extends ApiBaseController
             )
         );
         $context  = stream_context_create($options);
-        $result = file_get_contents($url, false, $context);
-        if ($result['code'] == !FIRBASE_CODE_SUCCESS) {
-            return $this->sendSuccess(false, 'firebase api sai');
+        try {
+            $result = file_get_contents($url, false, $context);
+        } catch (Exception $e) {
+            return $this->sendSuccess(false, 'firebase verify_id het han');
+        }
+        $result = json_decode($result);
+        if ($result->phoneNumber != $input['customer_phone']) {
+            return $this->sendSuccess(false, 'sdt firebase khac sdt nhap');
         }
         $data = $this->customerService->createNewCustomer($input);
         return $this->sendSuccess($data, 'Success');
