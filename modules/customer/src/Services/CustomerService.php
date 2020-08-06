@@ -158,7 +158,7 @@ class CustomerService extends BaseService
         //create device_id and device_token with customer_id
         $device = [
             'device_id' => $input['device_id'],
-            'device_token' => $input['device_token\' => $input[\'device_id'],
+            'device_token' => $input['device_token'],
             'customer_id' => $customerId,
             'device_name' => getNameDevice($input['os']),
         ];
