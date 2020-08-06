@@ -18,6 +18,7 @@ class CreateCustomerTokensTable extends Migration
             $table->text('customer_token');
             $table->text('customer_phone');
             $table->string('expired');
+            $table->timestamps();
         });
     }
 
