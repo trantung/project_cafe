@@ -9,6 +9,7 @@ use APV\Material\Models\MaterialType;
 use APV\Material\Models\Material;
 use APV\Size\Models\Size;
 use APV\Topping\Models\Topping;
+use APV\Customer\Models\CustomerToken;
 
 function getNameOfCategoryParent($category)
 {
@@ -209,6 +210,7 @@ function renderCode($str = null)
     $randstring = substr(str_shuffle(str_repeat($x='0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ', ceil($length/strlen($x)) )),1,$length);
     return $randstring;
 }
+
 function generateRandomString($length = 32) {
     $characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
     $charactersLength = strlen($characters);
@@ -217,4 +219,30 @@ function generateRandomString($length = 32) {
         $randomString .= $characters[rand(0, $charactersLength - 1)];
     }
     return $randomString;
+}
+
+function getNameDevice($os)
+{
+    if ($os == IOS) {
+        return 'IOS';
+    }
+    if ($os == ANDROID) {
+        return 'ANDROID';
+    }
+    if ($os == HDHK) {
+        return 'HDHK';
+    }
+    return 'UNKNOWN';
+}
+
+function checkCustomerToken($input)
+{
+    $customerId = $input['customer_id'];
+    $customerToken = $input['customer_token'];
+    $check = CustomerToken::where('customer_id', $customerId)->where('customer_token', $customerToken)->first();
+    if (!$check) {
+        return false;
+    }
+    //check thoi gian het han: TODO
+    return true;
 }

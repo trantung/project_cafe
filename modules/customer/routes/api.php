@@ -20,5 +20,5 @@ Route::group([
     'namespace' => 'APV\Customer\Http\Controllers\API',
 ], function () {
     Route::get('friend/friendList', 'CustomerApiController@getFriendList');
-    Route::get('register', 'CustomerApiController@postRegister');
+    Route::post('register', 'CustomerApiController@postRegister');
 });

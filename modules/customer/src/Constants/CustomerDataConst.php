@@ -23,5 +23,5 @@ class CustomerDataConst extends BaseDataConst
         'message' => 'Phone is existed',
     ];
     const PASSWORD_DEFAULT = 123456;
-    
+    const ACTIVE = 1;
 }

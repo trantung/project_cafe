@@ -1617,4 +1617,29 @@
 }
  */
 
+/**
+ * @api {post} /api_customer/register Xác thực mã code và đăng ký user mới
+ * @apiName postCustomerRegister
+ * @apiGroup Customer
+ *
+ * @apiParam {String} customer_phone phone của customer(required)
+ * @apiParam {String} customer_code code mà customer nhập(required)
+ * @apiParam {String} verify_id verificationId của app nhận được khi gọi đến firebase(required)
+ * @apiParam {String} device_id device_id của thiết bị(required)
+ * @apiParam {String} device_token device_token của thiết bị(required)
+ * @apiParam {Number} os Hệ điều hành của thiết bị(required. Default: 1: IOS, 2: ANDROID, 3: Hệ điều hành khác)
+ *
+ * @apiSuccessExample Success-Response:
+ * HTTP/1.1 200 OK
+    {
+        "success": true,
+        "response_code": 1000,
+        "data": {
+        "customer_id": 123,
+        "customer_token": 'AIzaSyAaoRvXXCxKIJzjseA0GbEC58bckEtKLxE',
+        },
+        "message": "success"
+    }
+ */
+
 

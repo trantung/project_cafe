@@ -61,12 +61,16 @@ class BaseService
 
     public function checkCustomerLogin($input, $field = null)
     {
-        if (!isset($input['customer_token'])) {
+        if (!isset($input['customer_token']) || !isset($input['customer_id'])) {
             return false;
         }
-        $customerToken = $input['customer_token'];
-        $checkToken = $this->checkCustomerToken($customerToken);
-        if (!$checkToken || !isset($input['customer_id'])) {
+        $checkCustomerToken = checkCustomerToken($input);
+//        $customerToken = $input['customer_token'];
+//        $checkToken = $this->checkCustomerToken($customerToken);
+//        if (!$checkToken || !isset($input['customer_id'])) {
+//            return false;
+//        }
+        if (!$checkCustomerToken) {
             return false;
         }
         if ($field) {

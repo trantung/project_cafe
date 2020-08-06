@@ -86,15 +86,16 @@ class CustomerApiController extends ApiBaseController
     public function postRegister(Request $request)
     {   
         $input = $request->all();
-        // dd($input);
-        $url = 'https://www.googleapis.com/identitytoolkit/v3/relyingparty/verifyPhoneNumber?key=' . API_KEY;
-        $urlVerify = 'https://www.googleapis.com/identitytoolkit/v3/relyingparty/sendVerificationCode?key=' . API_KEY;
-
-        $data = array('key' => , 'code' => $input['customer_code']);
-        $data = http_build_query($data);
-        // use key 'http' even if you send the request to https://...
+        dd('https://www.googleapis.com/identitytoolkit/v3/relyingparty/verifyPhoneNumber?key=' . API_KEY);
+        if (!isset($input['customer_code']) || !isset($input['customer_phone']) || !isset($input['verify_id']) || !isset($input['device_id']) || !isset($input['device_token'])) {
+            return $this->sendSuccess(false, 'Thiếu field');
+        }
+        //call to firebase restful api to verify phone number with code and sessionInfo and get response from firebase api
+        $sessionInfo = $input['verify_id'];
+        $url = FIREBASE_URL_VERIFY_PHONE;
+        $dataArray = array('sessionInfo' => $sessionInfo, 'code' => $input['customer_code']);
+        $data = http_build_query($dataArray);
         // $data = json_encode($data);
-
         $options = array(
             'http' => array(
                 'header'  => "Content-type: application/x-www-form-urlencoded\r\n",
@@ -103,8 +104,11 @@ class CustomerApiController extends ApiBaseController
             )
         );
         $context  = stream_context_create($options);
-        // $result = file_get_contents($url, false, $context);
-        $resultVerfiy = file_get_contents($urlVerify, false, $context);
-        dd($resultVerfiy);
+        $result = file_get_contents($url, false, $context);
+        if ($result['code'] == !FIRBASE_CODE_SUCCESS) {
+            return $this->sendSuccess(false, 'firebase api sai');
+        }
+        $data = $this->customerService->createNewCustomer($input);
+        return $this->sendSuccess($data, 'Success');
     }
 }

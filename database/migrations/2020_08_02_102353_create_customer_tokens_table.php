@@ -15,10 +15,9 @@ class CreateCustomerTokensTable extends Migration
     {
         Schema::create('customer_tokens', function (Blueprint $table) {
             $table->increments('customer_id');
-            $table->string('customer_token');
-            $table->string('customer_phone');
-            $table->datetime('expired');
-            $table->timestamps();
+            $table->text('customer_token');
+            $table->text('customer_phone');
+            $table->string('expired');
         });
     }
 

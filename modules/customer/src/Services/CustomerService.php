@@ -4,10 +4,10 @@ namespace APV\Customer\Services;
 use APV\Customer\Models\Customer;
 use APV\Customer\Models\CustomerFriend;
 use APV\Base\Services\BaseService;
+use APV\Customer\Models\CustomerToken;
+use APV\Customer\Models\Device;
 use League\Fractal\Resource\Collection;
-use Illuminate\Http\UploadedFile;
-use Illuminate\Support\Facades\Storage;
-use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
 use APV\Customer\Constants\CustomerDataConst;
 
 class CustomerService extends BaseService
@@ -139,6 +139,44 @@ class CustomerService extends BaseService
             $res[$key]['friend_phone'] = $value->friend_phone;
             $res[$key]['avatar'] = $value->avatar;
         }
+        return $res;
+    }
+
+    public function createNewCustomer($input)
+    {
+        $res = [];
+        //create new customer with phone
+        $phone = $input['customer_phone'];
+        $customerId = Customer::create([
+            'phone' => $phone,
+            'username' => $phone,
+            'password' => Hash::make(CustomerDataConst::PASSWORD_DEFAULT),
+            'name' => $phone,
+            'active' => CustomerDataConst::ACTIVE,
+        ])->id;
+        $res['customer_id'] = $customerId;
+        //create device_id and device_token with customer_id
+        $device = [
+            'device_id' => $input['device_id'],
+            'device_token' => $input['device_token\' => $input[\'device_id'],
+            'customer_id' => $customerId,
+            'device_name' => getNameDevice($input['os']),
+        ];
+        $deviceId = Device::create($device)->id;
+        if (!$deviceId) {
+            dd('deviceId');
+        }
+        //create customer_token
+        $customerToken = $customerId . '_' . generateRandomString();
+        // current subscription expiry date
+        $dateNow = date('Y-m-d');
+        $expired = date('Y-m-d', strtotime($dateNow . " +" . TOKEN_EXPIRED_DAY . " days"));
+
+        $token = CustomerToken::create(['customer_id' => $customerId, 'customer_token' => $customerToken, 'customer_phone' => $phone, 'expired' => $expired])->id;
+        if (!$token) {
+            dd('token');
+        }
+        $res['customer_token'] = $customerToken;
         return $res;
     }
 }
