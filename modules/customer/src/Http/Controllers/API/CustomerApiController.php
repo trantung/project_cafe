@@ -95,12 +95,15 @@ class CustomerApiController extends ApiBaseController
     {   
         $input = $request->all();
         if (!isset($input['customer_phone'])) {
-            return $this->sendSuccess(false, 'Thiếu field');
+            return $this->sendSuccess(false, 'Thiếu customer_phone');
         }
         //check sdt da co trong he thong
         $checkPhoneExist = $this->customerService->checkCustomerExist($input['customer_phone']);
         if (!empty($checkPhoneExist)) {
             return $this->sendSuccess($checkPhoneExist, 'Success');
+        }
+        if (!isset($input['verify_id']) || !isset($input['customer_code']) || !isset($input['device_token']) || !isset($input['device_id'])) {
+            return $this->sendSuccess(false, 'Thiếu field');
         }
         //call to firebase restful api to verify phone number with code and sessionInfo and get response from firebase api
         $sessionInfo = $input['verify_id'];
