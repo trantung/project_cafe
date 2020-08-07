@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use APV\User\Constants\UserResponseCode;
 use APV\Customer\Constants\CustomerDataConst;
 use APV\Base\Services\ApiAuth;
+use Exception;
 /**
  * Class CustomerApiController
  * @package APV\Customer\Http\Controllers\API
@@ -93,7 +94,6 @@ class CustomerApiController extends ApiBaseController
     public function postRegister(Request $request)
     {   
         $input = $request->all();
-        // dd('https://www.googleapis.com/identitytoolkit/v3/relyingparty/verifyPhoneNumber?key=' . API_KEY);
         if (!isset($input['customer_code']) || !isset($input['customer_phone']) || !isset($input['verify_id']) || !isset($input['device_id']) || !isset($input['device_token'])) {
             return $this->sendSuccess(false, 'Thiếu field');
         }
@@ -114,7 +114,7 @@ class CustomerApiController extends ApiBaseController
         try {
             $result = file_get_contents($url, false, $context);
         } catch (Exception $e) {
-            return $this->sendSuccess(false, 'firebase verify_id het han');
+            return $this->sendError(['code' => 1001], 'SESSION_EXPIRED', 401);
         }
         $result = json_decode($result);
         if ($result->phoneNumber != $input['customer_phone']) {

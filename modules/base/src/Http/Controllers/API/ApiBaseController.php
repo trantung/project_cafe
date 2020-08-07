@@ -35,7 +35,7 @@ class ApiBaseController extends Controller
      * @param array $errorMessages
      * @return JsonResponse
      */
-    public function sendError($errorCode, $errorMessages = [])
+    public function sendError($errorCode, $errorMessages = [], $errorCodeApi = null)
     {
         if (is_string($errorMessages)) {
             $errorCode['message'] = $errorMessages;
@@ -61,7 +61,9 @@ class ApiBaseController extends Controller
                 $response['errors'][$key] = [trans('messages.' . $value[0])];
             }
         }
-
+        if ($errorCodeApi) {
+            return response()->json($response, $errorCode);
+        }
         return response()->json($response, 400);
     }
 
@@ -117,4 +119,6 @@ class ApiBaseController extends Controller
         ];
         return $res;
     }
+
+
 }
