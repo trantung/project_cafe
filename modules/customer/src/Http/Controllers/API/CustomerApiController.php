@@ -97,6 +97,11 @@ class CustomerApiController extends ApiBaseController
         if (!isset($input['customer_code']) || !isset($input['customer_phone']) || !isset($input['verify_id']) || !isset($input['device_id']) || !isset($input['device_token'])) {
             return $this->sendSuccess(false, 'Thiếu field');
         }
+        //check sdt da co trong he thong
+        $checkPhoneExist = $this->customerService->checkCustomerExist($input['customer_phone']);
+        if (!empty($checkPhoneExist)) {
+            return $this->sendSuccess($checkPhoneExist, 'Success');
+        }
         //call to firebase restful api to verify phone number with code and sessionInfo and get response from firebase api
         $sessionInfo = $input['verify_id'];
         $url = FIREBASE_URL_VERIFY_PHONE;
@@ -110,11 +115,11 @@ class CustomerApiController extends ApiBaseController
                 'content' => $data
             )
         );
-        $context  = stream_context_create($options);
+        $context = stream_context_create($options);
         try {
             $result = file_get_contents($url, false, $context);
         } catch (Exception $e) {
-            return $this->sendError(['code' => 1001], 'SESSION_EXPIRED', 401);
+            return $this->sendError(['code' => 1001, 'message'=>'SESSION_EXPIRED'], [], 401);
         }
         $result = json_decode($result);
         if ($result->phoneNumber != $input['customer_phone']) {

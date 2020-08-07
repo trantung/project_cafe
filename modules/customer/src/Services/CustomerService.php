@@ -156,7 +156,7 @@ class CustomerService extends BaseService
         }
         $res['customer_id'] = $customerId;
         $res['customer_token'] = $customerToken->customer_token;
-        if ($customer->birthday) {
+        if ($customer->active == CUSTOMER_ACTIVE) {
             $res['is_login'] = LOGIN_SUCCESS_UPDATE;
         } else {
             $res['is_login'] = LOGIN_SUCCESS_NOT_UPDATE;
@@ -225,6 +225,7 @@ class CustomerService extends BaseService
             'birthday' => $input['birthday'],
             'height' => $input['height'],
             'weight' => $input['weight'],
+            'active' => CUSTOMER_ACTIVE,
         ]);
         $res['customer_id'] = $customerId;
         $res['customer_token'] = $input['customer_token'];

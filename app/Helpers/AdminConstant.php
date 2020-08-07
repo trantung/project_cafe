@@ -15,6 +15,8 @@ define('GROUP_OPTION_PRODUCT_TYPE_SHOW_CHECKBOX', 3);
 define('LOGIN_FAIL', 0);
 define('LOGIN_SUCCESS_NOT_UPDATE', 1);
 define('LOGIN_SUCCESS_UPDATE', 2);
+define('CUSTOMER_ACTIVE', 1);
+define('CUSTOMER_INACTIVE', 0);
 
 define('TOKEN_EXPIRED_DAY', 30);
 define('IOS', 1);

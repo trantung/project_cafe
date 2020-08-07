@@ -54,6 +54,7 @@ class ApiBaseController extends Controller
             'response_code' => $errorCode['code'],
             'message' => $message,
         ];
+        
 
         if (!empty($errorMessages)) {
             $response['errors'] = [];
@@ -62,8 +63,9 @@ class ApiBaseController extends Controller
             }
         }
         if ($errorCodeApi) {
-            return response()->json($response, $errorCode);
+            return response()->json($response, $errorCodeApi);
         }
+        
         return response()->json($response, 400);
     }
 
