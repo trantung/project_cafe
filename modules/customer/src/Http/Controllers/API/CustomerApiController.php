@@ -94,7 +94,7 @@ class CustomerApiController extends ApiBaseController
     public function postRegister(Request $request)
     {   
         $input = $request->all();
-        if (!isset($input['customer_code']) || !isset($input['customer_phone']) || !isset($input['verify_id']) || !isset($input['device_id']) || !isset($input['device_token'])) {
+        if (!isset($input['customer_code'])) {
             return $this->sendSuccess(false, 'Thiếu field');
         }
         //check sdt da co trong he thong
