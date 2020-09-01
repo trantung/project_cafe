@@ -67,7 +67,7 @@ return [
     |
     */
 
-    'timezone' => 'UTC',
+    'timezone' => 'Asia/Ho_Chi_Minh',
 
     /*
     |--------------------------------------------------------------------------
@@ -192,6 +192,7 @@ return [
         APV\Order\Providers\OrderProvider::class,
         APV\Tag\Providers\TagProvider::class,
         APV\Promotion\Providers\PromotionProvider::class,
+        APV\Hocmai\Providers\HocmaiProvider::class,
 //        Barryvdh\Debugbar\ServiceProvider::class,
 
     ],

@@ -70,7 +70,8 @@
             "APV\\Material\\": "modules/material/src",
             "APV\\Order\\": "modules/order/src",
             "APV\\Tag\\": "modules/tag/src",
-            "APV\\Promotion\\": "modules/promotion/src"
+            "APV\\Promotion\\": "modules/promotion/src",
+            "APV\\Hocmai\\": "modules/hocmai/src"
         },
         "classmap": [
             "database/seeds",

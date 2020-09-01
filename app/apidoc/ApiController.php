@@ -1668,3 +1668,125 @@
     }
  */
 
+/**
+ * @api {post} /api_hocmai/app/info Lấy thông tin app
+ * @apiName postApiHocmaiAppInfo
+ * @apiGroup Hocmai
+ *
+ * @apiParam {String} app_version version của app(required)
+ * @apiParam {String} app_id id của app(required. Ví dụ: .com, .hocmai.vn, ....)
+ * @apiParam {String} app_os Hệ điều hành của app(required. IOS:1, ANDROID:2, Khác:3)
+ *
+ * @apiSuccessExample Success-Response:
+ * HTTP/1.1 200 OK
+{
+"success": true,
+"response_code": 1000,
+"data": {
+"app_id": "100",
+"app_version": "1.0.0",
+"hocmai_app_id": 1
+},
+"message": "success"
+}
+ */
+
+/**
+ * @api {post} /api_hocmai/user/info Lấy thông tin user
+ * @apiName postApiHocmaiUserInfo
+ * @apiGroup Hocmai
+ *
+ * @apiParam {Number} hocmai_user_id user_id của hocmai(required)
+ * @apiParam {Number} city_id id của thành phố mà user đăng ký(required)
+ * @apiParam {Number} district_id id của quận mà user đăng ký(required)
+ * @apiParam {Number} class_id id của lớp mà user đăng ký(required)
+ * @apiParam {String} phone sdt mà user dùng(required)
+ * @apiParam {String} birthday ngày sinh của user(required. Định dạng: y/m/d. ví dụ: 2000/02/22)
+ * @apiParam {String} register_time Ngày tháng năm đăng ký tài khoản của user(required. Định dạng: y/m/d. ví dụ: 2000/02/22)
+ * @apiParam {String} app_version version của app(required)
+ * @apiParam {String} app_id id của app(required. Ví dụ: .com, .hocmai.vn, ....)
+ * @apiParam {String} app_os Hệ điều hành của app(required. IOS:1, ANDROID:2, Khác:3)
+ * @apiParam {String} device_token Token của device(required)
+ *
+ * @apiSuccessExample Success-Response:
+ * HTTP/1.1 200 OK
+{
+"success": true,
+"response_code": 1000,
+"data": {
+"hocmai_user_id": "1",
+"user_id": 1
+},
+"message": "success"
+}
+ */
+
+/**
+ * @api {post} /api_hocmai/course/list Lấy danh sách khóa học của 1 học sinh
+ * @apiName postApiHocmaiCourseList
+ * @apiGroup Hocmai
+ *
+ * @apiParam {Number} hocmai_user_id user_id của hocmai(required)
+ * @apiParam {String} course_list_id danh sách id của khóa học(required. Format: 1,2,3,4)
+ * @apiParam {String} course_list_name danh sách tên của khóa học tương ứng với course_list_id(required. Format: 'kh1','kh2','kh3','kh4')
+ *
+ * @apiSuccessExample Success-Response:
+ * HTTP/1.1 200 OK
+{
+"success": true,
+"response_code": 1000,
+"data": {
+"user_id": 1,
+"hocmai_user_id": "1",
+"total_course": 3
+},
+"message": "success"
+}
+ */
+
+/**
+ * @api {post} /api_hocmai/course/detail Chi tiết 1 khóa học của 1 học sinh
+ * @apiName postApiHocmaiCourseDetail
+ * @apiGroup Hocmai
+ *
+ * @apiParam {Number} hocmai_user_id user_id của hocmai(required)
+ * @apiParam {Number} hocmai_course_id id của khóa học(required)
+ * @apiParam {String} lesson_list_id danh sách id của bài giảng(required. Format: 1,2,3,4)
+ * @apiParam {String} lesson_list_name danh sách tên của bài giảng tương ứng với lesson_list_id(required. Format: 'lesson1','lesson2','lesson3','lesson4')
+ *
+ * @apiSuccessExample Success-Response:
+ * HTTP/1.1 200 OK
+{
+"success": true,
+"response_code": 1000,
+"data": {
+"user_id": 1,
+"hocmai_user_id": "1",
+"course_id": 2
+},
+"message": "success"
+}
+ */
+
+/**
+ * @api {post} /api_hocmai/lesson/detail Chi tiết 1 bài giảng
+ * @apiName postApiHocmaiLessonDetail
+ * @apiGroup Hocmai
+ *
+ * @apiParam {Number} hocmai_user_id user_id của hocmai(required)
+ * @apiParam {Number} hocmai_lesson_id id của bài giảng(required)
+ *
+ * @apiSuccessExample Success-Response:
+ * HTTP/1.1 200 OK
+{
+"success": true,
+"response_code": 1000,
+"data": {
+"user_id": 1,
+"hocmai_user_id": "1",
+"lesson_id": "12"
+},
+"message": "success"
+}
+ */
+
