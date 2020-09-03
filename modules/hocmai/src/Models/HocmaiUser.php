@@ -27,8 +27,9 @@ class HocmaiUser extends Model
      */
     //register_time:Ngày tháng năm đăng ký tài khoản của người dùng
     //number_open_app: Mobile: Số lần mở ứng dụng
+    //last_session: Lần cuối user tương tác với hệ thống(logout hoặc login)
     protected $fillable = [
         'city_id', 'district_id', 'first_login', 'last_login', 'phone', 'hocmai_user_id', 'number_open_app',
-        'class_id', 'birthday', 'register_time', 'total_course'
+        'class_id', 'birthday', 'register_time', 'total_course', 'last_session'
     ];
 }

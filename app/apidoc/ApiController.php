@@ -1790,3 +1790,23 @@
 }
  */
 
+/**
+ * @api {post} /api_hocmai/logout Logout khỏi app
+ * @apiName postApiHocmaiLogout
+ * @apiGroup Hocmai
+ *
+ * @apiParam {Number} hocmai_user_id user_id của hocmai(required)
+ *
+ * @apiSuccessExample Success-Response:
+ * HTTP/1.1 200 OK
+{
+"success": true,
+"response_code": 1000,
+"data": {
+"user_id": 1,
+"hocmai_user_id": "1",
+},
+"message": "success"
+}
+ */
+

@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class AddTotalCourseHocmaiUsersTable extends Migration
+class CreateHocmaiFiltersTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,8 +13,12 @@ class AddTotalCourseHocmaiUsersTable extends Migration
      */
     public function up()
     {
-        Schema::table('hocmai_users', function (Blueprint $table) {
-            $table->integer('total_course')->default(0);
+        Schema::create('hocmai_filters', function (Blueprint $table) {
+            $table->increments('id');
+            $table->string('name')->nullable();
+            $table->string('des')->nullable();
+            $table->timestamps();
+            $table->softDeletes();
         });
     }
 
@@ -25,8 +29,6 @@ class AddTotalCourseHocmaiUsersTable extends Migration
      */
     public function down()
     {
-        Schema::table('hocmai_users', function (Blueprint $table) {
-            $table->dropColumn('total_course');
-        });
+        Schema::dropIfExists('hocmai_filters');
     }
 }

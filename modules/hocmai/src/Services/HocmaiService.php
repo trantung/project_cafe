@@ -119,6 +119,7 @@ class HocmaiService extends BaseService
                 'district_id' => $input['district_id'],
                 'class_id' => $input['class_id'],
                 'last_login' => $now,
+                'last_session' => $now,
                 'phone' => $input['phone'],
                 'birthday' => $input['birthday'],
                 'number_open_app' => $check->number_open_app + 1,
@@ -348,6 +349,24 @@ class HocmaiService extends BaseService
         $res['user_id'] = $check->id;
         $res['hocmai_user_id'] = $hocmaiUserId;
         $res['lesson_id'] = $lessonId;
+        return $res;
+    }
+
+    public function postLogout($input)
+    {
+        if (!isset($input['hocmai_user_id']) || empty($input['hocmai_user_id'])) {
+            return false;
+        }
+        $hocmaiUserId = $input['hocmai_user_id'];
+        $check = HocmaiUser::where('hocmai_user_id', $hocmaiUserId)->first();
+        if (!$check) {
+            dd('ko co hocmai_user_id = ' . $hocmaiUserId . 'trong hocmai_users table');
+        }
+        //update last_session vào hocmai_users table
+        $now = date('Y-m-d H:i:s');
+        $check->update(['last_session' => $now]);
+        $res['user_id'] = $check->id;
+        $res['hocmai_user_id'] = $hocmaiUserId;
         return $res;
     }
 }

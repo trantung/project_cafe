@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class AddTotalCourseHocmaiUsersTable extends Migration
+class AddLastSessionHocmaiUsersTable extends Migration
 {
     /**
      * Run the migrations.
@@ -14,7 +14,7 @@ class AddTotalCourseHocmaiUsersTable extends Migration
     public function up()
     {
         Schema::table('hocmai_users', function (Blueprint $table) {
-            $table->integer('total_course')->default(0);
+            $table->integer('last_session')->default(0);
         });
     }
 
@@ -26,7 +26,7 @@ class AddTotalCourseHocmaiUsersTable extends Migration
     public function down()
     {
         Schema::table('hocmai_users', function (Blueprint $table) {
-            $table->dropColumn('total_course');
+            $table->dropColumn('last_session');
         });
     }
 }
