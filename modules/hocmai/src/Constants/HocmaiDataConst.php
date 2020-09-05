@@ -10,11 +10,15 @@ use APV\Base\Constants\BaseDataConst;
  */
 class HocmaiDataConst extends BaseDataConst
 {
-    const VOUCHER_STATUS_NOT_USE = 0;
-    const VOUCHER_STATUS_USED = 1;
-    const VOUCHER_EXPIRED = 1;
-    const VOUCHER_NOT_EXPIRED = 0;
-    //voucher co duoc su dung hay khong duoc ap dung
-    const VOUCHER_IS_INACTIVE = 0;
-    const VOUCHER_IS_ACTIVE = 1;
+	//type_id
+    const TYPE_OPTION = 1;
+    const TYPE_STRING = 2;
+    const TYPE_DATE = 3;
+    //operator
+    const OPERATOR_GREATER = '>';
+    const OPERATOR_LESS = '<';
+    const OPERATOR_GREATER_EQUAL = '>=';
+    const OPERATOR_LESS_EQUAL = '<=';
+    const OPERATOR_EQUAL = '=';
+    const OPERATOR_NOT_EQUAL = '!=';
 }

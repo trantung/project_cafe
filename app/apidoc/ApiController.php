@@ -1810,3 +1810,101 @@
 }
  */
 
+/**
+ * @api {get} /api_hocmai_backend/filter/list danh sách bộ lọc filter kèm chi tiết từng bộ lọc
+ * @apiName getBackendFilterList
+ * @apiGroup HocmaiBackend
+ *
+ * @apiSuccessExample Success-Response:
+ * HTTP/1.1 200 OK
+{
+    "success": true,
+    "response_code": 1000,
+    "data": {
+        "1": {
+            "filter_id": 1,
+            "filter_name": "First Session",
+            "type_id": 3,
+            "operator": [
+                {
+                    "id": 1,
+                    "name": ">"
+                },
+                {
+                    "id": 2,
+                    "name": "<"
+                }
+            ]
+        },
+        "2": {
+            "filter_id": 2,
+            "filter_name": "Last Session",
+            "type_id": 3,
+            "operator": [
+                {
+                    "id": 1,
+                    "name": ">"
+                },
+                {
+                    "id": 2,
+                    "name": "<"
+                }
+            ]
+        },
+        "8": {
+            "filter_id": 1,
+            "filter_name": "App version",
+            "type_id": 1,
+            "operator": [
+                {
+                    "id": 1,
+                    "name": ">"
+                },
+                {
+                    "id": 2,
+                    "name": "<"
+                },
+                {
+                    "id": 3,
+                    "name": ">="
+                },
+                {
+                    "id": 4,
+                    "name": "<="
+                },
+                {
+                    "id": 5,
+                    "name": "="
+                },
+                {
+                    "id": 6,
+                    "name": "!="
+                }
+            ],
+            "option": [
+                {
+                    "option_id": 1,
+                    "option_name": "1.0.0"
+                },
+                {
+                    "option_id": 2,
+                    "option_name": "2.0.1"
+                },
+                {
+                    "option_id": 3,
+                    "option_name": "1.0.1"
+                },
+                {
+                    "option_id": 4,
+                    "option_name": "2.0.2"
+                }
+            ]
+        }
+    },
+    "message": "success"
+}
+ */
+
+
+
+

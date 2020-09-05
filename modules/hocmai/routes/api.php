@@ -19,5 +19,15 @@ Route::group([
     //Chi tiết 1 bài giảng
     //param: hocmai_user_id, hocmai_lesson_id = 1;
     Route::post('lesson/detail', 'HocmaiController@postLessonDetail');
-
+});
+//api backend
+Route::group([
+    'prefix' => 'api_hocmai_backend',
+    'namespace' => 'APV\Hocmai\Http\Controllers\API',
+], function () {
+    // //Danh sách bộ lọc
+    // Route::get('filter/list', function(){
+    //     dd(11);
+    // });
+    Route::get('filter/list', 'HocmaiBackendController@getFilterList');
 });

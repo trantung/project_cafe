@@ -7,19 +7,19 @@ use Illuminate\Http\Request;
 /**
  * Class PromotionApiController
  * @package APV\Promotion\Http\Controllers\API
- * @property HocmaiBackendService $hocmaiBackendService
+ * @property HocmaiBackendService $backend
  */
 class HocmaiBackendController extends ApiBaseController
 {
-    public function __construct(HocmaiBackendService $hocmaiBackendService)
+    public function __construct(HocmaiBackendService $backend)
     {
-        $this->hocmaiBackendService = $hocmaiBackendService;
+        $this->backend = $backend;
     }
 
     public function getFilterList(Request $request)
     {
         $input = $request->all();
-        $data = $this->hocmaiBackendService->getFilterList($input);
+        $data = $this->backend->getFilterList($input);
         return $this->sendSuccess($data, 'success');
     }
 

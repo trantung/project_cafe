@@ -10,6 +10,6 @@ class HocmaiCity extends Model
      */
     protected $table = 'hocmai_citys';
     protected $fillable = [
-        'name'
+        'name', 'description', 'code'
     ];
 }
