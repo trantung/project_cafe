@@ -230,7 +230,7 @@ class HocmaiBackendService
     public function getOptionLastTimeOpenCourse()
     {
         $res = [];
-        $list = [1 => 10, 2 => 15];
+        $list = [10,15];
         foreach ($list as $key => $value)
         {
             $res[$key]['option_id'] = $key;
@@ -295,18 +295,18 @@ class HocmaiBackendService
     {
         $res = [];
         $list = [
-            1 => 'Lớp 1',
-            2 => 'Lớp 2',
-            3 => 'Lớp 3',
-            4 => 'Lớp 4',
-            5 => 'Lớp 5',
-            6 => 'Lớp 6',
-            7 => 'Lớp 7',
-            8 => 'Lớp 8',
-            9 => 'Lớp 9',
-            10 => 'Lớp 10',
-            11 => 'Lớp 11',
-            12 => 'Lớp 12',
+            'Lớp 1',
+            'Lớp 2',
+            'Lớp 3',
+            'Lớp 4',
+            'Lớp 5',
+            'Lớp 6',
+            'Lớp 7',
+            'Lớp 8',
+            'Lớp 9',
+            'Lớp 10',
+            'Lớp 11',
+            'Lớp 12',
         ];
         foreach ($list as $key => $value)
         {
