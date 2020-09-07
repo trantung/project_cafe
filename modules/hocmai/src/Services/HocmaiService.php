@@ -144,6 +144,7 @@ class HocmaiService extends BaseService
             'register_time' => $input['register_time'],
             'first_login' => $now,
             'last_login' => $now,
+            'last_session' => $now,
             'number_open_app' => 1,
         ])->id;
         $this->createNewUserApp($input, $userId);

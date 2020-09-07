@@ -65,7 +65,6 @@ class ApiBaseController extends Controller
         if ($errorCodeApi) {
             return response()->json($response, $errorCodeApi);
         }
-        
         return response()->json($response, 400);
     }
 

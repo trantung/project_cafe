@@ -30,6 +30,6 @@ class HocmaiUser extends Model
     //last_session: Lần cuối user tương tác với hệ thống(logout hoặc login)
     protected $fillable = [
         'city_id', 'district_id', 'first_login', 'last_login', 'phone', 'hocmai_user_id', 'number_open_app',
-        'class_id', 'birthday', 'register_time', 'total_course', 'last_session'
+        'class_id', 'birthday', 'register_time', 'total_course', 'last_session', 'username', 'name'
     ];
 }

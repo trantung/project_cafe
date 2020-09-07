@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class AddLastSessionHocmaiUsersTable extends Migration
+class AddMoreFieldHocmaiUserTables extends Migration
 {
     /**
      * Run the migrations.
@@ -14,7 +14,8 @@ class AddLastSessionHocmaiUsersTable extends Migration
     public function up()
     {
         Schema::table('hocmai_users', function (Blueprint $table) {
-            $table->string('last_session')->nullable();
+            $table->string('username')->nullable();
+            $table->string('name')->nullable();
         });
     }
 
@@ -26,7 +27,8 @@ class AddLastSessionHocmaiUsersTable extends Migration
     public function down()
     {
         Schema::table('hocmai_users', function (Blueprint $table) {
-            $table->dropColumn('last_session');
+            $table->dropColumn('username');
+            $table->dropColumn('name');
         });
     }
 }

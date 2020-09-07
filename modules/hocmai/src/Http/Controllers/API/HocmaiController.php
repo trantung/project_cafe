@@ -51,5 +51,11 @@ class HocmaiController extends ApiBaseController
         $data = $this->hocmaiService->postLessonDetail($input);
         return $this->sendSuccess($data, 'success');
     }
+    public function postLogout(Request $request)
+    {
+        $input = $request->all();
+        $data = $this->hocmaiService->postLogout($input);
+        return $this->sendSuccess($data, 'success');
+    }
 
 }
