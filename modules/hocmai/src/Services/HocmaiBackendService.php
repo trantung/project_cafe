@@ -448,19 +448,19 @@ class HocmaiBackendService
     public function getFilterList($input)
     {
         $data = [
-            1 => $this->firstSession(),
-            2 => $this->lastSession(),
-            8 => $this->appVersion(),
-            10 => $this->location(),
-            11 => $this->getListUser(),
-            12 => $this->getPhone(),
-            13 => $this->sessionCount(),
-            14 => $this->lastTimeOpenCourse(),
-            15 => $this->lastLessonLearning(),
-            16 => $this->userClass(),
-            17 => $this->userDob(),
-            18 => $this->userRegisterTime(),
-            20 => $this->amountCourseInMyCourse(),
+            $this->firstSession(),
+            $this->lastSession(),
+            $this->appVersion(),
+            $this->location(),
+            $this->getListUser(),
+            $this->getPhone(),
+            $this->sessionCount(),
+            $this->lastTimeOpenCourse(),
+            $this->lastLessonLearning(),
+            $this->userClass(),
+            $this->userDob(),
+            $this->userRegisterTime(),
+            $this->amountCourseInMyCourse(),
         ];
         return $data;
     }
@@ -579,20 +579,20 @@ class HocmaiBackendService
     public function getContextList($input)
     {
         $data = [
-            1 => $this->contextLogInCourse(),
-            2 => $this->contextCommon(2, 2, 'Truy cập my course'),
-            5 => $this->contextCommon(5, 5, 'Bật pop-up thông báo'),
-            6 => $this->contextCommon(6, 6, 'Bật pop-up thông báo - Khóa học'),
-            7 => $this->contextCommon(7, 7, 'Bật pop-up  - đăng ký tham gia sự kiện'),
-            8 => $this->contextCommon(8, 8, 'Bật popup tặng tài liệu học sinh'),
-            9 => $this->contextCommon(9, 9, 'Mở đến post facebook'),
-            10 => $this->contextCommon(10, 10, 'Bảo trì'),
-            11 => $this->contextCommon(11, 11, 'Cập nhật cache'),
-            12 => $this->contextCommon(12, 12, 'Đăng xuất'),
-            14 => $this->contextCommon(14, 14, 'Chuyển đến 1 trang webview'),
-            15 => $this->contextLoginLivestream(),
-            16 => $this->contextLoginLivestreamDetail(),
-            17 => $this->contextCommon(17, 17, 'Truy cập ứng dụng'),
+            $this->contextLogInCourse(),
+            $this->contextCommon(2, 2, 'Truy cập my course'),
+            $this->contextCommon(5, 5, 'Bật pop-up thông báo'),
+            $this->contextCommon(6, 6, 'Bật pop-up thông báo - Khóa học'),
+            $this->contextCommon(7, 7, 'Bật pop-up  - đăng ký tham gia sự kiện'),
+            $this->contextCommon(8, 8, 'Bật popup tặng tài liệu học sinh'),
+            $this->contextCommon(9, 9, 'Mở đến post facebook'),
+            $this->contextCommon(10, 10, 'Bảo trì'),
+            $this->contextCommon(11, 11, 'Cập nhật cache'),
+            $this->contextCommon(12, 12, 'Đăng xuất'),
+            $this->contextCommon(14, 14, 'Chuyển đến 1 trang webview'),
+            $this->contextLoginLivestream(),
+            $this->contextLoginLivestreamDetail(),
+            $this->contextCommon(17, 17, 'Truy cập ứng dụng'),
         ];
         return $data;
     }
