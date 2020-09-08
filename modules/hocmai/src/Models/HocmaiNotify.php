@@ -4,14 +4,14 @@ namespace APV\Hocmai\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class HocmaiFilter extends Model
+class HocmaiNotify extends Model
 {
     use SoftDeletes;
 
     /**
      * @var string
      */
-    protected $table = 'hocmai_filters';
+    protected $table = 'hocmai_notifies';
 
     /**
      * @var array
@@ -24,6 +24,6 @@ class HocmaiFilter extends Model
      * @var array
      */
     protected $fillable = [
-        'name', 'des'
+        'title', 'name', 'body', 'image_url'
     ];
 }

@@ -4,14 +4,14 @@ namespace APV\Hocmai\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class HocmaiFilter extends Model
+class HocmaiOperator extends Model
 {
     use SoftDeletes;
 
     /**
      * @var string
      */
-    protected $table = 'hocmai_filters';
+    protected $table = 'hocmai_operators';
 
     /**
      * @var array

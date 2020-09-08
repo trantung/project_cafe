@@ -35,4 +35,8 @@ Route::group([
     Route::get('filter/list', 'HocmaiBackendController@getFilterList');
     //Danh sách ngữ cảnh(context)
     Route::get('context/list', 'HocmaiBackendController@getContextList');
+
+    //Create new notify
+    //Step1: parameter
+    Route::post('notify/create/step1', 'HocmaiBackendController@postNotifyCreateStep1');
 });

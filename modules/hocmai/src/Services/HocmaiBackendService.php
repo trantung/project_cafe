@@ -4,11 +4,11 @@ namespace APV\Hocmai\Services;
 use APV\Hocmai\Models\HocmaiCourse;
 use APV\Hocmai\Models\HocmaiLesson;
 use APV\Hocmai\Models\HocmaiLessonUserLog;
+use APV\Hocmai\Models\HocmaiNotify;
 use APV\Hocmai\Models\HocmaiLivestream;
 use APV\Hocmai\Models\HocmaiUser;
 use APV\Hocmai\Models\HocmaiApp;
 use APV\Hocmai\Models\HocmaiCity;
-use APV\Base\Services\BaseService;
 use APV\Hocmai\Constants\HocmaiDataConst;
 
 
@@ -596,5 +596,26 @@ class HocmaiBackendService
         ];
         return $data;
     }
-
+    /**
+     * Create new notify
+     * Step 1: Create new notify with: title, body, name, image_url = url(image)
+     * Step 2: Update notify_filter with app_id, filter_id, type_id, operator_id, detail = 'option_id = 1' or 'filter_text = 15' or 'filter_date = 2020/12/22 12:24:14'
+     * Step 3: Update notify_profile with schedule_id and schedule_date(if have), start_date(if have), end_date(if have), schedule_time(if have)
+     * Step 4: Update notify_context with context_id and sound and ios_badge, expire
+     */
+    //Step1
+    public function postNotifyCreateStep1($input)
+    {
+        $input['image_url'] = '';
+        $file = request()->file('image');
+        if ($file) {
+            $fileNameImage = generateRandomString() . $file->getClientOriginalName();
+            $file->move(public_path("/uploads/notify" . '/images/'), $fileNameImage);
+            $imageUrl = url('/uploads/notify'  . '/images/' . $fileNameImage);
+            $input['image_url'] = $imageUrl;
+        }
+        $notifyId = HocmaiNotify::create($input)->id;
+        $res['notify_id'] = $notifyId;
+        return $res;
+    }
 }
