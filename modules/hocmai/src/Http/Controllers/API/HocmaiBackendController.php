@@ -93,4 +93,11 @@ class HocmaiBackendController extends ApiBaseController
         $data = $this->backend->postNotifyCreateStep1($input);
         return $this->sendSuccess($data, 'success');
     }
+    public function postNotifyCreateStep2(Request $request)
+    {
+        $input = $request->all();
+        $data = $this->backend->postNotifyCreateStep2($input);
+        return $this->sendSuccess($data, 'success');
+    }
+
 }

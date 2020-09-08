@@ -5,6 +5,7 @@ use APV\Hocmai\Models\HocmaiCourse;
 use APV\Hocmai\Models\HocmaiLesson;
 use APV\Hocmai\Models\HocmaiLessonUserLog;
 use APV\Hocmai\Models\HocmaiNotify;
+use APV\Hocmai\Models\HocmaiNotifyFilter;
 use APV\Hocmai\Models\HocmaiLivestream;
 use APV\Hocmai\Models\HocmaiUser;
 use APV\Hocmai\Models\HocmaiApp;
@@ -603,6 +604,7 @@ class HocmaiBackendService
      * Step 3: Update notify_profile with schedule_id and schedule_date(if have), start_date(if have), end_date(if have), schedule_time(if have)
      * Step 4: Update notify_context with context_id and sound and ios_badge, expire
      */
+
     //Step1
     public function postNotifyCreateStep1($input)
     {
@@ -616,6 +618,33 @@ class HocmaiBackendService
         }
         $notifyId = HocmaiNotify::create($input)->id;
         $res['notify_id'] = $notifyId;
+        return $res;
+    }
+    //Step2
+    public function getOptionNotify($input)
+    {
+        $detail = '';
+        if (isset($input['option_id'])) {
+            $detail = 'option_id='.$input['option_id'];
+            return $detail;
+        }
+        if (isset($input['filter_text'])) {
+            $detail = 'filter_text='.$input['option_id'];
+            return $detail;
+        }
+        if (isset($input['filter_date'])) {
+            $detail = 'filter_date='.$input['option_id'];
+            return $detail;
+        }
+        return $detail;
+    }
+
+    public function postNotifyCreateStep2($input)
+    {
+        $input['detail'] = $this->getOptionNotify($input);
+        $notifyFilter = HocmaiNotifyFilter::create($input);
+        $res['notify_id'] = $input['notify_id'];
+        $res['notify_filter_id'] = $notifyFilter;
         return $res;
     }
 }

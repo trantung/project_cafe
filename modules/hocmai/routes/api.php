@@ -39,4 +39,6 @@ Route::group([
     //Create new notify
     //Step1: parameter
     Route::post('notify/create/step1', 'HocmaiBackendController@postNotifyCreateStep1');
+    //Step2
+    Route::post('notify/create/step2', 'HocmaiBackendController@postNotifyCreateStep2');
 });

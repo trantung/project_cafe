@@ -16,6 +16,6 @@ class HocmaiNotifyFilter extends Model
      * @var array
      */
     protected $fillable = [
-        'notify_id', 'filter_id', 'type_id', 'operator_id', 'detail'
+        'notify_id', 'filter_id', 'type_id', 'operator_id', 'detail', 'app_id'
     ];
 }
