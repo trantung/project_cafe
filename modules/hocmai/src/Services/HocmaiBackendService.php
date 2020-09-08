@@ -610,6 +610,7 @@ class HocmaiBackendService
     {
         $input['image_url'] = '';
         $file = request()->file('image');
+        $imageUrl = '';
         if ($file) {
             $fileNameImage = generateRandomString() . $file->getClientOriginalName();
             $file->move(public_path("/uploads/notify" . '/images/'), $fileNameImage);
@@ -618,6 +619,7 @@ class HocmaiBackendService
         }
         $notifyId = HocmaiNotify::create($input)->id;
         $res['notify_id'] = $notifyId;
+        $res['image_url'] = $imageUrl;
         return $res;
     }
     //Step2
@@ -629,11 +631,11 @@ class HocmaiBackendService
             return $detail;
         }
         if (isset($input['filter_text'])) {
-            $detail = 'filter_text='.$input['option_id'];
+            $detail = 'filter_text='.$input['filter_text'];
             return $detail;
         }
         if (isset($input['filter_date'])) {
-            $detail = 'filter_date='.$input['option_id'];
+            $detail = 'filter_date='.$input['filter_date'];
             return $detail;
         }
         return $detail;
