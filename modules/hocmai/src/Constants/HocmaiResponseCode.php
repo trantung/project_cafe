@@ -4,10 +4,6 @@ namespace APV\Hocmai\Constants;
 
 use APV\Base\Constants\BaseResponseCode;
 
-/**
- * Class LevelResponseCode
- * @package APV\Promotion\Constants
- */
 class HocmaiResponseCode extends BaseResponseCode
 {
     const ERROR_CODE_NO_PERMISSION = [

@@ -7,14 +7,20 @@ use APV\Hocmai\Models\HocmaiLessonUserLog;
 use APV\Hocmai\Models\HocmaiNotify;
 use APV\Hocmai\Models\HocmaiNotifyFilter;
 use APV\Hocmai\Models\HocmaiLivestream;
+use APV\Hocmai\Models\HocmaiNotifyProfile;
 use APV\Hocmai\Models\HocmaiUser;
 use APV\Hocmai\Models\HocmaiApp;
 use APV\Hocmai\Models\HocmaiCity;
 use APV\Hocmai\Constants\HocmaiDataConst;
-
+use \DB;
 
 class HocmaiBackendService
 {
+    public function __construct(CommonService $commonService)
+    {
+        $this->commonService = $commonService;
+    }
+
     public function firstSession()
     {
         $data = [
@@ -242,10 +248,27 @@ class HocmaiBackendService
 
     public function lastTimeOpenCourse()
     {
+//        $data = [
+//            'filter_id' => 14,
+//            'filter_name' => 'LAST TIME OPEN COURSE',
+//            'type_id' => HocmaiDataConst::TYPE_OPTION,
+//            'operator' => [
+//                [
+//                    'id' => 1,
+//                    'name' => HocmaiDataConst::OPERATOR_GREATER,
+//                ],
+//                [
+//                    'id' => 2,
+//                    'name' => HocmaiDataConst::OPERATOR_LESS,
+//                ]
+//            ],
+//            'option' => $this->getOptionLastTimeOpenCourse(),
+//        ];
+//        return $data;
         $data = [
             'filter_id' => 14,
             'filter_name' => 'LAST TIME OPEN COURSE',
-            'type_id' => HocmaiDataConst::TYPE_OPTION,
+            'type_id' => HocmaiDataConst::TYPE_DATE,
             'operator' => [
                 [
                     'id' => 1,
@@ -255,8 +278,7 @@ class HocmaiBackendService
                     'id' => 2,
                     'name' => HocmaiDataConst::OPERATOR_LESS,
                 ]
-            ],
-            'option' => $this->getOptionLastTimeOpenCourse(),
+            ]
         ];
         return $data;
     }
@@ -456,7 +478,7 @@ class HocmaiBackendService
             $this->getListUser(),
             $this->getPhone(),
             $this->sessionCount(),
-            $this->lastTimeOpenCourse(),
+//            $this->lastTimeOpenCourse(),
             $this->lastLessonLearning(),
             $this->userClass(),
             $this->userDob(),
@@ -553,8 +575,8 @@ class HocmaiBackendService
     public function contextLoginLivestreamDetail()
     {
         $data = [
-            'id' => 15,
-            'action_type' => 15,
+            'id' => 16,
+            'action_type' => 16,
             'action_name' => 'Truy cập vào kênh livestream',
             'data_list' => [
                 [
@@ -641,12 +663,109 @@ class HocmaiBackendService
         return $detail;
     }
 
+    /**
+     * example step2 client sent
+      * {
+        "notify_id":38,
+        "filter":[
+        {
+        "filter_id":12,
+        "type_id":1,
+        "operator_id":5,
+        "option_id":1
+        },
+        {
+        "filter_id":14,
+        "type_id":1,
+        "operator_id":1,
+        "option_id":0
+        }
+        ],
+        "app_id":1,
+        "app_name":"vn.hocmai.appuser"
+        }
+     */
     public function postNotifyCreateStep2($input)
     {
-        $input['detail'] = $this->getOptionNotify($input);
-        $notifyFilter = HocmaiNotifyFilter::create($input);
+        $notifyId = $input['notify_id'];
+        $filter = $input['filter'];
+        foreach ($filter as $value)
+        {
+            $value['notify_id'] = $notifyId;
+            $value['detail'] = $this->getOptionNotify($value);
+            HocmaiNotifyFilter::create($value);
+        }
         $res['notify_id'] = $input['notify_id'];
-        $res['notify_filter_id'] = $notifyFilter;
         return $res;
     }
+
+    /**
+     * example step3 client sent
+     * {
+        "notify_id":38,
+        "schedule_id":2,
+        "start_date":"",
+        "end_date":"",
+        "schedule_time":"",
+        "schedule_date":"2020-09-27 00:00:00"
+        }
+     */
+    public function postNotifyCreateStep3($input)
+    {
+        $notifyProfile = HocmaiNotifyProfile::create($input)->id;
+        $res['notify_id'] = $input['notify_id'];
+        $res['notify_profile_id'] = $notifyProfile;
+        return $res;
+    }
+
+    /**
+     *  example step4 client sent
+     */
+    public function postNotifyCreateStep4($input)
+    {
+        dd($input);
+        $notifyProfile = HocmaiNotifyProfile::create($input)->id;
+        $res['notify_id'] = $input['notify_id'];
+        $res['notify_profile_id'] = $notifyProfile;
+        return $res;
+    }
+    /**
+     * Get list device_token by notifyId, filter_id, context_id
+     * Format data before send firebase
+     */
+    public function prepareData($notifyId)
+    {
+        $res = [];
+        //lay danh sach filter
+        $notifyFilters = HocmaiNotifyFilter::where('notify_id', $notifyId)->get();
+        $filter = $this->commonService->relationFilterWithTable();
+        $operator = $this->commonService->getOperator();
+        $data = DB::table('hocmai_users');
+        foreach ($notifyFilters as $value)
+        {
+            $filterId = $value->filter_id;
+            if (!isset($filter[$filterId])){
+                dd($notifyId);
+            }
+            $filterInfo = $filter[$filterId];
+            $field = $filterInfo['table'] . '.' . $filterInfo['field'];
+            $condition = $operator[$value->operator_id];
+            $explode = explode('=', $value->detail);
+            $conditionValue = $explode[1];
+            if (isset($filterInfo['table_child'])) {
+                $data = $data->join($filterInfo['table_child'], 'hocmai_users.id', '=', $filterInfo['table_child'] . '.' . $filterInfo['table_relation_foreign_key'])
+                    ->join($filterInfo['table'], $filterInfo['table_child'] . '.' . $filterInfo['table_foreign_key'], '=', $filterInfo['table'] . '.id');
+
+//                if (isset($filterInfo['field_child'])) {
+//                    $field = $filterInfo['table_child'] . '.' . $filterInfo['field_child'];
+//                }
+            }
+            $data = $data->where($field, $condition, $conditionValue);
+        }
+        $data = $data->select('hocmai_users.id as user_id')->groupBy('user_id')->get();
+        dd($data->toArray());
+        //lay danh sach context
+        return $res;
+    }
+
 }

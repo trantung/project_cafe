@@ -41,4 +41,10 @@ Route::group([
     Route::post('notify/create/step1', 'HocmaiBackendController@postNotifyCreateStep1');
     //Step2
     Route::post('notify/create/step2', 'HocmaiBackendController@postNotifyCreateStep2');
+    //Step3
+    Route::post('notify/create/step3', 'HocmaiBackendController@postNotifyCreateStep3');
+    //Step4
+    Route::post('notify/create/step4', 'HocmaiBackendController@postNotifyCreateStep4');
+
+    Route::post('notify/test', 'HocmaiBackendController@postNotifyTest');
 });

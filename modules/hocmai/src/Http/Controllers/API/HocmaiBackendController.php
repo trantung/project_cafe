@@ -93,10 +93,37 @@ class HocmaiBackendController extends ApiBaseController
         $data = $this->backend->postNotifyCreateStep1($input);
         return $this->sendSuccess($data, 'success');
     }
+
     public function postNotifyCreateStep2(Request $request)
     {
         $input = $request->all();
         $data = $this->backend->postNotifyCreateStep2($input);
+        return $this->sendSuccess($data, 'success');
+    }
+
+    public function postNotifyCreateStep3(Request $request)
+    {
+        $input = $request->all();
+        $data = $this->backend->postNotifyCreateStep3($input);
+        return $this->sendSuccess($data, 'success');
+    }
+
+    public function postNotifyTest(Request $request)
+    {
+        $input = $request->all();
+        $data = $this->backend->prepareData($input);
+        return $this->sendSuccess($data, 'success');
+    }
+
+    public function postNotifyCreateStep4(Request $request)
+    {
+        $input = $request->all();
+        $data = $this->backend->postNotifyCreateStep4($input);
+        $notifyId = $data['notify_id'];
+        //Lấy danh sách các device_token cần để gửi lên firebase và Format dữ liệu trước khi gửi lên firebase
+        $upData = $this->backend->prepareData($notifyId);
+        //Gửi lên firebase
+
         return $this->sendSuccess($data, 'success');
     }
 

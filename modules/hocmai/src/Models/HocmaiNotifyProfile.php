@@ -18,4 +18,26 @@ class HocmaiNotifyProfile extends Model
     protected $fillable = [
         'notify_id', 'schedule_id', 'fire_base_notify_id', 'schedule_date', 'start_date', 'end_date', 'schedule_time'
     ];
+
+    public static function scheduleList()
+    {
+        $data = [
+            [
+                'id' => 1,
+                'name' => 'now',
+                'label' => 'Bây giờ',
+            ],
+            [
+                'id' => 2,
+                'name' => 'scheduling',
+                'label' => 'Chọn ngày, giờ',
+            ],
+            [
+                'id' => 3,
+                'name' => 'daily',
+                'label' => 'Daily',
+            ]
+        ];
+        return $data;
+    }
 }
