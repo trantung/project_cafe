@@ -7,6 +7,6 @@ class HocmaiDeviceUser extends Model
 {
     protected $table = 'hocmai_device_user';
     protected $fillable = [
-        'hocmai_device_id', 'user_id'
+        'hocmai_device_id', 'user_id', 'device_token'
     ];
 }

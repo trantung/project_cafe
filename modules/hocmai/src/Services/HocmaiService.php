@@ -93,13 +93,13 @@ class HocmaiService extends BaseService
         return $deviceId;
     }
 
-    public function createNewDeviceUser($deviceId, $userId)
+    public function createNewDeviceUser($deviceId, $userId, $deviceToken = null)
     {
         $check = HocmaiDeviceUser::where('hocmai_device_id', $deviceId)
             ->where('user_id', $userId)
             ->first();
         if (!$check) {
-            HocmaiDevice::create(['user_id' => $userId, 'hocmai_device_id' =>$deviceId]);
+            HocmaiDeviceUser::create(['user_id' => $userId, 'hocmai_device_id' =>$deviceId, 'device_token' => $deviceToken]);
         }
         return true;
     }
@@ -149,7 +149,7 @@ class HocmaiService extends BaseService
         ])->id;
         $this->createNewUserApp($input, $userId);
         $this->createNewUserLoginLog($input, $userId);
-        $this->createNewDeviceUser($deviceId, $userId);
+        $this->createNewDeviceUser($deviceId, $userId, $deviceToken);
         $res['hocmai_user_id'] = $input['hocmai_user_id'];
         $res['user_id'] = $userId;
         return $res;

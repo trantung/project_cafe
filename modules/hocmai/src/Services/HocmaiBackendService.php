@@ -2,7 +2,10 @@
 namespace APV\Hocmai\Services;
 
 use APV\Hocmai\Models\HocmaiCourse;
+use APV\Hocmai\Models\HocmaiCourseUser;
+use APV\Hocmai\Models\HocmaiDeviceUser;
 use APV\Hocmai\Models\HocmaiLesson;
+use APV\Hocmai\Models\HocmaiLessonUser;
 use APV\Hocmai\Models\HocmaiLessonUserLog;
 use APV\Hocmai\Models\HocmaiNotify;
 use APV\Hocmai\Models\HocmaiNotifyFilter;
@@ -11,6 +14,7 @@ use APV\Hocmai\Models\HocmaiNotifyProfile;
 use APV\Hocmai\Models\HocmaiUser;
 use APV\Hocmai\Models\HocmaiApp;
 use APV\Hocmai\Models\HocmaiCity;
+use APV\Hocmai\Models\HocmaiNotifyContext;
 use APV\Hocmai\Constants\HocmaiDataConst;
 use \DB;
 
@@ -68,7 +72,7 @@ class HocmaiBackendService
         $res = [];
         $data = HocmaiApp::all();
         foreach ($data as $key => $value) {
-            $res[$key]['option_id'] = $value->id;
+            $res[$key]['option_id'] = $value->app_version;
             $res[$key]['option_name'] = $value->app_version;
         }
         return $res;
@@ -248,27 +252,10 @@ class HocmaiBackendService
 
     public function lastTimeOpenCourse()
     {
-//        $data = [
-//            'filter_id' => 14,
-//            'filter_name' => 'LAST TIME OPEN COURSE',
-//            'type_id' => HocmaiDataConst::TYPE_OPTION,
-//            'operator' => [
-//                [
-//                    'id' => 1,
-//                    'name' => HocmaiDataConst::OPERATOR_GREATER,
-//                ],
-//                [
-//                    'id' => 2,
-//                    'name' => HocmaiDataConst::OPERATOR_LESS,
-//                ]
-//            ],
-//            'option' => $this->getOptionLastTimeOpenCourse(),
-//        ];
-//        return $data;
         $data = [
             'filter_id' => 14,
             'filter_name' => 'LAST TIME OPEN COURSE',
-            'type_id' => HocmaiDataConst::TYPE_DATE,
+            'type_id' => HocmaiDataConst::TYPE_STRING,
             'operator' => [
                 [
                     'id' => 1,
@@ -278,7 +265,7 @@ class HocmaiBackendService
                     'id' => 2,
                     'name' => HocmaiDataConst::OPERATOR_LESS,
                 ]
-            ]
+            ],
         ];
         return $data;
     }
@@ -333,7 +320,7 @@ class HocmaiBackendService
         ];
         foreach ($list as $key => $value)
         {
-            $res[$key]['option_id'] = $key;
+            $res[$key]['option_id'] = $key + 1;
             $res[$key]['option_name'] = $value;
         }
         return $res;
@@ -478,7 +465,7 @@ class HocmaiBackendService
             $this->getListUser(),
             $this->getPhone(),
             $this->sessionCount(),
-//            $this->lastTimeOpenCourse(),
+            $this->lastTimeOpenCourse(),
             $this->lastLessonLearning(),
             $this->userClass(),
             $this->userDob(),
@@ -685,7 +672,7 @@ class HocmaiBackendService
         "app_name":"vn.hocmai.appuser"
         }
      */
-    public function postNotifyCreateStep2($input)
+    public function setNotifyFilter($input)
     {
         $notifyId = $input['notify_id'];
         $filter = $input['filter'];
@@ -693,8 +680,25 @@ class HocmaiBackendService
         {
             $value['notify_id'] = $notifyId;
             $value['detail'] = $this->getOptionNotify($value);
+            $value['app_id'] = $input['app_id'];
             HocmaiNotifyFilter::create($value);
         }
+        return $input['notify_id'];
+    }
+    public function postNotifyCreateStep2($arrayInput)
+    {
+        foreach ($arrayInput as $input) {
+            $this->setNotifyFilter($input);
+        }
+//        $notifyId = $input['notify_id'];
+//        $filter = $input['filter'];
+//        foreach ($filter as $value)
+//        {
+//            $value['notify_id'] = $notifyId;
+//            $value['detail'] = $this->getOptionNotify($value);
+//            HocmaiNotifyFilter::create($value);
+//        }
+
         $res['notify_id'] = $input['notify_id'];
         return $res;
     }
@@ -721,51 +725,277 @@ class HocmaiBackendService
     /**
      *  example step4 client sent
      */
+    public function setContextExpire($expire)
+    {
+        $number = $number_type = '';
+        if (isset($expire['number'])) {
+            $number = $expire['number'];
+        }
+        if (isset($expire['number_type'])) {
+            $number_type = $expire['number_type'];
+        }
+        $expire = 'number=' . $number . ',' . 'number_type' . $number_type;
+        return $expire;
+    }
+
+    public function setContextDetail($context)
+    {
+        $res = '';
+        foreach ($context as $key => $value)
+        {
+            $res .= $key . ':' . $value . ',';
+        }
+        return $res;
+    }
+
     public function postNotifyCreateStep4($input)
     {
-        dd($input);
-        $notifyProfile = HocmaiNotifyProfile::create($input)->id;
-        $res['notify_id'] = $input['notify_id'];
-        $res['notify_profile_id'] = $notifyProfile;
+        $upData['notify_id'] = $input['notify_id'];
+        $upData['sound'] = $input['sound'];
+        $upData['ios_badge'] = $input['ios_badge'];
+        $upData['action_type'] = $upData['context_id'] = $input['context']['action_type'];
+        $upData['expire'] = $this->setContextExpire($input['expire']);
+        $upData['detail'] = $this->setContextDetail($input['context']);
+        $notifyContext = HocmaiNotifyContext::create($upData)->id;
+        $res['notify_id'] = $upData['notify_id'];
+        $res['notify_context_id'] = $notifyContext;
         return $res;
+    }
+    public function getInfoByFilter($data, $filterId, $condition, $conditionValue)
+    {
+        //FIRST SESSION
+        if ($filterId == 1)
+        {
+            $data = $data->where('hocmai_users.first_login', $condition, $conditionValue);
+        }
+        //Last SESSION
+        if ($filterId == 2)
+        {
+            $data = $data->where('hocmai_users.last_login', $condition, $conditionValue);
+        }
+        //location
+        if ($filterId == 10)
+        {
+            $data = $data->where('hocmai_users.city_id', $condition, $conditionValue);
+        }
+        //user_id
+        if ($filterId == 11)
+        {
+            $data = $data->where('hocmai_users.hocmai_user_id', $condition, $conditionValue);
+        }
+        //user_phone
+        if ($filterId == 12)
+        {
+            $data = $data->where('hocmai_users.phone', $condition, $conditionValue);
+        }
+        //session count(number_open_app)
+        if ($filterId == 13)
+        {
+            $data = $data->where('hocmai_users.number_open_app', $condition, $conditionValue);
+        }
+        //user class(class_id)
+        if ($filterId == 16)
+        {
+            $data = $data->where('hocmai_users.class_id', $condition, $conditionValue);
+        }
+        //user dob(birthday)
+        if ($filterId == 17)
+        {
+            $data = $data->where('hocmai_users.birthday', $condition, $conditionValue);
+        }
+        //register_time
+        if ($filterId == 18)
+        {
+            $data = $data->where('hocmai_users.register_time', $condition, $conditionValue);
+        }
+        //app version
+        if ($filterId == 8)
+        {
+            $data = $data->join('hocmai_user_app', 'hocmai_users.id', '=', 'hocmai_user_app.user_id')
+                ->join('hocmai_apps', 'hocmai_apps.id', '=', 'hocmai_user_app.hocmai_app_id')
+                ->where('hocmai_apps.app_version', $condition, $conditionValue);
+        }
+        //LAST TIME OPEN COURSE
+        if ($filterId == 14)
+        {
+            $now = date('Y-m-d h:i:s');
+            if ($condition == HocmaiDataConst::OPERATOR_LESS) {
+                $conditionValue = date("Y-m-d H:i:s",strtotime($now." -" . $conditionValue . " hours"));
+            }
+            if ($condition == HocmaiDataConst::OPERATOR_GREATER) {
+                $conditionValue = date("Y-m-d H:i:s",strtotime($now." +" . $conditionValue . " hours"));
+            }
+            $data = $data->join('hocmai_course_user_log', 'hocmai_users.id', '=', 'hocmai_course_user_log.user_id')
+                ->join('hocmai_courses', 'hocmai_courses.id', '=', 'hocmai_course_user_log.course_id')
+                ->where('hocmai_course_user_log.last_time', $condition, $conditionValue);
+        }
+         //last lesson learning
+        if ($filterId == 15)
+        {
+            $data = $data->join('hocmai_lesson_user_log', 'hocmai_users.id', '=', 'hocmai_lesson_user_log.user_id')
+                ->join('hocmai_lessons', 'hocmai_lessons.id', '=', 'hocmai_lesson_user_log.lesson_id')
+                ->where('hocmai_lesson_user_log.lesson_id', $condition, $conditionValue);
+        }
+        //AMOUNT COURSE IN MYCOURSE(count(course_id))
+        if ($filterId == 20)
+        {
+            $data = $data->where('hocmai_users.total_course', $condition, $conditionValue);
+        }
+        return $data;
     }
     /**
      * Get list device_token by notifyId, filter_id, context_id
      * Format data before send firebase
      */
-    public function prepareData($notifyId)
+    public function getCourseByContextDetail($detail)
     {
-        $res = [];
+        $data = explode(',', $detail);
+        $courseId = $lessionId = '';
+        foreach ($data as $value)
+        {
+            $res = explode(':', $value);
+            if ($res[0] == 'course_id') {
+                $courseId = $res[1];
+            }
+            if ($res[0] == 'lesson_id') {
+                $lessionId = $res[1];
+            }
+        }
+        return [
+            'course_id' => $courseId,
+            'lesson_id' => $lessionId,
+        ];
+    }
+
+    public function getUserListByAppId($notifyId, $appId)
+    {
         //lay danh sach filter
-        $notifyFilters = HocmaiNotifyFilter::where('notify_id', $notifyId)->get();
-        $filter = $this->commonService->relationFilterWithTable();
+        $notifyFilters = HocmaiNotifyFilter::where('notify_id', $notifyId)->where('app_id', $appId)->get();
         $operator = $this->commonService->getOperator();
         $data = DB::table('hocmai_users');
         foreach ($notifyFilters as $value)
         {
             $filterId = $value->filter_id;
-            if (!isset($filter[$filterId])){
-                dd($notifyId);
-            }
-            $filterInfo = $filter[$filterId];
-            $field = $filterInfo['table'] . '.' . $filterInfo['field'];
-            $condition = $operator[$value->operator_id];
             $explode = explode('=', $value->detail);
             $conditionValue = $explode[1];
-            if (isset($filterInfo['table_child'])) {
-                $data = $data->join($filterInfo['table_child'], 'hocmai_users.id', '=', $filterInfo['table_child'] . '.' . $filterInfo['table_relation_foreign_key'])
-                    ->join($filterInfo['table'], $filterInfo['table_child'] . '.' . $filterInfo['table_foreign_key'], '=', $filterInfo['table'] . '.id');
-
-//                if (isset($filterInfo['field_child'])) {
-//                    $field = $filterInfo['table_child'] . '.' . $filterInfo['field_child'];
-//                }
-            }
-            $data = $data->where($field, $condition, $conditionValue);
+            $condition = $operator[$value->operator_id];
+            $data = $this->getInfoByFilter($data, $filterId, $condition, $conditionValue);
         }
-        $data = $data->select('hocmai_users.id as user_id')->groupBy('user_id')->get();
-        dd($data->toArray());
-        //lay danh sach context
+        $data = $data->whereNull('hocmai_users.deleted_at')
+            ->select('hocmai_users.id')
+            ->groupBy('hocmai_users.id')
+            ->get();
+        $context = HocmaiNotifyContext::where('notify_id', $notifyId)->first();
+        if (!$context) {
+            dd('thieu context cho notify_id = ' . $notifyId);
+        }
+        $contextId = $context->context_id;
+        $res = [];
+        if ($contextId == 1) {
+            $detail = $context->detail;
+            $courseLesson = $this->getCourseByContextDetail($detail);
+            if ($courseLesson['lesson_id'] != '') {
+                $lessonId = $courseLesson['lesson_id'];
+                foreach ($data as $value) {
+                    $lessonUser = HocmaiLessonUser::where('lesson_id', $lessonId)
+                        ->where('user_id', $value->id)->first();
+                    if ($lessonUser) {
+                        $res[] = $value->id;
+                    }
+                }
+            }
+            else {
+                if ($courseLesson['course_id'] != '') {
+                    $courseId = $courseLesson['course_id'];
+                    foreach ($data as $value) {
+                        $courseUser = HocmaiCourseUser::where('course_id', $courseId)
+                            ->where('user_id', $value->id)->first();
+                        if ($courseUser) {
+                            $res[] = $value->id;
+                        }
+                    }
+                }
+            }
+        } else {
+            foreach ($data as $v) {
+                $res[] = $v->id;
+            }
+        }
         return $res;
     }
+
+    public function prepareData($notifyId)
+    {
+        $listDevice = [];
+        $android = $this->getUserListByAppId($notifyId, 1);
+        $ios = $this->getUserListByAppId($notifyId, 2);
+        $res = array_unique (array_merge ($android, $ios));
+        foreach ($res as $userId) {
+            $deviceToken = HocmaiDeviceUser::where('user_id', $userId)->orderBy('created_at', 'DESC')->first();
+            if ($deviceToken) {
+                $listDevice[] = $deviceToken;
+            }
+        }
+        return $listDevice;
+    }
+
+    public function getNotifyDetail($notifyId)
+    {
+        $data = HocmaiNotify::find($notifyId);
+        if (!$data){
+            dd('sai notifyId = ' . $notifyId);
+        }
+        return $data;
+    }
+
+    public function getTitleNotify($notifyId)
+    {
+        $data = $this->getNotifyDetail($notifyId);
+        return $data->title;
+    }
+
+    public function getBodyNotify($notifyId)
+    {
+        $data = $this->getNotifyDetail($notifyId);
+        return $data->body;
+    }
+
+    public function getIconNotify($notifyId)
+    {
+        $data = $this->getNotifyDetail($notifyId);
+        return $data->image_url;
+    }
+
+    public function getSoundNotify($notifyId)
+    {
+        $data = HocmaiNotifyContext::where('notify_id', $notifyId)->first();
+        if (!$data) {
+            dd('sound sai notifyId = ' .  $notifyId);
+        }
+        return $data->sound;
+    }
+
+    public function getIosBadgeNotify($notifyId)
+    {
+        $data = HocmaiNotifyContext::where('notify_id', $notifyId)->first();
+        if (!$data) {
+            dd('ios_badge sai notifyId = ' .  $notifyId);
+        }
+        return $data->ios_badge;
+    }
+
+    public function formatDataNotify($notifyId)
+    {
+        $data = HocmaiNotifyContext::where('notify_id', $notifyId)->first();
+        if (!$data) {
+            dd('formatDataNotify sai notifyId = ' .  $notifyId);
+        }
+        $res['action_type'] = $data->action_type;
+        return $res;
+    }
+
+
+
+
 
 }

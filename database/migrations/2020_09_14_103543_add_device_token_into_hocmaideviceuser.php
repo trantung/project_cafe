@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateHocmaiContextsTable extends Migration
+class AddDeviceTokenIntoHocmaideviceuser extends Migration
 {
     /**
      * Run the migrations.
@@ -13,12 +13,8 @@ class CreateHocmaiContextsTable extends Migration
      */
     public function up()
     {
-        Schema::create('hocmai_contexts', function (Blueprint $table) {
-            $table->increments('id');
-            $table->string('name')->nullable();
-            $table->text('des')->nullable();
-            $table->timestamps();
-            $table->softDeletes();
+        Schema::table('hocmai_device_user', function (Blueprint $table) {
+            $table->text('device_token')->nullable();
         });
     }
 
@@ -29,6 +25,8 @@ class CreateHocmaiContextsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('hocmai_contexts');
+        Schema::table('hocmai_device_user', function (Blueprint $table) {
+            $table->dropColumn('device_token');
+        });
     }
 }
