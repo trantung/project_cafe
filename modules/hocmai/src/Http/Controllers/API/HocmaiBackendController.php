@@ -159,6 +159,7 @@ class HocmaiBackendController extends ApiBaseController
         $notifyId = $data['notify_id'];
         //Lấy danh sách các device_token cần để gửi lên firebase
         $listDevice = $this->backend->prepareData($notifyId);
+        $listDevice = ['f_otCxA1a2U:APA91bFMSz5apCOk_spB1EHf2K41QqAFODkz4fYPdtErsFBaocS3FEjmBzd9Oh8MdX4SAWU2X7V19QJbK0_R2TV2JSNJWFqawJxkKbCNIOLbkBGZiCV7sI31kAjrcIapjeo5GeZOfcKO'];
         //Format dữ liệu trước khi gửi lên firebase
         $fcmUrl = 'https://fcm.googleapis.com/fcm/send';
         $title = $this->backend->getTitleNotify($notifyId);
