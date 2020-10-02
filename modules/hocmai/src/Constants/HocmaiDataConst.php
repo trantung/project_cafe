@@ -30,4 +30,6 @@ class HocmaiDataConst extends BaseDataConst
     const OPERATOR_EQUAL = '=';
     //id = 6
     const OPERATOR_NOT_EQUAL = '!=';
+
+    const API_ACCESS_KEY = 'AAAANlBfKMs:APA91bGgy7i0mrkcvtubZV-0uVI-czC0-gQJEdYNkq4yeakFHq-De1iAk0cf43FvBAtzK9h_Yej03YemlNHos0X7kj4R5vEVVnh7PC5dMM09S3XIEdX6DyfSTyzzZs8Yi4MpY9gJaPTB';
 }
