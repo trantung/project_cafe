@@ -984,18 +984,77 @@ class HocmaiBackendService
         return $data->ios_badge;
     }
 
-    public function formatDataNotify($notifyId)
+    public function getInfoByActionTypeDetail($detail, $field)
+    {
+        $result = [];
+        $data = explode(',', $detail);
+        foreach ($data as $value) {
+            $res = explode(':', $value);
+            if ($res[0] == 'course_id') {
+                $result['course_id'] = $courseId = $res[1];
+            }
+            if ($res[0] == 'lesson_id') {
+                $result['lesson_id'] = $res[1];
+            }
+            if ($res[0] == 'url') {
+                $result['url'] = $res[1];
+            }
+            if ($res[0] == 'livestream_id') {
+                $result['livestream_id'] = $res[1];
+            }
+            if ($res[0] == 'school_block_id') {
+                $result['school_block_id'] = $res[1];
+            }
+        }
+        if (isset($result[$field])) {
+            return $result[$field];
+        }
+        return null;
+    }
+
+    public function getIsBuyCourse($detail)
+    {
+        return true;
+    }
+
+    public function formatDataNotify($notifyId, $title, $body, $import = null)
     {
         $data = HocmaiNotifyContext::where('notify_id', $notifyId)->first();
-        if (!$data) {
-            dd('formatDataNotify sai notifyId = ' .  $notifyId);
+
+        if ($import) {
+            $actionType = 18;
+        } else {
+            if (!$data) {
+                dd('formatDataNotify sai notifyId = ' .  $notifyId);
+            }
+            $actionType = $data->action_type;
         }
-        $res['action_type'] = $data->action_type;
+        $res['title'] = $title;
+        $res['body'] = $body;
+        $res['data']['action_type'] = $actionType;
+        if ($actionType == 1) {
+            $res['data']['course_id'] = $this->getInfoByActionTypeDetail($data->detail, 'course_id');
+            $res['data']['lesson_id'] = $this->getInfoByActionTypeDetail($data->detail, 'lesson_id');
+            $res['data']['is_buy'] = $this->getIsBuyCourse($data->detail);
+        }
+        if ($actionType == 14) {
+            $res['data']['url'] = $this->getInfoByActionTypeDetail($data->detail, 'url');
+        }
+        if ($actionType == 15) {
+            $res['data']['school_block_id'] = $this->getInfoByActionTypeDetail($data->detail, 'school_block_id');
+        }
         return $res;
     }
 
-
-
-
+    public function updateNotifySuccess($notifyId, $failure, $success)
+    {
+        $notify = HocmaiNotify::find($notifyId);
+        $notify->update([
+            'status' => HocmaiDataConst::UPLOAD_FIREBASE_SUCCESS,
+            'success' => $success,
+            'failure' => $failure,
+        ]);
+        return true;
+    }
 
 }

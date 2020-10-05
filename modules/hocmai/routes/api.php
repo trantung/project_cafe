@@ -47,4 +47,7 @@ Route::group([
     Route::post('notify/create/step4', 'HocmaiBackendController@postNotifyCreateStep4');
 
     Route::post('notify/test', 'HocmaiBackendController@postNotifyTest');
+
+    //import file excel cac device_token
+    Route::post('notify/import', 'HocmaiBackendController@postNotifyImport');
 });

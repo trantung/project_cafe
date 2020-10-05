@@ -13,7 +13,7 @@ class HocmaiDataConst extends BaseDataConst
     const IOS = 1;
     const ANDROID = 2;
     const ANOTHER = 3;
-	//type_id
+    //type_id
     const TYPE_OPTION = 1;
     const TYPE_STRING = 2;
     const TYPE_DATE = 3;
@@ -31,5 +31,10 @@ class HocmaiDataConst extends BaseDataConst
     //id = 6
     const OPERATOR_NOT_EQUAL = '!=';
 
+    //firebase api access key
     const API_ACCESS_KEY = 'AAAANlBfKMs:APA91bGgy7i0mrkcvtubZV-0uVI-czC0-gQJEdYNkq4yeakFHq-De1iAk0cf43FvBAtzK9h_Yej03YemlNHos0X7kj4R5vEVVnh7PC5dMM09S3XIEdX6DyfSTyzzZs8Yi4MpY9gJaPTB';
+
+    //status notify
+    //update success to firebase
+    const UPLOAD_FIREBASE_SUCCESS = 1;
 }
