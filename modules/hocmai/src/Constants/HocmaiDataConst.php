@@ -37,4 +37,8 @@ class HocmaiDataConst extends BaseDataConst
     //status notify
     //update success to firebase
     const UPLOAD_FIREBASE_SUCCESS = 1;
+
+    const BEFORE_SENT = 1;
+    const SENT_FAIL = 2;
+    const SENT_SUCCESS = 3;
 }

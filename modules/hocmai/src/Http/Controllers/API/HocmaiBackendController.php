@@ -6,6 +6,7 @@ use APV\Hocmai\Services\HocmaiBackendService;
 use Illuminate\Http\Request;
 use APV\Hocmai\Models\HocmaiLivestream;
 use APV\Hocmai\Models\HocmaiNotifyDevice;
+use APV\Hocmai\Models\HocmaiNotifyImport;
 use APV\Hocmai\Constants\HocmaiDataConst;
 use Maatwebsite\Excel\Facades\Excel;
 /**
@@ -127,15 +128,11 @@ class HocmaiBackendController extends ApiBaseController
             'sound' => 'sound',
             'badge' => 0,
         ];
-        $extraNotificationData = [
-            "message" => $notification,
-            "moredata" => [
-                'action_type' => 1,
-            ]
-        ];
+        $token = 'f_otCxA1a2U:APA91bFMSz5apCOk_spB1EHf2K41QqAFODkz4fYPdtErsFBaocS3FEjmBzd9Oh8MdX4SAWU2X7V19QJbK0_R2TV2JSNJWFqawJxkKbCNIOLbkBGZiCV7sI31kAjrcIapjeo5GeZOfcKO';
+        $extraNotificationData = ['action_type' => 1];
         $fcmNotification = [
-	    	'registration_ids' => $listDevice,
-           // 'to'        => 'ctq6fdwQQuKMhrKzM42ZTE:APA91bGBAnVNDULQl_BKn2wB-181PvlM03P8MgdTwIpxSA0_Z8YpbiJ83UpOLDW3g2p1cV2HjB7BSsNs7qwtIC_RbTcsIFKX0mtEpljJh3f6Ne_JxdCqBZZBbnElvKey_tY4G4iUKmB3', //single token
+//	    	'registration_ids' => $listDevice,
+            'to' => $token,
             'notification' => $notification,
             'data' => $extraNotificationData
         ];
@@ -153,7 +150,8 @@ class HocmaiBackendController extends ApiBaseController
         curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($fcmNotification));
         $result = curl_exec($ch);
         curl_close($ch);
-        dd(json_decode($result));
+        dd(json_decode($result)->failure);
+        dd(json_decode($result)->failure);
         return $this->sendSuccess($data, 'success');
     }
 
@@ -165,44 +163,6 @@ class HocmaiBackendController extends ApiBaseController
         //Lấy danh sách các device_token cần để gửi lên firebase
         $listDevice = $this->backend->prepareData($notifyId);
         $this->commonSendNotifyToFirebase($listDevice, $notifyId);
-//        //Format dữ liệu trước khi gửi lên firebase
-//        $fcmUrl = 'https://fcm.googleapis.com/fcm/send';
-//        $title = $this->backend->getTitleNotify($notifyId);
-//        $body = $this->backend->getBodyNotify($notifyId);
-//        $icon = $this->backend->getIconNotify($notifyId);
-//        $sound = $this->backend->getSoundNotify($notifyId);
-//        $iosBadge = $this->backend->getIosBadgeNotify($notifyId);
-//        $notification = [
-//            'title' => $title,
-//            'body' => $body,
-//            'icon' => $icon,
-//            'sound' => $sound,
-//            'badge' => $iosBadge,
-//        ];
-//        $extraNotificationData = ["message" => $notification,"moredata" => $this->backend->formatDataNotify($notifyId, $title, $body)];
-//        $fcmNotification = [
-//            'registration_ids' => $listDevice,
-////            'to'        => $token, //single token
-//            'notification' => $notification,
-//            'data' => $extraNotificationData
-//        ];
-//
-//        $headers = [
-//            'Authorization: key=' . HocmaiDataConst::API_ACCESS_KEY,
-//            'Content-Type: application/json'
-//        ];
-//        $ch = curl_init();
-//        curl_setopt($ch, CURLOPT_URL,$fcmUrl);
-//        curl_setopt($ch, CURLOPT_POST, true);
-//        curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
-//        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-//        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
-//        curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($fcmNotification));
-//        $result = curl_exec($ch);
-//        curl_close($ch);
-//        //update notify with status = 1(up thanh cong)
-//        $this->backend->updateNotifySuccess($notifyId);
-
         return $this->sendSuccess($data, 'success');
     }
 
@@ -226,31 +186,43 @@ class HocmaiBackendController extends ApiBaseController
             'sound' => $sound,
             'badge' => $iosBadge,
         ];
-        $extraNotificationData = ["message" => $notification,"moredata" => $this->backend->formatDataNotify($notifyId, $title, $body, $import)];
-        $fcmNotification = [
-            'registration_ids' => $listDevice,
-            'notification' => $notification,
-            'data' => $extraNotificationData
-        ];
-
+        $extraNotificationData = $this->backend->formatDataNotify($notifyId, $title, $body, $import);
         $headers = [
             'Authorization: key=' . HocmaiDataConst::API_ACCESS_KEY,
             'Content-Type: application/json'
         ];
-        $ch = curl_init();
-        curl_setopt($ch, CURLOPT_URL,$fcmUrl);
-        curl_setopt($ch, CURLOPT_POST, true);
-        curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
-        curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($fcmNotification));
-        $result = curl_exec($ch);
-        curl_close($ch);
-        $response = json_decode($result);
-        $failure = $response->failure;
-        $success = $response->success;
+        $failureNotify = $successNotify = 0;
+        foreach ($listDevice as $token)
+        {
+            $fcmNotification = [
+//            'registration_ids' => $listDevice,
+                'to' => $token,
+                'notification' => $notification,
+                'data' => $extraNotificationData
+            ];
+            $ch = curl_init();
+            curl_setopt($ch, CURLOPT_URL,$fcmUrl);
+            curl_setopt($ch, CURLOPT_POST, true);
+            curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+            curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+            curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+            curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($fcmNotification));
+            $result = curl_exec($ch);
+            curl_close($ch);
+            $response = json_decode($result);
+            $failure = $response->failure;
+            $success = $response->success;
+            if ($failure != 0) {
+                $failureNotify = $failureNotify + 1;
+                $this->backend->updateNotifyDevice($notifyId, $token, true);
+            }
+            if ($success != 0) {
+                $this->backend->updateNotifyDevice($notifyId, $token);
+                $successNotify = $successNotify + 1;
+            }
+        }
         //update notify with status = 1(up thanh cong)
-        $this->backend->updateNotifySuccess($notifyId, $failure, $success);
+        $this->backend->updateNotifySuccess($notifyId, $failureNotify, $successNotify);
         return true;
     }
 
@@ -259,18 +231,13 @@ class HocmaiBackendController extends ApiBaseController
         $input = $request->all();
         $notifyId = $input['notify_id'];
         $listDevice = [];
-        $path = $request->file('file')->getRealPath();
-        $data =  Excel::load($path, function ($reader) {
-            $reader->noHeading();
-        })->get()->toArray();
-        foreach ($data as $key => $value) {
-            $listDevice[] = $value[0];
+        if($request->hasFile('file')) {
+            $data = Excel::toArray(new HocmaiNotifyImport, request()->file('file'));
+            foreach ($data[0] as $key => $value) {
+                $listDevice[] = $value[0];
+            }
         }
-        foreach ($listDevice as $deviceToken)
-        {
-            HocmaiNotifyDevice::create(['notify_id' => $notifyId, 'device_token' => $deviceToken, 'status' => HocmaiDataConst::UPLOAD_FIREBASE_SUCCESS]);
-        }
-        $this->commonSendNotifyToFirebase($listDevice, $notifyId, true);
-        return $this->sendSuccess([], 'success');
+        $this->backend->saveDeviceBeforeSend($listDevice, $notifyId);
+        return $this->sendSuccess(['notify_id' => $notifyId], 'success');
     }
 }

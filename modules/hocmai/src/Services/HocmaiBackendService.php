@@ -15,6 +15,8 @@ use APV\Hocmai\Models\HocmaiUser;
 use APV\Hocmai\Models\HocmaiApp;
 use APV\Hocmai\Models\HocmaiCity;
 use APV\Hocmai\Models\HocmaiNotifyContext;
+use APV\Hocmai\Models\HocmaiNotifyDevice;
+use APV\Hocmai\Models\HocmaiNotifyDeviceError;
 use APV\Hocmai\Constants\HocmaiDataConst;
 use \DB;
 
@@ -931,11 +933,12 @@ class HocmaiBackendService
         $ios = $this->getUserListByAppId($notifyId, 2);
         $res = array_unique (array_merge ($android, $ios));
         foreach ($res as $userId) {
-            $deviceToken = HocmaiDeviceUser::where('user_id', $userId)->orderBy('created_at', 'DESC')->first();
-            if ($deviceToken) {
-                $listDevice[] = $deviceToken;
+            $deviceUser = HocmaiDeviceUser::where('user_id', $userId)->orderBy('created_at', 'DESC')->first();
+            if ($deviceUser) {
+                $listDevice[] = $deviceUser->device_token;
             }
         }
+        $this->saveDeviceBeforeSend($listDevice, $notifyId);
         return $listDevice;
     }
 
@@ -1057,4 +1060,29 @@ class HocmaiBackendService
         return true;
     }
 
+    public function saveDeviceBeforeSend($listDevice, $notifyId)
+    {
+        foreach ($listDevice as $token)
+        {
+            HocmaiNotifyDevice::create(['notify_id' => $notifyId, 'device_token' => $token, 'status' => HocmaiDataConst::BEFORE_SENT]);
+        }
+        return true;
+    }
+
+    public function updateNotifyDevice($notifyId, $deviceToken, $failure = null)
+    {
+        $notifyDevice = HocmaiNotifyDevice::where('notify_id', $notifyId)->where('device_token', $deviceToken)
+            ->first();
+        if ($notifyDevice) {
+            if ($failure) {
+                $notifyDevice->update(['status' => HocmaiDataConst::SENT_FAIL]);
+            } else{
+                $notifyDevice->update(['status' => HocmaiDataConst::SENT_SUCCESS]);
+
+            }
+            return true;
+        }
+        HocmaiNotifyDeviceError::create(['notify_id' => $notifyId, 'device_token' => $deviceToken]);
+        return true;
+    }
 }

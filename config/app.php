@@ -194,6 +194,7 @@ return [
         APV\Promotion\Providers\PromotionProvider::class,
         APV\Hocmai\Providers\HocmaiProvider::class,
 //        Barryvdh\Debugbar\ServiceProvider::class,
+        Maatwebsite\Excel\ExcelServiceProvider::class,
 
     ],
 
@@ -244,7 +245,7 @@ return [
         'Validator' => Illuminate\Support\Facades\Validator::class,
         'View' => Illuminate\Support\Facades\View::class,
        // 'Debugbar' => 'Barryvdh\Debugbar\Facade',
-
+        'Excel' => Maatwebsite\Excel\Facades\Excel::class,
     ],
 
 ];
