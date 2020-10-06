@@ -887,6 +887,11 @@ class HocmaiBackendService
             ->select('hocmai_users.id')
             ->groupBy('hocmai_users.id')
             ->get();
+        return $this->getUserListByContext($notifyId, $data);
+    }
+
+    public function getUserListByContext($notifyId, $data)
+    {
         $context = HocmaiNotifyContext::where('notify_id', $notifyId)->first();
         if (!$context) {
             dd('thieu context cho notify_id = ' . $notifyId);
@@ -1078,11 +1083,36 @@ class HocmaiBackendService
                 $notifyDevice->update(['status' => HocmaiDataConst::SENT_FAIL]);
             } else{
                 $notifyDevice->update(['status' => HocmaiDataConst::SENT_SUCCESS]);
-
             }
             return true;
         }
         HocmaiNotifyDeviceError::create(['notify_id' => $notifyId, 'device_token' => $deviceToken]);
         return true;
+    }
+
+    public function getListDeviceByImport($notifyId)
+    {
+        $list = HocmaiNotifyDevice::where('notify_id', $notifyId)->get();
+        //lấy danh sách user theo device_token
+        $listUser = $listDevice = [];
+        foreach ($list as $item)
+        {
+            $deviceToken = $item->device_token;
+            $deviceUser = HocmaiDeviceUser::where('device_token', $deviceToken)->first();
+            if ($deviceUser) {
+                $listUser = $deviceUser->user_id;
+            }
+        }
+        $data = HocmaiUser::whereIn('id', $listUser)->get();
+        //lấy danh sách user kết hợp thêm điều kiện ngữ cảnh
+        $res = $this->getUserListByContext($notifyId, $data);
+        //Lấy danh sách device_token đúng theo danh sách import kết hợp ngữ cảnh là $res
+        foreach ($res as $userId) {
+            $deviceUser = HocmaiDeviceUser::where('user_id', $userId)->orderBy('created_at', 'DESC')->first();
+            if ($deviceUser) {
+                $listDevice[] = $deviceUser->device_token;
+            }
+        }
+        return $listDevice;
     }
 }

@@ -24,6 +24,6 @@ class HocmaiNotify extends Model
      * @var array
      */
     protected $fillable = [
-        'title', 'name', 'body', 'image_url'
+        'title', 'name', 'body', 'image_url', 'status', 'failure', 'success'
     ];
 }
