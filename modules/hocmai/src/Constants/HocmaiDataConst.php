@@ -41,4 +41,5 @@ class HocmaiDataConst extends BaseDataConst
     const BEFORE_SENT = 1;
     const SENT_FAIL = 2;
     const SENT_SUCCESS = 3;
+    const API_SYNC = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoiMTIzMjk3OSIsInVzZXJuYW1lIjoiaG9jbWFpLmtpdGh1YXQiLCJmaXJzdF9uYW1lIjoiS2l0aHVhdCIsImxhc3RfbmFtZSI6IkhvY21haSIsImlhdCI6MTYwMTg5MjIzMywiZXhwIjoxNjAyNDk3MDMzfQ.FpofakgBIQYFdVZFbbl-tVjpAI2RMrgphxiIWA-IBHI';
 }

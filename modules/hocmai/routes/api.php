@@ -50,4 +50,6 @@ Route::group([
 
     //import file excel cac device_token
     Route::post('notify/import', 'HocmaiBackendController@postNotifyImport');
+    //dong bo
+    Route::post('notify/sync', 'HocmaiBackendController@postNotifySync');
 });

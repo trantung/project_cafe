@@ -166,7 +166,7 @@ class HocmaiBackendController extends ApiBaseController
         } else {
             $listDevice = $this->backend->prepareData($notifyId);
         }
-
+        dd($listDevice);
         $this->commonSendNotifyToFirebase($listDevice, $notifyId);
         return $this->sendSuccess($data, 'success');
     }
@@ -244,5 +244,23 @@ class HocmaiBackendController extends ApiBaseController
         }
         $this->backend->saveDeviceBeforeSend($listDevice, $notifyId);
         return $this->sendSuccess(['notify_id' => $notifyId], 'success');
+    }
+
+    public function postNotifySync(Request $request)
+    {
+        $headers = [
+            'Authorization: x-api-key=' . HocmaiDataConst::API_SYNC,
+            'Content-Type: application/json'
+        ];
+        $ch = curl_init();
+        curl_setopt($ch, CURLOPT_URL,$fcmUrl);
+        curl_setopt($ch, CURLOPT_POST, true);
+        curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+        curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($fcmNotification));
+        $result = curl_exec($ch);
+        curl_close($ch);
+        dd($result);
     }
 }
