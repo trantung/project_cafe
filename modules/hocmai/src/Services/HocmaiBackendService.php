@@ -1039,7 +1039,7 @@ class HocmaiBackendService
         }
         $res['title'] = $title;
         $res['body'] = $body;
-        $res['data']['action_type'] = $actionType;
+        $res['data'] = ['action_type' => $actionType];
         if ($actionType == 1) {
             $res['data']['course_id'] = $this->getInfoByActionTypeDetail($data->detail, 'course_id');
             $res['data']['lesson_id'] = $this->getInfoByActionTypeDetail($data->detail, 'lesson_id');

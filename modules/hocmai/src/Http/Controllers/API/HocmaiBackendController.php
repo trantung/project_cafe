@@ -166,7 +166,7 @@ class HocmaiBackendController extends ApiBaseController
         } else {
             $listDevice = $this->backend->prepareData($notifyId);
         }
-        dd($listDevice);
+        $listDevice = ['f_otCxA1a2U:APA91bFMSz5apCOk_spB1EHf2K41QqAFODkz4fYPdtErsFBaocS3FEjmBzd9Oh8MdX4SAWU2X7V19QJbK0_R2TV2JSNJWFqawJxkKbCNIOLbkBGZiCV7sI31kAjrcIapjeo5GeZOfcKO'];
         $this->commonSendNotifyToFirebase($listDevice, $notifyId);
         return $this->sendSuccess($data, 'success');
     }
@@ -264,7 +264,6 @@ class HocmaiBackendController extends ApiBaseController
         // dd($result);
 
         $curl = curl_init();
-
         curl_setopt_array($curl, array(
             CURLOPT_URL => "https://api-prod.hocmai.vn/notification/migration/packageRegistered",
             CURLOPT_RETURNTRANSFER => true,
@@ -282,7 +281,7 @@ class HocmaiBackendController extends ApiBaseController
         $err = curl_error($curl);
 
         curl_close($curl);
-        dd($response);
+        dd(json_decode($response)->data);
 
     }
 }
