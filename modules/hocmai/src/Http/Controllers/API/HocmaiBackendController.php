@@ -273,7 +273,7 @@ class HocmaiBackendController extends ApiBaseController
             CURLOPT_CUSTOMREQUEST => "GET",
             CURLOPT_HTTPHEADER => array(
                 "cache-control: no-cache",
-                'Authorization: x-api-key=' . HocmaiDataConst::API_SYNC,
+                'x-api-key: ' . HocmaiDataConst::API_SYNC,
                 'Content-Type: application/json'
             ),
         ));
