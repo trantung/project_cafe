@@ -246,42 +246,5 @@ class HocmaiBackendController extends ApiBaseController
         return $this->sendSuccess(['notify_id' => $notifyId], 'success');
     }
 
-    public function postNotifySync(Request $request)
-    {
-        // $headers = [
-        //     'Authorization: x-api-key=' . HocmaiDataConst::API_SYNC,
-        //     'Content-Type: application/json'
-        // ];
-        // $ch = curl_init();
-        // curl_setopt($ch, CURLOPT_URL,$fcmUrl);
-        // curl_setopt($ch, CURLOPT_POST, true);
-        // curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
-        // curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-        // curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
-        // curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($fcmNotification));
-        // $result = curl_exec($ch);
-        // curl_close($ch);
-        // dd($result);
 
-        $curl = curl_init();
-        curl_setopt_array($curl, array(
-            CURLOPT_URL => "https://api-prod.hocmai.vn/notification/migration/packageRegistered",
-            CURLOPT_RETURNTRANSFER => true,
-            CURLOPT_TIMEOUT => 30,
-            CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
-            CURLOPT_CUSTOMREQUEST => "GET",
-            CURLOPT_HTTPHEADER => array(
-                "cache-control: no-cache",
-                'x-api-key: ' . HocmaiDataConst::API_SYNC,
-                'Content-Type: application/json'
-            ),
-        ));
-
-        $response = curl_exec($curl);
-        $err = curl_error($curl);
-
-        curl_close($curl);
-        dd(json_decode($response)->data);
-
-    }
 }

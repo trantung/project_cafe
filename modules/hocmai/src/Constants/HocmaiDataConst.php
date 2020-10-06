@@ -13,6 +13,9 @@ class HocmaiDataConst extends BaseDataConst
     const IOS = 1;
     const ANDROID = 2;
     const ANOTHER = 3;
+
+    const ANDROID_LENGTH = 152;
+    const IOS_LENGTH = 64;
     //type_id
     const TYPE_OPTION = 1;
     const TYPE_STRING = 2;

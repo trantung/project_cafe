@@ -23,6 +23,20 @@ Route::group([
     //Khi logout khỏi app
     //param: hocmai_user_id
     Route::post('logout', 'HocmaiController@postLogout');
+
+    //Sync with hocmai system api
+    //dong bo user. url: https://api-prod.hocmai.vn/notification/migration/user
+    Route::post('sync/user', 'HocmaiController@postSyncUser');
+    //dong bo khoa hoc da dang ky url: https://api-prod.hocmai.vn/notification/migration/packageRegistered
+    Route::post('sync/course/regist', 'HocmaiController@postSyncCourseRegist');
+    //dong bo thong tin goi IAP da nap. url: https://api-prod.hocmai.vn/notification/migration/IAPPurchased
+    Route::post('sync/iap/regist', 'HocmaiController@postSyncIapRegist');
+    
+    //dong bo chuong trinh da dang ky url: https://api-prod.hocmai.vn/notification/migration/programRegistered
+    // Route::post('sync/program/regist', 'HocmaiController@postSyncProgramRegist');
+
+    
+
 });
 //api backend
 Route::group([
@@ -50,6 +64,5 @@ Route::group([
 
     //import file excel cac device_token
     Route::post('notify/import', 'HocmaiBackendController@postNotifyImport');
-    //dong bo
-    Route::post('notify/sync', 'HocmaiBackendController@postNotifySync');
+
 });

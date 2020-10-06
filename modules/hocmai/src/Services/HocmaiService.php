@@ -370,4 +370,52 @@ class HocmaiService extends BaseService
         $res['hocmai_user_id'] = $hocmaiUserId;
         return $res;
     }
+
+    public function createNewUserFull($hocmaiUserId, $cityId, $deviceToken)
+    {
+        $os = HocmaiDataConst::ANOTHER;
+        $strlen = strlen($deviceToken);
+        if ($strlen == HocmaiDataConst::ANDROID_LENGTH) {
+            $os = HocmaiDataConst::IOS;
+        }
+        if ($strlen == HocmaiDataConst::IOS_LENGTH) {
+            $os = HocmaiDataConst::ANDROID;
+        }
+        $checkUser = HocmaiUser::where('hocmai_user_id', $hocmaiUserId)->first();
+        if ($checkUser) {
+            $userId = $checkUser->id;
+        }
+        if (!$checkUser) {
+            if ($cityId == '') {
+                $cityId = 0;
+            }
+            $userId = HocmaiUser::create([
+                'hocmai_user_id' => $hocmaiUserId,
+                'city_id' => $cityId,
+            ])->id;
+        }
+        $checkUserApp = HocmaiUserApp::where('user_id', $userId)
+            ->where('hocmai_app_id', $os)
+            ->first();
+        if (!$checkUserApp) {
+            HocmaiUserApp::create([
+                'hocmai_user_id' => $hocmaiUserId,
+                'user_id' => $userId,
+                'hocmai_app_id' => $os,
+            ]);
+        }
+        
+        $deviceUser = HocmaiDeviceUser::where('user_id', $userId)
+            ->where('device_token', $deviceToken)->first();
+        if (!$deviceUser) {
+            HocmaiDeviceUser::create([
+                'user_id' => $userId,
+                'device_token' => $deviceToken,
+                'hocmai_device_id' => $deviceToken,
+            ]);
+        }
+
+        return true;
+        
+    }
 }
