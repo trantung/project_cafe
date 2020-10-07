@@ -1053,17 +1053,17 @@ class HocmaiBackendService
         // $res = $this->convertToObject()
         // $this->action_type = $actionType;
         // $res['data'] = $this->action_type;
-        $res['data'] = ['action_type' => $actionType];
+        $res['action_type'] = $actionType;
         if ($actionType == 1) {
-            $res['data']['course_id'] = $this->getInfoByActionTypeDetail($data->detail, 'course_id');
-            $res['data']['lesson_id'] = $this->getInfoByActionTypeDetail($data->detail, 'lesson_id');
-            $res['data']['is_buy'] = $this->getIsBuyCourse($data->detail);
+            $res['course_id'] = $this->getInfoByActionTypeDetail($data->detail, 'course_id');
+            $res['lesson_id'] = $this->getInfoByActionTypeDetail($data->detail, 'lesson_id');
+            $res['is_buy'] = $this->getIsBuyCourse($data->detail);
         }
         if ($actionType == 14) {
-            $res['data']['url'] = $this->getInfoByActionTypeDetail($data->detail, 'url');
+            $res['url'] = $this->getInfoByActionTypeDetail($data->detail, 'url');
         }
         if ($actionType == 15) {
-            $res['data']['school_block_id'] = $this->getInfoByActionTypeDetail($data->detail, 'school_block_id');
+            $res['school_block_id'] = $this->getInfoByActionTypeDetail($data->detail, 'school_block_id');
         }
         return $res;
     }
