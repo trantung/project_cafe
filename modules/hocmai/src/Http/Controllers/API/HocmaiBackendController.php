@@ -160,14 +160,16 @@ class HocmaiBackendController extends ApiBaseController
         $input = $request->all();
         $data = $this->backend->postNotifyCreateStep4($input);
         $notifyId = $data['notify_id'];
+        $import = null;
         //Lấy danh sách các device_token cần để gửi lên firebase
         if (isset($input['import']) && $input['import'] == 1) {
+            $import = $input['import'];
             $listDevice = $this->backend->getListDeviceByImport($notifyId);
         } else {
             $listDevice = $this->backend->prepareData($notifyId);
         }
         $listDevice = ['f_otCxA1a2U:APA91bFMSz5apCOk_spB1EHf2K41QqAFODkz4fYPdtErsFBaocS3FEjmBzd9Oh8MdX4SAWU2X7V19QJbK0_R2TV2JSNJWFqawJxkKbCNIOLbkBGZiCV7sI31kAjrcIapjeo5GeZOfcKO'];
-        $this->commonSendNotifyToFirebase($listDevice, $notifyId);
+        $this->commonSendNotifyToFirebase($listDevice, $notifyId, $import);
         return $this->sendSuccess($data, 'success');
     }
 

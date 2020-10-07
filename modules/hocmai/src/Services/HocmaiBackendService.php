@@ -1044,19 +1044,15 @@ class HocmaiBackendService
     {
         $data = HocmaiNotifyContext::where('notify_id', $notifyId)->first();
 
-        if ($import) {
-            $actionType = 18;
-        } else {
-            if (!$data) {
-                dd('formatDataNotify sai notifyId = ' .  $notifyId);
-            }
-            $actionType = $data->action_type;
+        if (!$data) {
+            dd('formatDataNotify sai notifyId = ' .  $notifyId);
         }
+        $actionType = $data->action_type;
         $res['title'] = $title;
         $res['body'] = $body;
         // $res = $this->convertToObject()
         // $this->action_type = $actionType;
-        $res['data'] = $this->action_type;
+        // $res['data'] = $this->action_type;
         $res['data'] = ['action_type' => $actionType];
         if ($actionType == 1) {
             $res['data']['course_id'] = $this->getInfoByActionTypeDetail($data->detail, 'course_id');
