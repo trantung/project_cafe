@@ -119,7 +119,7 @@ class HocmaiBackendController extends ApiBaseController
 //        $listDevice = $this->backend->prepareData($input);
 //        dd($listDevice);
         $listDevice = [
-            'fctq6fdwQQuKMhrKzM42ZTE:APA91bGBAnVNDULQl_BKn2wB-181PvlM03P8MgdTwIpxSA0_Z8YpbiJ83UpOLDW3g2p1cV2HjB7BSsNs7qwtIC_RbTcsIFKX0mtEpljJh3f6Ne_JxdCqBZZBbnElvKey_tY4G4iUKmB3','ctq6fdwQQuKMhrKzM42ZTE:APA91bGBAnVNDULQl_BKn2wB-181PvlM03P8MgdTwIpxSA0_Z8YpbiJ83UpOLDW3g2p1cV2HjB7BSsNs7qwtIC_RbTcsIFKX0mtEpljJh3f6Ne_JxdCqBZZBbnElvKey_tY4G4iUKB4' ];
+            'f_otCxA1a2U:APA91bFMSz5apCOk_spB1EHf2K41QqAFODkz4fYPdtErsFBaocS3FEjmBzd9Oh8MdX4SAWU2X7V19QJbK0_R2TV2JSNJWFqawJxkKbCNIOLbkBGZiCV7sI31kAjrcIapjeo5GeZOfcKO', 'dz7t6wS0ui8:APA91bEkR2aq7B2RAdsw37VFLV2skbOe8DLrZOxZDGhESdptcAkT2VyK2K8aO0jMrP_2rk4nC6bLiOPqJkUOjpZ81QqE4fl8XOsGH3c7nAC9itIhatum8n0Oew7TgN_j927MTUnozLjt'];
         $fcmUrl = 'https://fcm.googleapis.com/fcm/send';
         $notification = [
             'title' => 'title',
