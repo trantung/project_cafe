@@ -1107,6 +1107,8 @@ class HocmaiBackendService
     public function getListDeviceByImport($notifyId)
     {
         $list = HocmaiNotifyDevice::where('notify_id', $notifyId)->get();
+        var_dump($notifyId);
+        var_dump('___');
         var_dump($list);
         //lấy danh sách user theo device_token
         $listUser = $listDevice = [];
