@@ -1117,6 +1117,7 @@ class HocmaiBackendService
                 $listUser = $deviceUser->user_id;
             }
         }
+        dd($listUser);
         $data = HocmaiUser::whereIn('id', $listUser)->get();
         //lấy danh sách user kết hợp thêm điều kiện ngữ cảnh
         $res = $this->getUserListByContext($notifyId, $data);
