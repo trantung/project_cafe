@@ -1114,10 +1114,9 @@ class HocmaiBackendService
             $deviceToken = $item->device_token;
             $deviceUser = HocmaiDeviceUser::where('device_token', $deviceToken)->first();
             if ($deviceUser) {
-                $listUser = $deviceUser->user_id;
+                $listUser[] = $deviceUser->user_id;
             }
         }
-        dd($listUser);
         $data = HocmaiUser::whereIn('id', $listUser)->get();
         //lấy danh sách user kết hợp thêm điều kiện ngữ cảnh
         $res = $this->getUserListByContext($notifyId, $data);
