@@ -106,6 +106,7 @@ class HocmaiService extends BaseService
     {
         $res = [];
         $now = date('Y-m-d H:i:s');
+        dd($input);
         $deviceToken = $input['device_token'];
         //check thông tin user đã có chưa
         $check = HocmaiUser::where('hocmai_user_id', $input['hocmai_user_id'])->first();

@@ -1151,6 +1151,7 @@ class HocmaiBackendService
             $res[$key]['app_os'] = $os;
             $res[$key]['os_name'] = $nameOs;
             $res[$key]['created_at'] = $created_at->format('Y-m-d H:i:s');
+            $res[$key]['updated_at'] = $hocmaiDeviceUser->updated_at->format('Y-m-d H:i:s');
         }
         return $res;
     }
