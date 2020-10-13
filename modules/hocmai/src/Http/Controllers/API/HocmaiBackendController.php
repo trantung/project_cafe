@@ -249,5 +249,11 @@ class HocmaiBackendController extends ApiBaseController
         return $this->sendSuccess(['notify_id' => $notifyId], 'success');
     }
 
+    public function postDeviceTokenUserHocmaiId(Request $request)
+    {
+        $input = $request->all();
+        $data = $this->backend->postDeviceTokenUserHocmaiId($input);
+        return $this->sendSuccess($data, 'success');
+    }
 
 }

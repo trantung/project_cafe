@@ -892,43 +892,47 @@ class HocmaiBackendService
 
     public function getUserListByContext($notifyId, $data)
     {
-        $context = HocmaiNotifyContext::where('notify_id', $notifyId)->first();
-        if (!$context) {
-            dd('thieu context cho notify_id = ' . $notifyId);
-        }
-        $contextId = $context->context_id;
         $res = [];
-        if ($contextId == 1) {
-            $detail = $context->detail;
-            $courseLesson = $this->getCourseByContextDetail($detail);
-            if ($courseLesson['lesson_id'] != '') {
-                $lessonId = $courseLesson['lesson_id'];
-                foreach ($data as $value) {
-                    $lessonUser = HocmaiLessonUser::where('lesson_id', $lessonId)
-                        ->where('user_id', $value->id)->first();
-                    if ($lessonUser) {
-                        $res[] = $value->id;
-                    }
-                }
-            }
-            else {
-                if ($courseLesson['course_id'] != '') {
-                    $courseId = $courseLesson['course_id'];
-                    foreach ($data as $value) {
-                        $courseUser = HocmaiCourseUser::where('course_id', $courseId)
-                            ->where('user_id', $value->id)->first();
-                        if ($courseUser) {
-                            $res[] = $value->id;
-                        }
-                    }
-                }
-            }
-        } else {
-            foreach ($data as $v) {
-                $res[] = $v->id;
-            }
+        foreach ($data as $v) {
+            $res[] = $v->id;
         }
         return $res;
+//        $context = HocmaiNotifyContext::where('notify_id', $notifyId)->first();
+//        if (!$context) {
+//            dd('thieu context cho notify_id = ' . $notifyId);
+//        }
+//        $contextId = $context->context_id;
+//        if ($contextId == 1) {
+//            $detail = $context->detail;
+//            $courseLesson = $this->getCourseByContextDetail($detail);
+//            if ($courseLesson['lesson_id'] != '') {
+//                $lessonId = $courseLesson['lesson_id'];
+//                foreach ($data as $value) {
+//                    $lessonUser = HocmaiLessonUser::where('lesson_id', $lessonId)
+//                        ->where('user_id', $value->id)->first();
+//                    if ($lessonUser) {
+//                        $res[] = $value->id;
+//                    }
+//                }
+//            }
+//            else {
+//                if ($courseLesson['course_id'] != '') {
+//                    $courseId = $courseLesson['course_id'];
+//                    foreach ($data as $value) {
+//                        $courseUser = HocmaiCourseUser::where('course_id', $courseId)
+//                            ->where('user_id', $value->id)->first();
+//                        if ($courseUser) {
+//                            $res[] = $value->id;
+//                        }
+//                    }
+//                }
+//            }
+//        } else {
+//            foreach ($data as $v) {
+//                $res[] = $v->id;
+//            }
+//        }
+//        return $res;
     }
 
     public function prepareData($notifyId)
@@ -1024,22 +1028,7 @@ class HocmaiBackendService
     {
         return true;
     }
-    public function convertToObject()
-    {
-        $res['data'] = ['action_type' => $actionType];
-        if ($actionType == 1) {
-            $res['data']['course_id'] = $this->getInfoByActionTypeDetail($data->detail, 'course_id');
-            $res['data']['lesson_id'] = $this->getInfoByActionTypeDetail($data->detail, 'lesson_id');
-            $res['data']['is_buy'] = $this->getIsBuyCourse($data->detail);
-        }
-        if ($actionType == 14) {
-            $res['data']['url'] = $this->getInfoByActionTypeDetail($data->detail, 'url');
-        }
-        if ($actionType == 15) {
-            $res['data']['school_block_id'] = $this->getInfoByActionTypeDetail($data->detail, 'school_block_id');
-        }
-        return $res;
-    }
+
     public function formatDataNotify($notifyId, $title, $body, $import = null)
     {
         $data = HocmaiNotifyContext::where('notify_id', $notifyId)->first();
@@ -1132,5 +1121,37 @@ class HocmaiBackendService
             }
         }
         return $listDevice;
+    }
+
+    public function postDeviceTokenUserHocmaiId($input)
+    {
+        $hocmai_user_id = $input['hocmai_user_id'];
+        $user = HocmaiUser::where('hocmai_user_id', $hocmai_user_id)->first();
+        if (!$user) {
+            dd('Không có user này trong hệ thống');
+        }
+        $res = [];
+        $nameOs = '';
+        $userId = $user->id;
+        $os = HocmaiDataConst::ANOTHER;
+        $list = HocmaiDeviceUser::where('user_id', $userId)->orderBy('created_at', 'DESC')->get();
+        foreach ($list as $key => $hocmaiDeviceUser) {
+            $token = $hocmaiDeviceUser->device_token;
+            $created_at = $hocmaiDeviceUser->created_at;
+            $strlen = strlen($token);
+            if ($strlen == HocmaiDataConst::ANDROID_LENGTH) {
+                $os = HocmaiDataConst::ANDROID;
+                $nameOs = 'ANDROID';
+            }
+            if ($strlen == HocmaiDataConst::IOS_LENGTH) {
+                $os = HocmaiDataConst::IOS;
+                $nameOs = 'IOS';
+            }
+            $res[$key]['device_token'] = $token;
+            $res[$key]['app_os'] = $os;
+            $res[$key]['os_name'] = $nameOs;
+            $res[$key]['created_at'] = $created_at->format('Y-m-d H:i:s');
+        }
+        return $res;
     }
 }

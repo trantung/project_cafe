@@ -93,13 +93,11 @@ class HocmaiService extends BaseService
         return $deviceId;
     }
 
-    public function createNewDeviceUser($deviceId, $userId, $deviceToken = null)
+    public function createNewDeviceUser($userId, $deviceToken = null)
     {
-        $check = HocmaiDeviceUser::where('hocmai_device_id', $deviceId)
-            ->where('user_id', $userId)
-            ->first();
+        $check = HocmaiDeviceUser::where('user_id', $userId)->first();
         if (!$check) {
-            HocmaiDeviceUser::create(['user_id' => $userId, 'hocmai_device_id' =>$deviceId, 'device_token' => $deviceToken]);
+            HocmaiDeviceUser::create(['user_id' => $userId, 'device_token' => $deviceToken]);
         }
         return true;
     }
@@ -109,7 +107,6 @@ class HocmaiService extends BaseService
         $res = [];
         $now = date('Y-m-d H:i:s');
         $deviceToken = $input['device_token'];
-        $deviceId = $this->getDeviceIdByDeviceToken($deviceToken);
         //check thông tin user đã có chưa
         $check = HocmaiUser::where('hocmai_user_id', $input['hocmai_user_id'])->first();
         if ($check) {
@@ -129,7 +126,7 @@ class HocmaiService extends BaseService
             //tạo mới record trong bảng hocmai_user_login_log
             $this->createNewUserLoginLog($input, $check->id);
             //tạo mới record trong bảng hocmai_device_user
-            $this->createNewDeviceUser($deviceId, $check->id);
+            $this->createNewDeviceUser($check->id, $deviceToken);
             $res['hocmai_user_id'] = $input['hocmai_user_id'];
             $res['user_id'] = $check->id;
             return $res;
@@ -149,7 +146,7 @@ class HocmaiService extends BaseService
         ])->id;
         $this->createNewUserApp($input, $userId);
         $this->createNewUserLoginLog($input, $userId);
-        $this->createNewDeviceUser($deviceId, $userId, $deviceToken);
+        $this->createNewDeviceUser($userId, $deviceToken);
         $res['hocmai_user_id'] = $input['hocmai_user_id'];
         $res['user_id'] = $userId;
         return $res;

@@ -64,5 +64,7 @@ Route::group([
 
     //import file excel cac device_token
     Route::post('notify/import', 'HocmaiBackendController@postNotifyImport');
+    //get device_token by user hocmai_id
+    Route::post('device_token/user_hocmai_id', 'HocmaiBackendController@postDeviceTokenUserHocmaiId');
 
 });
