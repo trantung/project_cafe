@@ -13,6 +13,7 @@ use APV\Hocmai\Models\HocmaiCourse;
 use APV\Hocmai\Models\HocmaiCourseUser;
 use APV\Hocmai\Models\HocmaiCourseUserLog;
 use APV\Hocmai\Models\HocmaiLessonUserLog;
+use APV\Hocmai\Models\HocmaiAppVersion;
 use APV\Hocmai\Constants\HocmaiDataConst;
 use APV\Base\Services\BaseService;
 use Illuminate\Http\Request;
@@ -28,26 +29,34 @@ class HocmaiService extends BaseService
     {
         $res = [];
         $arrayField = [
-            'app_version', 'app_os', 'app_id'
+            'app_version', 'app_os', 'app_name'
         ];
         $input = $this->formatInput($input, $arrayField);
         //check app_id và app_version và app_os tồn tại hay chưa
-        $check = HocmaiApp::where('app_id', $input['app_id'])
-            ->where('app_version', $input['app_version'])
+        $check = HocmaiApp::where('app_id', $input['app_name'])
             ->where('app_os', $input['app_os'])
             ->first();
         if ($check) {
-            $res['app_id'] = $check->app_id;
-            $res['app_version'] = $check->app_version;
-            $res['app_os'] = $check->app_os;
-            $res['hocmai_app_id'] = $check->id;
-            return $res;
+            $appId = $check->id;
+            $version = HocmaiAppVersion::where('app_id', $appId)
+                ->where('version', $input['app_version'])
+                ->first();
+            if (!$version) {
+                HocmaiAppVersion::create([
+                    'app_id' => $appId,
+                    'version' => $input['app_version'],
+                ])->id;
+            }
+            return true;
         }
-        $hocmaiAppId = HocmaiApp::create($input)->id;
-        $res['app_id'] = $input['app_id'];
-        $res['app_version'] = $input['app_version'];
-        $res['app_os'] = $input['app_os'];
-        $res['hocmai_app_id'] = $hocmaiAppId;
+        $appId = HocmaiApp::create([
+            'app_id' => $input['app_name'],
+            'app_os' => $input['app_os'],
+        ])->id;
+        HocmaiAppVersion::create([
+            'app_id' => $appId,
+            'version' => $input['app_version'],
+        ])->id;
         return $res;
     }
 
@@ -125,7 +134,7 @@ class HocmaiService extends BaseService
         $now = date('Y-m-d H:i:s');
         $arrayField = [
             'device_token', 'hocmai_user_id', 'city_id', 'district_id', 'class_id', 'last_login', 'last_session',
-            'phone', 'birthday', 'number_open_app'
+            'phone', 'birthday', 'number_open_app', 'app_id', 'app_os', 'app_version'
         ];
         $input = $this->formatInput($input, $arrayField);
         $deviceToken = $input['device_token'];
