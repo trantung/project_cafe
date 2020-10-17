@@ -1147,11 +1147,16 @@ class HocmaiBackendService
                 $os = HocmaiDataConst::IOS;
                 $nameOs = 'IOS';
             }
+            $user = HocmaiUser::find($userId);
+            $firstLogin = '';
+            if ($user) {
+                $firstLogin = $user->first_login;
+            }
             $res[$key]['device_token'] = $token;
             $res[$key]['app_os'] = $os;
             $res[$key]['os_name'] = $nameOs;
-            $res[$key]['created_at'] = $created_at->format('Y-m-d H:i:s');
-            $res[$key]['updated_at'] = $hocmaiDeviceUser->updated_at->format('Y-m-d H:i:s');
+            $res[$key]['token_created_at'] = $created_at->format('Y-m-d H:i:s');
+            $res[$key]['first_login'] = $firstLogin;
         }
         return $res;
     }
