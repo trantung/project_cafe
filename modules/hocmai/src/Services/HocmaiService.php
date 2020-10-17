@@ -113,9 +113,9 @@ class HocmaiService extends BaseService
     public function createNewDeviceUser($userId, $deviceToken = null)
     {
         $check = HocmaiDeviceUser::where('user_id', $userId)->first();
-        if (!$check) {
-            HocmaiDeviceUser::create(['user_id' => $userId, 'device_token' => $deviceToken]);
-        }
+        // if (!$check) {
+        HocmaiDeviceUser::create(['user_id' => $userId, 'device_token' => $deviceToken]);
+        // }
         return true;
     }
 
