@@ -1,4 +1,15 @@
 <?php
+
+// dd($strlen);
+Route::get('/test_device', function(){
+    $deviceToken = 'f7avS6zvCYI:APA91bG3QTgEZunoDfIgm8H_A5OQgohd5tf2K__3jqN4gcDkT-GMODyrj5Lw_KThLJTNNlibtYphs1gkNBwafe5VvWIFEKsiY9CkzyQU9EbBt1o6kJ-OJwunkokj2iHCASYp2K96WWq7';
+    $deviceToken = 'fbrupa9YG30:APA91bFix_ZOOMw3kmiWovU9wrGlnY4ArZLnXF0ubBEaOEYEls2F9-f3lbSuBzGSqCuNXcKXLIlNp15ogY0P6VYLENkEeneidyN44TCyN-Rp63ANM9w6hAbNgzDMHO_UB4Bg2YI89HSw';
+
+    // $bin = decbin(ord($deviceToken));
+    // $hex = bin2hex($bin);
+    $check = ctype_xdigit($deviceToken);
+    dd($check);
+});
 Route::group([
     'prefix' => 'api_hocmai',
     'namespace' => 'APV\Hocmai\Http\Controllers\API',

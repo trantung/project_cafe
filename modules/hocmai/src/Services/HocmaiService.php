@@ -445,6 +445,36 @@ class HocmaiService extends BaseService
         }
 
         return true;
-        
+    }
+
+    public function createOrUpdateCourse($id, $name, $listUserId)
+    {
+        $check = HocmaiCourse::where('hocmai_course_id', $id)->first();
+        if (!$check) {
+            $courseId = HocmaiCourse::create([
+                'hocmai_course_id' => $id,
+                'course_name' => $name,
+            ])->id;
+        } else {
+            $courseId = $check->id;
+        }
+        foreach ($listUserId as $key => $hocmaiUserId) {
+            $user = HocmaiUser::where('hocmai_user_id', $hocmaiUserId)->first();
+            if (!$user) {
+                $userId = HocmaiUser::create(['hocmai_user_id' => $hocmaiUserId])->id;
+                
+            } else {
+                $userId = $user->id;
+            }
+            $courseUser = HocmaiCourseUser::where('course_id', $courseId)->where('user_id', $userId)->first();
+            if (!$courseUser) {
+                HocmaiCourseUser::create([
+                    'course_id' => $courseId,
+                    'user_id' => $userId,
+                    'hocmai_user_id' => $hocmaiUserId,
+                ]);
+            }
+        }
+        return true;
     }
 }

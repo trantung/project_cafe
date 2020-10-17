@@ -3,6 +3,7 @@ namespace APV\Hocmai\Http\Controllers\API;
 
 use APV\Base\Http\Controllers\API\ApiBaseController;
 use APV\Hocmai\Services\HocmaiService;
+use APV\Hocmai\Services\HocmaiCourse;
 use Illuminate\Http\Request;
 use APV\Base\Services\ApiAuth;
 use APV\Hocmai\Constants\HocmaiDataConst;
@@ -85,7 +86,6 @@ class HocmaiController extends ApiBaseController
     public function postSyncUser(Request $request)
     {
         $data = $this->getCommonDataSync('https://api-prod.hocmai.vn/notification/migration/user', 'GET');
-         dd($data);
         foreach ($data as $key => $value) {
             $hocmaiUserId = $value->user_id;
             $cityId = $value->city_id;
@@ -98,7 +98,13 @@ class HocmaiController extends ApiBaseController
     public function postSyncCourseRegist(Request $request)
     {
         $data = $this->getCommonDataSync('https://api-prod.hocmai.vn/notification/migration/packageRegistered', 'GET');
-        dd($data);
+        foreach ($data as $key => $value) {
+            $courseId = $value->package_id;
+            $courseName = $value->package_name;
+            $listUser = $value->list_user_id;
+            $this->hocmaiService->createOrUpdateCourse($courseId, $courseName, $listUser);
+        }
+        return $this->sendSuccess(['sync' => 'ok'], 'success');
     }
 
     public function postSyncIapRegist(Request $request)
