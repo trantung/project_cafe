@@ -81,4 +81,19 @@ class BaseService
         return true;
     }
 
+    public function getValueFromParam($input, $field)
+    {
+        if (isset($input[$field])) {
+            return $input[$field];
+        }
+        return 0;
+    }
+    
+    public function formatInput($input, $arrayField)
+    {
+        foreach ($arrayField as $field) {
+            $input[$field] = $this->getValueDefault($input, $field);
+        }
+        return $input;
+    }
 }

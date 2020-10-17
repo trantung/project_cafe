@@ -85,15 +85,12 @@ class HocmaiController extends ApiBaseController
     public function postSyncUser(Request $request)
     {
         $data = $this->getCommonDataSync('https://api-prod.hocmai.vn/notification/migration/user', 'GET');
-        // dd($data);
+         dd($data);
         foreach ($data as $key => $value) {
-            if ($value->user_id == 2731689) {
-                dd($value);
-            }
             $hocmaiUserId = $value->user_id;
             $cityId = $value->city_id;
             $deviceToken = $value->token;
-            $data = $this->hocmaiService->createNewUserFull($hocmaiUserId, $cityId, $deviceToken);
+            $this->hocmaiService->createNewUserFull($hocmaiUserId, $cityId, $deviceToken);
         }
         return $this->sendSuccess(['sync' => 'ok'], 'success');
     }
