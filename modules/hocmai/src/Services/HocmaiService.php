@@ -63,11 +63,11 @@ class HocmaiService extends BaseService
     public function getHocmaiAppId($input)
     {
         $arrayField = [
-            'app_id', 'app_version', 'app_os'
+            'app_name', 'app_version', 'app_os'
         ];
         $input = $this->formatInput($input, $arrayField);
 
-        $check = HocmaiApp::where('app_id', $input['app_id'])
+        $check = HocmaiApp::where('app_id', $input['app_name'])
             ->where('app_version', $input['app_version'])
             ->where('app_os', $input['app_os'])
             ->first();
