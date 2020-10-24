@@ -566,7 +566,7 @@ class HocmaiBackendService
         $data = [
             'id' => 16,
             'action_type' => 16,
-            'action_name' => 'Truy cập vào kênh livestream',
+            'action_name' => 'Truy cập vào cụ thể livestream',
             'data_list' => [
                 [
                     'school_block_id' => 1,

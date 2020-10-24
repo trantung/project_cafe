@@ -1911,6 +1911,7 @@
  * @apiName postNotifyCreateStep4
  * @apiGroup HocmaiNotify
  * @apiParam {Number} notify_id id của notify(required)
+ * @apiParam {Number} import nếu import file thì phải gửi lên và giá trị = 1
  * @apiParam {String} sound
  * @apiParam {String} ios_badge
  * @apiParam {Array} context ngữ cảnh dạng array(ví dụ: context = [action_type=>1])
