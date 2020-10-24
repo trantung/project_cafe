@@ -880,6 +880,15 @@ class HocmaiBackendService
             $filterId = $value->filter_id;
             $explode = explode('=', $value->detail);
             $conditionValue = $explode[1];
+            var_dump('data');
+            var_dump($data);
+            var_dump('filterId');
+            var_dump($filterId);
+            var_dump('condition');
+            var_dump($condition);
+            var_dump('conditionValue');
+            var_dump($conditionValue);
+            dd('tunglaso1');
             $condition = $operator[$value->operator_id];
             $data = $this->getInfoByFilter($data, $filterId, $condition, $conditionValue);
         }
