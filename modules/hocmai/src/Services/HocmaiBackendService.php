@@ -886,7 +886,9 @@ class HocmaiBackendService
         $data = $data->whereNull('hocmai_users.deleted_at')
             ->select('hocmai_users.id')
             ->groupBy('hocmai_users.id')
-            ->get();
+            ->toSql();
+            // ->get();
+            dd($data);
         return $this->getUserListByContext($notifyId, $data);
     }
 
