@@ -1070,10 +1070,17 @@ class HocmaiBackendService
 
     public function saveDeviceBeforeSend($listDevice, $notifyId)
     {
+        $list = [];
         foreach ($listDevice as $token)
         {
-            HocmaiNotifyDevice::create(['notify_id' => $notifyId, 'device_token' => $token, 'status' => HocmaiDataConst::BEFORE_SENT]);
+            // HocmaiNotifyDevice::create(['notify_id' => $notifyId, 'device_token' => $token, 'status' => HocmaiDataConst::BEFORE_SENT]);
+            $list[] = [
+                'notify_id' => $notifyId,
+                'device_token' => $token,
+                'status' => HocmaiDataConst::BEFORE_SENT,
+            ];
         }
+        HocmaiNotifyDevice::insert($list);
         return true;
     }
 
