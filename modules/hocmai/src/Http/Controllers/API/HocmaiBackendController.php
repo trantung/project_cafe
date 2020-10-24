@@ -168,9 +168,21 @@ class HocmaiBackendController extends ApiBaseController
         } else {
             $listDevice = $this->backend->prepareData($notifyId);
         }
-        // dd($listDevice);
-        // $listDevice = ['f_otCxA1a2U:APA91bFMSz5apCOk_spB1EHf2K41QqAFODkz4fYPdtErsFBaocS3FEjmBzd9Oh8MdX4SAWU2X7V19QJbK0_R2TV2JSNJWFqawJxkKbCNIOLbkBGZiCV7sI31kAjrcIapjeo5GeZOfcKO', 'dz7t6wS0ui8:APA91bEkR2aq7B2RAdsw37VFLV2skbOe8DLrZOxZDGhESdptcAkT2VyK2K8aO0jMrP_2rk4nC6bLiOPqJkUOjpZ81QqE4fl8XOsGH3c7nAC9itIhatum8n0Oew7TgN_j927MTUnozLjt'];
+        $data = ['number_device_tokens' => count($listDevice)];
+//        $this->commonSendNotifyToFirebase($listDevice, $notifyId, $import);
+        return $this->sendSuccess($data, 'success');
+    }
+
+    public function postNotifyCreateStep5(Request $request)
+    {
+        $input = $request->all();
+        $notifyId = $input['notify_id'];
+        $listDevice = $this->backend->getListDeviceTokens($notifyId);
         $this->commonSendNotifyToFirebase($listDevice, $notifyId, $import);
+        $data['number_device_tokens'] = count($listDevice);
+        $data['sent_error'] = count($this->backend->getListDeviceTokensError($notifyId));
+        $data['sent_fail'] = count($this->backend->getListDeviceTokensSentFail($notifyId));
+        $data['sent_success'] = count($this->backend->getListDeviceTokensSentSuccess($notifyId));
         return $this->sendSuccess($data, 'success');
     }
 

@@ -1904,3 +1904,44 @@
     "message": "success"
 }
  */
+
+
+/**
+ * @api {post} /api_hocmai_backend/notify/create/step4 confirm và lấy thông tin số lượng device_tokens sẽ được gửi
+ * @apiName postNotifyCreateStep4
+ * @apiGroup HocmaiNotify
+ * @apiParam {Number} notify_id id của notify(required)
+ * @apiParam {String} sound
+ * @apiParam {String} ios_badge
+ * @apiParam {Array} context ngữ cảnh dạng array(ví dụ: context = [action_type=>1])
+ * @apiSuccessExample Success-Response: số lượng device_token sẽ được gửi đi
+ * HTTP/1.1 200 OK
+{
+"success": true,
+"response_code": 1000,
+"data": {
+'number_device_tokens' => 10
+},
+"message": "success"
+}
+ */
+
+/**
+ * @api {post} /api_hocmai_backend/notify/create/step5 Gửi notify tới các device_token
+ * @apiName postNotifyCreateStep5
+ * @apiGroup HocmaiNotify
+ * @apiParam {Number} notify_id id của notify(required)
+ * @apiSuccessExample Success-Response: sent_error: số lượng token ko có notify_id(debug hệ thống), send_fail: số lượng token mà firebase ko gửi được, sent_success: số lượng token gửi ok
+ * HTTP/1.1 200 OK
+{
+"success": true,
+"response_code": 1000,
+"data": {
+'number_device_tokens' => 10,
+ 'sent_error' => 1,
+ 'sent_fail' => 1,
+ 'sent_success' => 8,
+},
+"message": "success"
+}
+ */

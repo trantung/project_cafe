@@ -68,9 +68,12 @@ Route::group([
     Route::post('notify/create/step2', 'HocmaiBackendController@postNotifyCreateStep2');
     //Step3
     Route::post('notify/create/step3', 'HocmaiBackendController@postNotifyCreateStep3');
-    //Step4
+    //Step4: trả về số lượng device_token sẽ được gửi
     Route::post('notify/create/step4', 'HocmaiBackendController@postNotifyCreateStep4');
+    //Step5
+    Route::post('notify/create/step5', 'HocmaiBackendController@postNotifyCreateStep5');
 
+    //test
     Route::post('notify/test', 'HocmaiBackendController@postNotifyTest');
 
     //import file excel cac device_token
