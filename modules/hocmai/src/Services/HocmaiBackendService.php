@@ -677,7 +677,10 @@ class HocmaiBackendService
     public function setNotifyFilter($input)
     {
         $notifyId = $input['notify_id'];
-        $filter = $input['filter'];
+        $filter = [];
+        if (isset($input['filter'])) {
+            $filter = $input['filter'];
+        }
         foreach ($filter as $value)
         {
             $value['notify_id'] = $notifyId;
@@ -880,24 +883,15 @@ class HocmaiBackendService
             $filterId = $value->filter_id;
             $explode = explode('=', $value->detail);
             $conditionValue = $explode[1];
-            var_dump('data');
-            var_dump($data);
-            var_dump('filterId');
-            var_dump($filterId);
-            var_dump('condition');
-            var_dump($condition);
-            var_dump('conditionValue');
-            var_dump($conditionValue);
-            dd('tunglaso1');
             $condition = $operator[$value->operator_id];
             $data = $this->getInfoByFilter($data, $filterId, $condition, $conditionValue);
         }
         $data = $data->whereNull('hocmai_users.deleted_at')
             ->select('hocmai_users.id')
             ->groupBy('hocmai_users.id')
-            ->toSql();
-            // ->get();
-            dd($data);
+//            ->toSql();
+             ->get();
+//            dd($data);
         return $this->getUserListByContext($notifyId, $data);
     }
 
@@ -949,9 +943,14 @@ class HocmaiBackendService
     public function prepareData($notifyId)
     {
         $listDevice = [];
-        $android = $this->getUserListByAppId($notifyId, 1);
-        $ios = $this->getUserListByAppId($notifyId, 2);
-        $res = array_unique (array_merge ($android, $ios));
+        $res = [];
+        $notifyApps = HocmaiNotifyFilter::where('notify_id', $notifyId)->pluck('app_id');
+        foreach ($notifyApps as $appId)
+        {
+            if ($appId != NULL) {
+                $res = array_unique (array_merge ($res, $this->getUserListByAppId($notifyId, $appId)));
+            }
+        }
         foreach ($res as $userId) {
             $deviceUser = HocmaiDeviceUser::where('user_id', $userId)->orderBy('created_at', 'DESC')->first();
             if ($deviceUser) {
@@ -1020,7 +1019,7 @@ class HocmaiBackendService
                 $result['lesson_id'] = $res[1];
             }
             if ($res[0] == 'url') {
-                $result['url'] = $res[1];
+                $result['url'] = substr($value, 4);
             }
             if ($res[0] == 'livestream_id') {
                 $result['livestream_id'] = $res[1];
@@ -1203,4 +1202,29 @@ class HocmaiBackendService
         return $res;
     }
 
+    public function getAppList($input)
+    {
+        $data = HocmaiApp::all();
+        $res = [];
+        foreach($data as $key => $app)
+        {
+            $res[] = [
+                'app_id'=> $app->id,
+                'app_name'=> $app->app_id,
+                'app_os'=> $app->app_os,
+            ];
+        }
+        return $res;
+    }
+
+    public function postNotifySaveNotSend($notifyId)
+    {
+        $notify = HocmaiNotify::find($notifyId);
+        if (!$notify)
+        {
+            dd('not found notifyId = ' . $notifyId);
+        }
+        $notify->update(['status' => HocmaiDataConst::SAVE_NOT_SENT,]);
+        return true;
+    }
 }
