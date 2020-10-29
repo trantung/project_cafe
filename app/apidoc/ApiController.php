@@ -1965,7 +1965,7 @@
  */
 
 /**
- * @api {get} /app/list Lấy danh sách app
+ * @api {get} api_hocmai_backend/app/list Lấy danh sách app
  * @apiName getAppList
  * @apiGroup HocmaiBackend
  *
@@ -1988,4 +1988,51 @@
 ],
 "message": "success"
 }
+ */
+
+/**
+ * @api {get} api_hocmai_backend/notify-list Lấy danh sách notify
+ * @apiName getNotifyList
+ * @apiGroup HocmaiBackend
+ *
+ * @apiSuccessExample Success-Response: Danh sách
+ * HTTP/1.1 200 OK
+"success": true,
+"response_code": 1000,
+"data": [
+{
+{
+"notify_id": 1,
+"notify_name": null,
+"notify_title": "test",
+"status": null,
+"status_name": "Đang hoạt động",
+"start_date_sent": null,
+"end_date_sent": null,
+"number_sent_success": null,
+"is_edit": false
+},
+{
+"notify_id": 2,
+"notify_name": null,
+"notify_title": "kjdsfjk",
+"status": null,
+"status_name": "Đang hoạt động",
+"start_date_sent": "2020-10-02 08:08:43",
+"end_date_sent": "2020-10-02 08:08:43",
+"number_sent_success": null,
+"is_edit": false
+},
+{
+"notify_id": 3,
+"notify_name": null,
+"notify_title": "sfsd",
+"status": null,
+"status_name": "Đang hoạt động",
+"start_date_sent": "2020-10-06 01:39:37",
+"end_date_sent": "2020-10-06 01:39:37",
+"number_sent_success": null,
+"is_edit": false
+},
+]
  */
