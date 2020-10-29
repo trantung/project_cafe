@@ -1705,6 +1705,7 @@
  * @apiParam {String} register_time Ngày tháng năm đăng ký tài khoản của user(required. Định dạng: y/m/d. ví dụ: 2000/02/22)
  * @apiParam {String} app_version version của app(required)
  * @apiParam {String} app_id id của app(required. Ví dụ: .com, .hocmai.vn, ....)
+ * @apiParam {String} user_name username của user
  * @apiParam {String} app_os Hệ điều hành của app(required. IOS:1, ANDROID:2, Khác:3)
  * @apiParam {String} device_token Token của device(required)
  *
