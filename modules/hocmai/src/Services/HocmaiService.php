@@ -29,11 +29,11 @@ class HocmaiService extends BaseService
     {
         $res = [];
         $arrayField = [
-            'app_version', 'app_os', 'app_name'
+            'app_version', 'app_os', 'app_id'
         ];
         $input = $this->formatInput($input, $arrayField);
         //check app_id và app_version và app_os tồn tại hay chưa
-        $check = HocmaiApp::where('app_id', $input['app_name'])
+        $check = HocmaiApp::where('app_id', $input['app_id'])
             ->where('app_os', $input['app_os'])
             ->first();
         if ($check) {
@@ -50,7 +50,7 @@ class HocmaiService extends BaseService
             return true;
         }
         $appId = HocmaiApp::create([
-            'app_id' => $input['app_name'],
+            'app_id' => $input['app_id'],
             'app_os' => $input['app_os'],
         ])->id;
         HocmaiAppVersion::create([
@@ -63,12 +63,11 @@ class HocmaiService extends BaseService
     public function getHocmaiAppId($input)
     {
         $arrayField = [
-            'app_name', 'app_version', 'app_os'
+            'app_id', 'app_version', 'app_os'
         ];
         $input = $this->formatInput($input, $arrayField);
 
-        $check = HocmaiApp::where('app_id', $input['app_name'])
-            ->where('app_version', $input['app_version'])
+        $check = HocmaiApp::where('app_id', $input['app_id'])
             ->where('app_os', $input['app_os'])
             ->first();
         if ($check) {
@@ -119,12 +118,14 @@ class HocmaiService extends BaseService
         return $deviceId;
     }
 
-    public function createNewDeviceUser($userId, $deviceToken = null)
+    public function createNewDeviceUser($userId, $input)
     {
-        $check = HocmaiDeviceUser::where('user_id', $userId)->first();
-        // if (!$check) {
-        HocmaiDeviceUser::create(['user_id' => $userId, 'device_token' => $deviceToken]);
-        // }
+        $check = HocmaiDeviceUser::where('user_id', $userId)
+            ->where('device_token', $input['device_token'])
+            ->first();
+        if (!$check) {
+            HocmaiDeviceUser::create(['user_id' => $userId, 'device_token' => $input['device_token'], 'app_os' => $input['app_os']]);
+        }
         return true;
     }
 
@@ -134,7 +135,7 @@ class HocmaiService extends BaseService
         $now = date('Y-m-d H:i:s');
         $arrayField = [
             'device_token', 'hocmai_user_id', 'city_id', 'district_id', 'class_id', 'last_login', 'last_session',
-            'phone', 'birthday', 'number_open_app', 'app_id', 'app_os', 'app_version'
+            'phone', 'birthday', 'number_open_app', 'app_id', 'app_os', 'app_version', 'username'
         ];
         $input = $this->formatInput($input, $arrayField);
         $deviceToken = $input['device_token'];
@@ -151,6 +152,7 @@ class HocmaiService extends BaseService
                 'last_session' => $now,
                 'phone' => $input['phone'],
                 'birthday' => $input['birthday'],
+                'username' => $input['username'],
                 'number_open_app' => $check->number_open_app + 1,
             ]);
             //tạo mới record trong bảng hocmai_user_app
@@ -158,7 +160,7 @@ class HocmaiService extends BaseService
             //tạo mới record trong bảng hocmai_user_login_log
             $this->createNewUserLoginLog($input, $check->id);
             //tạo mới record trong bảng hocmai_device_user
-            $this->createNewDeviceUser($check->id, $deviceToken);
+            $this->createNewDeviceUser($check->id, $input);
             $res['hocmai_user_id'] = $input['hocmai_user_id'];
             $res['user_id'] = $check->id;
             return $res;
@@ -174,11 +176,12 @@ class HocmaiService extends BaseService
             'first_login' => $now,
             'last_login' => $now,
             'last_session' => $now,
+            'username' => $input['username'],
             'number_open_app' => 1,
         ])->id;
         $this->createNewUserApp($input, $userId);
         $this->createNewUserLoginLog($input, $userId);
-        $this->createNewDeviceUser($userId, $deviceToken);
+        $this->createNewDeviceUser($userId, $input);
         $res['hocmai_user_id'] = $input['hocmai_user_id'];
         $res['user_id'] = $userId;
         return $res;

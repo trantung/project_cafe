@@ -1811,7 +1811,7 @@
  */
 
 /**
- * @api {get} /api_hocmai_backend/filter/list danh sách bộ lọc filter kèm chi tiết từng bộ lọc
+ * @api {get} /api_hocmai_backend/filter/list Lấy danh sách bộ lọc filter kèm chi tiết từng bộ lọc
  * @apiName getBackendFilterList
  * @apiGroup HocmaiBackend
  *
@@ -1943,6 +1943,48 @@
  'sent_fail' => 1,
  'sent_success' => 8,
 },
+"message": "success"
+}
+ */
+
+/**
+ * @api {post} /notify/save_not_send Save notify nhưng chưa gửi
+ * @apiName postNotifySaveNotSend
+ * @apiGroup HocmaiBackend
+ * @apiParam {Number} notify_id id của notify(required)
+ * @apiSuccessExample Success-Response: Danh sách
+ * HTTP/1.1 200 OK
+{
+"success": true,
+"response_code": 1000,
+"data": [
+],
+"message": "success"
+}
+ */
+
+/**
+ * @api {get} /app/list Lấy danh sách app
+ * @apiName getAppList
+ * @apiGroup HocmaiBackend
+ *
+ * @apiSuccessExample Success-Response: Danh sách
+ * HTTP/1.1 200 OK
+{
+"success": true,
+"response_code": 1000,
+"data": [
+{
+"app_id": 1,
+"app_name": "vn.hocmai.appuser",
+"app_os": null
+},
+{
+"app_id": 2,
+"app_name": "com.hocmai",
+"app_os": null
+}
+],
 "message": "success"
 }
  */
