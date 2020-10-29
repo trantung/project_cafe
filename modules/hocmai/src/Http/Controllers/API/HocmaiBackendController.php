@@ -282,4 +282,11 @@ class HocmaiBackendController extends ApiBaseController
         $data = $this->backend->getAppList($input);
         return $this->sendSuccess($data, 'success');
     }
+
+    public function getNotifyList(Request $request)
+    {
+        $data = $this->backend->getNotifyList();
+        return $this->sendSuccess($data, 'success');
+    }
+
 }

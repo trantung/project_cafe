@@ -397,7 +397,7 @@ class HocmaiBackendService
     {
         $data = [
             'filter_id' => 18,
-            'filter_name' => 'User DOB',
+            'filter_name' => 'Thời gian đăng ký',
             'type_id' => HocmaiDataConst::TYPE_DATE,
             'operator' => [
                 [
@@ -721,6 +721,7 @@ class HocmaiBackendService
      */
     public function postNotifyCreateStep3($input)
     {
+//        dd($input);
         $notifyProfile = HocmaiNotifyProfile::create($input)->id;
         $res['notify_id'] = $input['notify_id'];
         $res['notify_profile_id'] = $notifyProfile;
@@ -818,7 +819,8 @@ class HocmaiBackendService
         {
             $data = $data->join('hocmai_user_app', 'hocmai_users.id', '=', 'hocmai_user_app.user_id')
                 ->join('hocmai_apps', 'hocmai_apps.id', '=', 'hocmai_user_app.hocmai_app_id')
-                ->where('hocmai_apps.app_version', $condition, $conditionValue);
+                ->join('hocmai_app_versions', 'hocmai_app_versions.app_id', '=', 'hocmai_apps.id')
+                ->where('hocmai_app_versions.app_version', $condition, $conditionValue);
         }
         //LAST TIME OPEN COURSE
         if ($filterId == 14)
@@ -1226,5 +1228,108 @@ class HocmaiBackendService
         }
         $notify->update(['status' => HocmaiDataConst::SAVE_NOT_SENT,]);
         return true;
+    }
+
+    public function getStatusNotify($notify, $notifyProfile)
+    {
+        if (!$notifyProfile) {
+            return 'Lỗi notify_profile';
+        }
+        if ($notify->status == HocmaiDataConst::UPLOAD_FIREBASE_SUCCESS) {
+            return 'Đã gửi';
+        }
+
+        if ($notify->status == HocmaiDataConst::SAVE_NOT_SENT) {
+            return 'Lưu nhưng chưa gửi';
+        }
+
+        if ($notify->status == NULL) {
+            return 'Gửi fail';
+        }
+        return 'error status';
+    }
+
+    public function getStartDateNotifySent($notifyProfile)
+    {
+        if (!$notifyProfile) {
+            return null;
+        }
+        if ($notifyProfile->schedule_id == HocmaiDataConst::SCHEDULE_NOW) {
+            return $notifyProfile->created_at->format('Y-m-d h:i:s');
+        }
+        if ($notifyProfile->schedule_id == HocmaiDataConst::SCHEDULE_TIMER) {
+            return $notifyProfile->schedule_date;
+        }
+        if ($notifyProfile->schedule_id == HocmaiDataConst::SCHEDULE_DAILY) {
+            return $notifyProfile->start_date;
+        }
+        return null;
+    }
+
+    public function getEndDateNotifySent($notifyProfile)
+    {
+        if (!$notifyProfile) {
+            return null;
+        }
+        if ($notifyProfile->schedule_id == HocmaiDataConst::SCHEDULE_NOW) {
+            return $notifyProfile->created_at->format('Y-m-d h:i:s');
+        }
+        if ($notifyProfile->schedule_id == HocmaiDataConst::SCHEDULE_TIMER) {
+            return $notifyProfile->schedule_date;
+        }
+        if ($notifyProfile->schedule_id == HocmaiDataConst::SCHEDULE_DAILY) {
+            return $notifyProfile->end_date;
+        }
+        return null;
+    }
+
+    public function getSentSuccessNumber($notify)
+    {
+        if ($notify->success) {
+            return $notify->success;
+        }
+        return null;
+    }
+
+    public function getEditStatusNotify($notify, $notifyProfile)
+    {
+        if (!$notifyProfile) {
+            return false;
+        }
+        if ($notify->status == HocmaiDataConst::UPLOAD_FIREBASE_SUCCESS) {
+            return false;
+        }
+        $now = date('Y-m-d H:i:s');
+        //nếu gửi ngay thì ko cho edit
+        if ($notifyProfile->schedule_id == HocmaiDataConst::SCHEDULE_NOW) {
+            return false;
+        }
+        //nếu hẹn giờ thì xem:  now < schedule_date ko cho sua
+        if ($notifyProfile->schedule_id == HocmaiDataConst::SCHEDULE_NOW) {
+            $schedule_date = $notifyProfile->schedule_date;
+            if ($now >= $schedule_date) {
+                return false;
+            }
+        }
+        return true;
+    }
+    public function getNotifyList()
+    {
+        $res = [];
+        $list = HocmaiNotify::all();
+        foreach ($list as $key => $notify)
+        {
+            $notifyProfile = HocmaiNotifyProfile::where('notify_id', $notify->id)->first();
+            $res[$key]['notify_id'] = $notify->id;
+            $res[$key]['notify_name'] = $notify->name;
+            $res[$key]['notify_title'] = $notify->title;
+            $res[$key]['status'] = $notify->status;
+            $res[$key]['status_name'] = $this->getStatusNotify($notify, $notifyProfile);
+            $res[$key]['start_date_sent'] = $this->getStartDateNotifySent($notifyProfile);
+            $res[$key]['end_date_sent'] = $this->getEndDateNotifySent($notifyProfile);
+            $res[$key]['number_sent_success'] = $this->getSentSuccessNumber($notify);
+            $res[$key]['is_edit'] = $this->getEditStatusNotify($notify, $notifyProfile);
+        }
+        return $res;
     }
 }

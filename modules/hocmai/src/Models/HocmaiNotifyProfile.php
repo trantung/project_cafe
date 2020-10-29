@@ -30,7 +30,7 @@ class HocmaiNotifyProfile extends Model
             [
                 'id' => 2,
                 'name' => 'scheduling',
-                'label' => 'Chọn ngày, giờ',
+                'label' => 'Hẹn giờ',
             ],
             [
                 'id' => 3,

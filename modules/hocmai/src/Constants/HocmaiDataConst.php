@@ -34,10 +34,19 @@ class HocmaiDataConst extends BaseDataConst
     //id = 6
     const OPERATOR_NOT_EQUAL = '!=';
 
+    //thời gian gửi notify
+    //gửi luôn
+    const SCHEDULE_NOW = 1;
+    //Chọn ngày giờ(Hẹn giờ gửi)
+    const SCHEDULE_TIMER = 2;
+    //Daily
+    const SCHEDULE_DAILY = 3;
+
     //firebase api access key
     const API_ACCESS_KEY = 'AAAANlBfKMs:APA91bGgy7i0mrkcvtubZV-0uVI-czC0-gQJEdYNkq4yeakFHq-De1iAk0cf43FvBAtzK9h_Yej03YemlNHos0X7kj4R5vEVVnh7PC5dMM09S3XIEdX6DyfSTyzzZs8Yi4MpY9gJaPTB';
 
     //status notify
+    const SAVE_NOT_SENT = 2;
     //update success to firebase
     const UPLOAD_FIREBASE_SUCCESS = 1;
 

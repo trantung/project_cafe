@@ -45,6 +45,7 @@ class HocmaiService extends BaseService
                 HocmaiAppVersion::create([
                     'app_id' => $appId,
                     'version' => $input['app_version'],
+                    'app_version' => $this->convertStringToInt($input['app_version']),
                 ])->id;
             }
             return true;
@@ -56,8 +57,14 @@ class HocmaiService extends BaseService
         HocmaiAppVersion::create([
             'app_id' => $appId,
             'version' => $input['app_version'],
+            'app_version' => $this->convertStringToInt($input['app_version']),
         ])->id;
         return $res;
+    }
+
+    public function convertStringToInt($string)
+    {
+        return str_replace('.', '', $string);
     }
 
     public function getHocmaiAppId($input)
