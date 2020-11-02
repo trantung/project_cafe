@@ -1321,7 +1321,7 @@ class HocmaiBackendService
     {
         $res = [];
         $list = HocmaiNotify::all();
-        $list = HocmaiNotify::withSimplePagination();
+        // $list = HocmaiNotify::withSimplePagination();
         foreach ($list as $key => $notify)
         {
             $notifyProfile = HocmaiNotifyProfile::where('notify_id', $notify->id)->first();
