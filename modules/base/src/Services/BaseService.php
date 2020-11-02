@@ -91,9 +91,10 @@ class BaseService
     
     public function formatInput($input, $arrayField)
     {
+        $res = [];
         foreach ($arrayField as $field) {
-            $input[$field] = $this->getValueDefault($input, $field);
+            $res[$field] = $this->getValueDefault($input, $field);
         }
-        return $input;
+        return $res;
     }
 }

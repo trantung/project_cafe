@@ -31,7 +31,6 @@ class HocmaiService extends BaseService
         $arrayField = [
             'app_version', 'app_os', 'app_id'
         ];
-        $input = $this->formatInput($input, $arrayField);
         //check app_id và app_version và app_os tồn tại hay chưa
         $check = HocmaiApp::where('app_id', $input['app_id'])
             ->where('app_os', $input['app_os'])
@@ -47,7 +46,13 @@ class HocmaiService extends BaseService
                     'version' => $input['app_version'],
                     'app_version' => $this->convertStringToInt($input['app_version']),
                 ])->id;
+                return true;
             }
+            $version->update([
+                'app_id' => $appId,
+                'version' => $input['app_version'],
+                'app_version' => $this->convertStringToInt($input['app_version']),
+            ]);
             return true;
         }
         $appId = HocmaiApp::create([
@@ -80,8 +85,7 @@ class HocmaiService extends BaseService
         if ($check) {
             return $check->id;
         }
-        $hocmaiAppId = HocmaiApp::create($input)->id;
-        return $hocmaiAppId;
+        return null;
     }
 
     public function createNewUserApp($input, $hocmaiUserId = null)
@@ -132,6 +136,8 @@ class HocmaiService extends BaseService
             ->first();
         if (!$check) {
             HocmaiDeviceUser::create(['user_id' => $userId, 'device_token' => $input['device_token'], 'app_os' => $input['app_os']]);
+        } else {
+            $check->update(['app_os' => $input['app_os']]);
         }
         return true;
     }
@@ -142,7 +148,7 @@ class HocmaiService extends BaseService
         $now = date('Y-m-d H:i:s');
         $arrayField = [
             'device_token', 'hocmai_user_id', 'city_id', 'district_id', 'class_id', 'last_login', 'last_session',
-            'phone', 'birthday', 'number_open_app', 'app_id', 'app_os', 'app_version', 'username'
+            'phone', 'birthday', 'number_open_app', 'app_id', 'app_os', 'app_version', 'username', 'register_time'
         ];
         $input = $this->formatInput($input, $arrayField);
         $deviceToken = $input['device_token'];

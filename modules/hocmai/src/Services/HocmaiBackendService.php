@@ -1171,7 +1171,7 @@ class HocmaiBackendService
         $hocmai_user_id = $input['hocmai_user_id'];
         $user = HocmaiUser::where('hocmai_user_id', $hocmai_user_id)->first();
         if (!$user) {
-            dd('Không có user này trong hệ thống');
+            return ['error' => 'khong co user trong he thong'];
         }
         $res = [];
         $nameOs = '';
@@ -1200,6 +1200,10 @@ class HocmaiBackendService
             $res[$key]['os_name'] = $nameOs;
             $res[$key]['token_created_at'] = $created_at->format('Y-m-d H:i:s');
             $res[$key]['first_login'] = $firstLogin;
+            $res[$key]['id'] = $user->id;
+            $res[$key]['phone'] = $user->phone;
+            $res[$key]['birthday'] = $user->birthday;
+            $res[$key]['username'] = $user->username;
         }
         return $res;
     }
@@ -1317,6 +1321,7 @@ class HocmaiBackendService
     {
         $res = [];
         $list = HocmaiNotify::all();
+        $list = HocmaiNotify::withSimplePagination();
         foreach ($list as $key => $notify)
         {
             $notifyProfile = HocmaiNotifyProfile::where('notify_id', $notify->id)->first();
