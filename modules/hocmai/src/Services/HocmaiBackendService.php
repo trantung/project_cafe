@@ -1181,14 +1181,12 @@ class HocmaiBackendService
         foreach ($list as $key => $hocmaiDeviceUser) {
             $token = $hocmaiDeviceUser->device_token;
             $created_at = $hocmaiDeviceUser->created_at;
-            $strlen = strlen($token);
-            if ($strlen == HocmaiDataConst::ANDROID_LENGTH) {
-                $os = HocmaiDataConst::ANDROID;
-                $nameOs = 'ANDROID';
-            }
-            if ($strlen == HocmaiDataConst::IOS_LENGTH) {
-                $os = HocmaiDataConst::IOS;
+            $nameOs = '';
+            if ($hocmaiDeviceUser->os == HocmaiDataConst::IOS) {
                 $nameOs = 'IOS';
+            }
+            if ($hocmaiDeviceUser->os == HocmaiDataConst::ANDROID) {
+                $nameOs = 'ANDROID';
             }
             $user = HocmaiUser::find($userId);
             $firstLogin = '';
@@ -1196,7 +1194,7 @@ class HocmaiBackendService
                 $firstLogin = $user->first_login;
             }
             $res[$key]['device_token'] = $token;
-            $res[$key]['app_os'] = $os;
+            $res[$key]['app_os'] = $hocmaiDeviceUser->os;
             $res[$key]['os_name'] = $nameOs;
             $res[$key]['token_created_at'] = $created_at->format('Y-m-d H:i:s');
             $res[$key]['first_login'] = $firstLogin;
