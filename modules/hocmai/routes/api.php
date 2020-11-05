@@ -12,7 +12,6 @@ Route::get('/test_device', function(){
 Route::group([
     'prefix' => 'api_hocmai',
     'namespace' => 'APV\Hocmai\Http\Controllers\API',
-    'middleware' => 'cors',
 ], function () {
     //Lấy thông tin app info: app_version, app_id(id của app)
     Route::post('app/info', 'HocmaiController@postAppInfo');
@@ -85,5 +84,6 @@ Route::group([
     //api danh sach app
     Route::get('app/list', 'HocmaiBackendController@getAppList');
     //danh sach notify
-    Route::get('notify-list', 'HocmaiBackendController@getNotifyList');
+    Route::get('notify-list', 'HocmaiBackendController@getNotifyList')->middleware('cors');
+;
 });
