@@ -20,11 +20,11 @@ class RedirectIfAuthenticated
         // if (Auth::guard($guard)->check()) {
         //     return redirect('/home');
         // }
-
-        return $next($request)
-            ->header('Access-Control-Allow-Origin', '*')
-            ->header('Access-Control-Allow-Methods', '*')
-            ->header('Access-Control-Allow-Credentials', 'true')
-            ->header('Access-Control-Allow-Headers', 'X-CSRF-Token');;
-    }
+//	die("demo");
+        return $next($request);
+//            ->header('Access-Control-Allow-Origin', '*')
+  //          ->header('Access-Control-Allow-Methods', '*')
+    //        ->header('Access-Control-Allow-Credentials', 'true');
+           // ->header('Access-Control-Allow-Headers', 'X-CSRF-Token');;
+   }
 }
