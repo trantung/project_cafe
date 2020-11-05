@@ -1,5 +1,4 @@
 <?php
-
 // dd($strlen);
 Route::get('/test_device', function(){
     $deviceToken = 'f7avS6zvCYI:APA91bG3QTgEZunoDfIgm8H_A5OQgohd5tf2K__3jqN4gcDkT-GMODyrj5Lw_KThLJTNNlibtYphs1gkNBwafe5VvWIFEKsiY9CkzyQU9EbBt1o6kJ-OJwunkokj2iHCASYp2K96WWq7';
@@ -13,6 +12,7 @@ Route::get('/test_device', function(){
 Route::group([
     'prefix' => 'api_hocmai',
     'namespace' => 'APV\Hocmai\Http\Controllers\API',
+    'middleware' => 'cors',
 ], function () {
     //Lấy thông tin app info: app_version, app_id(id của app)
     Route::post('app/info', 'HocmaiController@postAppInfo');
