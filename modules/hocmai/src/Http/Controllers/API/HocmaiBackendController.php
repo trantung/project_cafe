@@ -262,7 +262,9 @@ class HocmaiBackendController extends ApiBaseController
         if($request->hasFile('file')) {
             $data = Excel::toArray(new HocmaiNotifyImport, request()->file('file'));
             foreach ($data[0] as $key => $value) {
-                $listDevice[] = $value[0];
+                if (isset($value[0])) {
+                    $listDevice[] = $value[0];
+                }
             }
         }
         $this->backend->saveDeviceBeforeSend($listDevice, $notifyId);
