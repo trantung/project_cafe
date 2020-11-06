@@ -1147,11 +1147,12 @@ class HocmaiBackendService
         $list = HocmaiNotifyDevice::where('notify_id', $notifyId)->get();
         //lấy danh sách user theo device_token
         $listUser = $listDevice = [];
-        var_dump($list->toArray());
         foreach ($list as $item)
         {
             $deviceToken = $item->device_token;
-            $deviceUser = HocmaiDeviceUser::where('device_token', $deviceToken)->first();
+            $deviceUser = HocmaiDeviceUser::where('device_token', $deviceToken)
+                ->where('id', 'DESC')
+                ->first();
             if ($deviceUser) {
                 $listUser[] = $deviceUser->user_id;
             }
