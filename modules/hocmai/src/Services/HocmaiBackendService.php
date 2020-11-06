@@ -1087,13 +1087,16 @@ class HocmaiBackendService
         foreach ($listDevice as $token)
         {
             // HocmaiNotifyDevice::create(['notify_id' => $notifyId, 'device_token' => $token, 'status' => HocmaiDataConst::BEFORE_SENT]);
-            $list[] = [
-                'notify_id' => $notifyId,
-                'device_token' => $token,
-                'status' => HocmaiDataConst::BEFORE_SENT,
-                'created_at' => $now,
-            ];
+            if (isset($token)) {
+                $list[] = [
+                    'notify_id' => $notifyId,
+                    'device_token' => $token,
+                    'status' => HocmaiDataConst::BEFORE_SENT,
+                    'created_at' => $now,
+                ];
+            }
         }
+
         HocmaiNotifyDevice::insert($list);
         return true;
     }
@@ -1158,7 +1161,6 @@ class HocmaiBackendService
             }
         }
         $data = HocmaiUser::whereIn('id', $listUser)->get();
-        var_dump($data->toArray());
         //lấy danh sách user kết hợp thêm điều kiện ngữ cảnh
         $res = $this->getUserListByContext($notifyId, $data);
         //Lấy danh sách device_token đúng theo danh sách import kết hợp ngữ cảnh là $res
