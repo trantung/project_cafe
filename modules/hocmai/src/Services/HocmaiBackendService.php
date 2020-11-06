@@ -1087,7 +1087,7 @@ class HocmaiBackendService
         foreach ($listDevice as $token)
         {
             // HocmaiNotifyDevice::create(['notify_id' => $notifyId, 'device_token' => $token, 'status' => HocmaiDataConst::BEFORE_SENT]);
-            if (isset($token)) {
+            if ($token != null) {
                 $list[] = [
                     'notify_id' => $notifyId,
                     'device_token' => $token,
@@ -1154,7 +1154,7 @@ class HocmaiBackendService
         {
             $deviceToken = $item->device_token;
             $deviceUser = HocmaiDeviceUser::where('device_token', $deviceToken)
-                ->where('id', 'DESC')
+                ->orderBy('id', 'DESC')
                 ->first();
             if ($deviceUser) {
                 $listUser[] = $deviceUser->user_id;
@@ -1170,7 +1170,6 @@ class HocmaiBackendService
                 $listDevice[] = $deviceUser->device_token;
             }
         }
-        dd($listDevice);
         return $listDevice;
     }
 
