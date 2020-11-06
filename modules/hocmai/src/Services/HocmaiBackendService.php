@@ -1091,7 +1091,7 @@ class HocmaiBackendService
                 'notify_id' => $notifyId,
                 'device_token' => $token,
                 'status' => HocmaiDataConst::BEFORE_SENT,
-                'created_at' => $now;
+                'created_at' => $now,
             ];
         }
         HocmaiNotifyDevice::insert($list);
