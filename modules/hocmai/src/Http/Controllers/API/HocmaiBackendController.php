@@ -297,14 +297,17 @@ class HocmaiBackendController extends ApiBaseController
         $notifyId = $input['notify_id'];
         $listDevice = $this->backend->postNotifySendHandle($input);
         $this->commonSendNotifyToFirebase($listDevice, $notifyId);
-
+        $res = [
+            'count' => count($listDevice),
+            'list_device_token' => $listDevice,
+        ];
         // var_dump('<pre>');
         // var_dump(count($data));
         // var_dump('</pre>');
         // var_dump('<pre>');
         // dd($data);
         // var_dump('</pre>');
-        return $this->sendSuccess($data, 'success');
+        return $this->sendSuccess($res, 'success');
     }
 
 }
