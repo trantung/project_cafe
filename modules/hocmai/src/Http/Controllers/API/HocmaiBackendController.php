@@ -293,7 +293,7 @@ class HocmaiBackendController extends ApiBaseController
 
     public function postNotifySendHandle(Request $request)
     {
-        $notify_id = $input['notify_id'];
+        $notifyId = $input['notify_id'];
         $title = $this->backend->getTitleNotify($notifyId);
         $body = $this->backend->getBodyNotify($notifyId);
         $icon = $this->backend->getIconNotify($notifyId);
