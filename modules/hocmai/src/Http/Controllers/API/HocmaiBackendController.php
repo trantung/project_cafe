@@ -296,7 +296,9 @@ class HocmaiBackendController extends ApiBaseController
         $input = $request->all(); 
         $notifyId = $input['notify_id'];
         $listDevice = $this->backend->postNotifySendHandle($input);
-        $this->commonSendNotifyToFirebase($listDevice, $notifyId);
+        if (isset($input['handle']) && $input['handle'] == 1) {
+            $this->commonSendNotifyToFirebase($listDevice, $notifyId);
+        }
         $res = [
             'count' => count($listDevice),
             'list_device_token' => $listDevice,
