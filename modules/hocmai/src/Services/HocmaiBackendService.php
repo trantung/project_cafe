@@ -1347,7 +1347,7 @@ class HocmaiBackendService
     {
         $notifyId = $input['notify_id'];
         $listDevice = $this->getListDeviceTokens($notifyId);
-        $check = HocmaiNotifyDevice::where('notify_id', $notifyId)
+        $data = HocmaiNotifyDevice::where('notify_id', $notifyId)
             ->whereIn('device_token', $listDevice)
             ->where('status', HocmaiDataConst::BEFORE_SENT)
             ->pluck('device_token');
