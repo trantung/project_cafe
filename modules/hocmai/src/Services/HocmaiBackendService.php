@@ -1346,7 +1346,11 @@ class HocmaiBackendService
     public function postNotifySendHandle($input,$title, $body)
     {
         $notifyId = $input['notify_id'];
-        $listDevice = $this->getListDeviceTokens($notifyId);
+        $list = $this->getListDeviceTokens($notifyId);
+        $listDevice = HocmaiNotifyDevice::where('notify_id', $notifyId)
+            ->groupBy('device_token')
+            ->pluck('device_token');
+
         $data = HocmaiNotifyDevice::where('notify_id', $notifyId)
             ->whereIn('device_token', $listDevice)
             ->where('status', HocmaiDataConst::BEFORE_SENT)
