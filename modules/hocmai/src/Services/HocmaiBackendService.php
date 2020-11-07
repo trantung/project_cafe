@@ -1184,7 +1184,7 @@ class HocmaiBackendService
         $nameOs = '';
         $userId = $user->id;
         $os = HocmaiDataConst::ANOTHER;
-        $list = HocmaiDeviceUser::where('user_id', $userId)->orderBy('created_at', 'DESC')->get();
+        $list = HocmaiDeviceUser::where('user_id', $userId)->orderBy('id', 'DESC')->get();
         foreach ($list as $key => $hocmaiDeviceUser) {
             $token = $hocmaiDeviceUser->device_token;
             $created_at = $hocmaiDeviceUser->created_at;
@@ -1341,5 +1341,16 @@ class HocmaiBackendService
             $res[$key]['is_edit'] = $this->getEditStatusNotify($notify, $notifyProfile);
         }
         return $res;
+    }
+
+    public function postNotifySendHandle($input,$title, $body)
+    {
+        $notify_id = $input['notify_id'];
+        $listDevice = $this->getListDeviceTokens($notifyId);
+        $check = HocmaiNotifyDevice::where('notify_id', $notifyId)
+            ->whereIn('device_token', $listDevice)
+            ->where('status', HocmaiDataConst::BEFORE_SENT)
+            ->pluck('device_token');
+        return $data;
     }
 }

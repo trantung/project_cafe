@@ -82,8 +82,10 @@ Route::group([
     //get device_token by user hocmai_id
     Route::post('device_token/user_hocmai_id', 'HocmaiBackendController@postDeviceTokenUserHocmaiId')->middleware('cors');
     //api danh sach app
-    Route::get('app/list', 'HocmaiBackendController@getAppList');
+    Route::get('app/list', 'HocmaiBackendController@getAppList')->middleware('cors');;
     //danh sach notify
     Route::get('notify-list', 'HocmaiBackendController@getNotifyList')->middleware('cors');
+    //ban truc tiep
+    Route::post('notify_send_handle', 'HocmaiBackendController@postNotifySendHandle')->middleware('cors');
     
 });
