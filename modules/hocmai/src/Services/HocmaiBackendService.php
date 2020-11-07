@@ -1343,7 +1343,7 @@ class HocmaiBackendService
         return $res;
     }
 
-    public function postNotifySendHandle($input,$title, $body)
+    public function postNotifySendHandle($input)
     {
         $notifyId = $input['notify_id'];
         $list = $this->getListDeviceTokens($notifyId);
