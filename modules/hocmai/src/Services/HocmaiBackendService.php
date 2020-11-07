@@ -1351,9 +1351,15 @@ class HocmaiBackendService
             ->groupBy('device_token')
             ->pluck('device_token');
 
+        $listDevice = HocmaiNotifyDevice::where('notify_id', $notifyId)
+            ->whereIn('device_token', $listDevice)
+            ->where('status', '!=',HocmaiDataConst::BEFORE_SENT)
+            ->groupBy('device_token')
+            ->pluck('device_token');
+
         $data = HocmaiNotifyDevice::where('notify_id', $notifyId)
             ->whereIn('device_token', $listDevice)
-            ->where('status', HocmaiDataConst::BEFORE_SENT)
+            ->where('status', '=',HocmaiDataConst::BEFORE_SENT)
             ->groupBy('device_token')
             ->pluck('device_token');
         return $data;
