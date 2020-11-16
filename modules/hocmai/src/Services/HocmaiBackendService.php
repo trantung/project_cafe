@@ -1120,7 +1120,7 @@ class HocmaiBackendService
     public function getListDeviceTokens($notifyId)
     {
         $listDevice = HocmaiNotifyDevice::where('notify_id', $notifyId)->where('status', HocmaiDataConst::BEFORE_SENT)->pluck('device_token');
-        return $listDevice;
+        return $listDevice->toArray();
     }
 
     public function getListDeviceTokensError($notifyId)
