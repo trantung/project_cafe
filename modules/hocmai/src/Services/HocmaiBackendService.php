@@ -1364,4 +1364,45 @@ class HocmaiBackendService
             ->pluck('device_token');
         return $data;
     }
+    
+    public function postNotifyHandleClass($input)
+    {
+        $list = HocmaiUser::where('class_id', '>=', $input['class_id_start'])
+            ->where('class_id', '<=', $input['class_id_end'])
+            ->pluck('id');
+        $listDevice = [];
+        foreach ($list as $key => $userId)
+        {
+            $deviceUser = HocmaiDeviceUser::where('user_id', $userId)
+                ->orderBy('id', 'DESC')
+                ->first();
+            if ($deviceUser) {
+                $listDevice[] = $deviceUser->device_token;
+            }
+        }
+        return $listDevice;
+    }
+
+    public function postInfoUserByToken($input)
+    {
+        $token = $input['device_token'];
+        $listUsers = HocmaiDeviceUser::where('device_token', $token)->groupBy('user_id')->pluck('user_id');
+        $list = HocmaiUser::whereIn('id', $listUsers)->get();
+        foreach ($list as $value)
+        {
+            $res = [];
+            $res['user_id'] = $value->id;
+            $res['hocmai_user_id'] = $value->hocmai_user_id;
+            $res['class_id'] = $value->class_id;
+            $res['city_id'] = $value->city_id;
+            $res['phone'] = $value->phone;
+            $res['first_login'] = $value->first_login;
+            $res['last_login'] = $value->last_login;
+            $res['birthday'] = $value->birthday;
+            $res['last_session'] = $value->last_session;
+            $res['username'] = $value->username;
+            $res['name'] = $value->name;
+        }
+        return $res;
+    }
 }

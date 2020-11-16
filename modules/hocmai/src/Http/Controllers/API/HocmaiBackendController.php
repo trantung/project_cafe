@@ -184,14 +184,70 @@ class HocmaiBackendController extends ApiBaseController
     public function postNotifyCreateStep5(Request $request)
     {
         $input = $request->all();
+        if (!isset($input['notify_id']) || empty($input['notify_id'])) {
+            dd('thieu notify_id');
+        }
+        $time_start = microtime(true);
         $notifyId = $input['notify_id'];
         $listDevice = $this->backend->getListDeviceTokens($notifyId);
-        $this->commonSendNotifyToFirebase($listDevice, $notifyId);
-        $data['number_device_tokens'] = count($listDevice);
-        $data['sent_error'] = count($this->backend->getListDeviceTokensError($notifyId));
-        $data['sent_fail'] = count($this->backend->getListDeviceTokensSentFail($notifyId));
-        $data['sent_success'] = count($this->backend->getListDeviceTokensSentSuccess($notifyId));
+        $number_device_tokens = count($listDevice);
+        $inputListDevice = array_chunk($listDevice, HocmaiDataConst::LIMIT_SENT_FIREBASE);
+        $input['title'] = $this->backend->getTitleNotify($notifyId);
+        $input['body'] = $this->backend->getBodyNotify($notifyId);
+        $input['icon'] = $this->backend->getIconNotify($notifyId);
+        $extraNotificationData = $this->backend->formatDataNotify($notifyId, $input['title'], $input['body']);
+        $successNotify = $failureNotify = 0;
+        foreach ($inputListDevice as $key => $listDevice) {
+            $response = $this->commonSendNotifyToFirebaseAll($listDevice, $input, $extraNotificationData);
+            $successNotify = $successNotify + $response['success'];
+            $failureNotify = $failureNotify + $response['failure'];
+        }
+//        $this->commonSendNotifyToFirebase($listDevice, $notifyId);
+        $this->backend->updateNotifySuccess($notifyId, $failureNotify, $successNotify);
+        $time_end = microtime(true);
+        $execution_time = $time_end - $time_start;
+        $data['number_device_tokens'] = $number_device_tokens;
+        $data['notify_id'] = $notifyId;
+        $data['success'] = $successNotify;
+        $data['failure'] = $failureNotify;
+        $data['execution_time'] = $execution_time . 'giây';
+//        $data['sent_error'] = count($this->backend->getListDeviceTokensError($notifyId));
+//        $data['sent_fail'] = count($this->backend->getListDeviceTokensSentFail($notifyId));
+//        $data['sent_success'] = count($this->backend->getListDeviceTokensSentSuccess($notifyId));
         return $this->sendSuccess($data, 'success');
+    }
+
+    public function commonSendNotifyToFirebaseAll($listDevice, $input, $extraNotificationData)
+    {
+        $fcmUrl = 'https://fcm.googleapis.com/fcm/send';
+        $sound = $iosBadge = 0;
+        $notification = [
+            'title' => $input['title'],
+            'body' => $input['body'],
+        ];
+        $headers = [
+            'Authorization: key=' . HocmaiDataConst::API_ACCESS_KEY,
+            'Content-Type: application/json'
+        ];
+
+        $fcmNotification = [
+            'registration_ids' => $listDevice,
+            'notification' => $notification,
+            'data' => $extraNotificationData
+        ];
+        $ch = curl_init();
+        curl_setopt($ch, CURLOPT_URL,$fcmUrl);
+        curl_setopt($ch, CURLOPT_POST, true);
+        curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+        curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($fcmNotification));
+        $result = curl_exec($ch);
+        curl_close($ch);
+        $response = json_decode($result);
+        $data['success'] = $response->success;
+        $data['failure'] = $response->failure;
+        return $data;
     }
 
     public function commonSendNotifyToFirebase($listDevice, $notifyId, $import = null)
@@ -293,7 +349,7 @@ class HocmaiBackendController extends ApiBaseController
 
     public function postNotifySendHandle(Request $request)
     {
-        $input = $request->all(); 
+        $input = $request->all();
         $notifyId = $input['notify_id'];
         $listDevice = $this->backend->postNotifySendHandle($input);
         if (isset($input['handle']) && $input['handle'] == 1) {
@@ -303,13 +359,106 @@ class HocmaiBackendController extends ApiBaseController
             'count' => count($listDevice),
             'list_device_token' => $listDevice,
         ];
-        // var_dump('<pre>');
-        // var_dump(count($data));
-        // var_dump('</pre>');
-        // var_dump('<pre>');
-        // dd($data);
-        // var_dump('</pre>');
+//         var_dump('<pre>');
+//         var_dump(count($data));
+//         var_dump('</pre>');
+//         var_dump('<pre>');
+//         dd($data);
+//         var_dump('</pre>');
         return $this->sendSuccess($res, 'success');
     }
 
+    public function sendAllNotify($input, $listDevice)
+    {
+        $fcmUrl = 'https://fcm.googleapis.com/fcm/send';
+        $title = $input['title'];
+        $body = $input['body'];
+        $action_type = $input['action_type'];
+        $notification = [
+            'title' => $title,
+            'body' => $body,
+        ];
+        $extraNotificationData['title'] = $title;
+        $extraNotificationData['body'] = $body;
+        $extraNotificationData['action_type'] = $action_type;
+        $headers = [
+            'Authorization: key=' . HocmaiDataConst::API_ACCESS_KEY,
+            'Content-Type: application/json'
+        ];
+        $fcmNotification = [
+            'registration_ids' => $listDevice,
+            'notification' => $notification,
+            'data' => $extraNotificationData
+        ];
+        $ch = curl_init();
+        curl_setopt($ch, CURLOPT_URL,$fcmUrl);
+        curl_setopt($ch, CURLOPT_POST, true);
+        curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+        curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($fcmNotification));
+        $result = curl_exec($ch);
+        curl_close($ch);
+        $response = json_decode($result);
+        $data['success'] = $response->success;
+        $data['failure'] = $response->failure;
+        return $data;
+    }
+
+    public function postNotifyHandleClass(Request $request)
+    {
+        $input = $request->all();
+        $time_start = microtime(true);
+        $listDevice = $this->backend->postNotifyHandleClass($input);
+        if (isset($input['confirm']) && $input['confirm'] == 1) {
+            $response = $this->sendAllNotify($input, $listDevice);
+            $res = [
+                'count' => count($listDevice),
+                'success' => $response->success,
+                'fail' => $response->failure,
+            ];
+            return $this->sendSuccess($res, 'success');
+        }
+        $time_end = microtime(true);
+        $execution_time = $time_end - $time_start;
+        $res['count'] = count($listDevice);
+        $res['execution_time'] = $execution_time . ' giay';
+        $res['data'] = $listDevice;
+        return $this->sendSuccess($res, 'success');
+    }
+
+    public function testSendAllNotify(Request $request)
+    {
+        $time_start = microtime(true);
+        $input = $request->all();
+        $listDevice = [];
+        for ($i = 0; $i <= $input['loop']; $i++) {
+            $listDevice[$i] = generateRandomString(152);
+        }
+        $number_device_tokens =  count($listDevice);
+        $inputListDevice = array_chunk($listDevice, HocmaiDataConst::LIMIT_SENT_FIREBASE);
+        $successNotify = $failureNotify = 0;
+        foreach ($inputListDevice as $listDevice) {
+            $response = $this->sendAllNotify($input, $listDevice);
+            $successNotify = $successNotify + $response['success'];
+            $failureNotify = $failureNotify + $response['failure'];
+        }
+
+        $time_end = microtime(true);
+        $execution_time = ($time_end - $time_start)/60;
+        $data = [
+            'success' => $successNotify,
+            'failure' => $failureNotify,
+            'number_device_tokens' => $number_device_tokens,
+            'execution_time' => $execution_time,
+        ];
+        return $this->sendSuccess($data, 'success');
+    }
+
+    public function postInfoUserByToken(Request $request)
+    {
+        $input = $request->all();
+        $res = $this->backend->postInfoUserByToken($input);
+        return $this->sendSuccess($res, 'success');
+    }
 }
