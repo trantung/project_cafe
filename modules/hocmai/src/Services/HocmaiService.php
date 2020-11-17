@@ -29,16 +29,14 @@ class HocmaiService extends BaseService
     {
         $res = [];
         $arrayField = [
-            'app_version', 'app_os', 'app_id'
+            'app_version', 'app_os'
         ];
         //check app_id và app_version và app_os tồn tại hay chưa
-        $check = HocmaiApp::where('app_id', $input['app_id'])
-            ->where('app_os', $input['app_os'])
+        $check = HocmaiApp::where('app_os', $input['app_os'])
             ->first();
         if ($check) {
             $appId = $check->id;
-            $version = HocmaiAppVersion::where('app_id', $appId)
-                ->where('version', $input['app_version'])
+            $version = HocmaiAppVersion::where('version', $input['app_version'])
                 ->first();
             if (!$version) {
                 HocmaiAppVersion::create([
@@ -56,7 +54,6 @@ class HocmaiService extends BaseService
             return true;
         }
         $appId = HocmaiApp::create([
-            'app_id' => $input['app_id'],
             'app_os' => $input['app_os'],
         ])->id;
         HocmaiAppVersion::create([
@@ -75,12 +72,11 @@ class HocmaiService extends BaseService
     public function getHocmaiAppId($input)
     {
         $arrayField = [
-            'app_id', 'app_version', 'app_os'
+            'app_version', 'app_os'
         ];
         $input = $this->formatInput($input, $arrayField);
 
-        $check = HocmaiApp::where('app_id', $input['app_id'])
-            ->where('app_os', $input['app_os'])
+        $check = HocmaiApp::where('app_os', $input['app_os'])
             ->first();
         if ($check) {
             return $check->id;
@@ -88,18 +84,23 @@ class HocmaiService extends BaseService
         return null;
     }
 
-    public function createNewUserApp($input, $hocmaiUserId = null)
+    public function createNewUserApp($input, $hocmaiUserId)
     {
         $hocmaiAppId = $this->getHocmaiAppId($input);
         $arrayField = [
             'user_id', 'hocmai_user_id', 'hocmai_app_id'
         ];
         $input = $this->formatInput($input, $arrayField);
-        HocmaiUserApp::create([
-            'user_id' => $hocmaiUserId,
-            'hocmai_user_id' => $input['hocmai_user_id'],
-            'hocmai_app_id' => $hocmaiAppId,
-        ]);
+        $checkHocmaiUserApp = HocmaiUserApp::where('user_id', $hocmaiUserId)
+            ->first();
+        if (!$checkHocmaiUserApp) {
+            HocmaiUserApp::create([
+                'user_id' => $hocmaiUserId,
+                'hocmai_user_id' => $input['hocmai_user_id'],
+                'hocmai_app_id' => $hocmaiAppId,
+            ]);
+            return true;
+        }
         return true;
     }
 
@@ -152,7 +153,7 @@ class HocmaiService extends BaseService
         $now = date('Y-m-d H:i:s');
         $arrayField = [
             'device_token', 'hocmai_user_id', 'city_id', 'district_id', 'class_id', 'last_login', 'last_session',
-            'phone', 'birthday', 'number_open_app', 'app_id', 'app_os', 'app_version', 'username', 'register_time'
+            'phone', 'birthday', 'number_open_app', 'app_name', 'app_os', 'app_version', 'username'
         ];
         $input = $this->formatInput($input, $arrayField);
         $deviceToken = $input['device_token'];
