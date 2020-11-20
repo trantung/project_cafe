@@ -146,14 +146,16 @@ class HocmaiService extends BaseService
         $check = HocmaiDeviceUser::where('user_id', $userId)
             ->where('device_token', $input['device_token'])
             ->first();
-        $now = date('Y-m-d H:i:s');
-//        HocmaiDeviceUser::create(['user_id' => $userId, 'device_token' => $input['device_token'], 'app_os' => $input['app_os']]);
          if (!$check) {
              HocmaiDeviceUser::create(['user_id' => $userId, 'device_token' => $input['device_token'], 'app_os' => $input['app_os']]);
          } else {
-             $check->update([
-                 'app_os' => $input['app_os'],
-             ]);
+            $data = HocmaiDeviceUser::orderBy('id', 'DESC')
+                ->skip(0)
+                ->take(5)
+                ->pluck('id');
+            $list = $data->toArray();
+            HocmaiDeviceUser::whereNotIn('id', $list)->delete();
+            HocmaiDeviceUser::create(['user_id' => $userId, 'device_token' => $input['device_token'], 'app_os' => $input['app_os']]);
          }
         return true;
     }
