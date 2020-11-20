@@ -166,7 +166,7 @@ class HocmaiBackendService
         $data = [
             'filter_id' => 11,
             'filter_name' => 'UserId',
-            'type_id' => HocmaiDataConst::TYPE_OPTION,
+            'type_id' => HocmaiDataConst::TYPE_STRING,
             'operator' => [
                 [
                     'id' => 5,
@@ -1186,26 +1186,21 @@ class HocmaiBackendService
         $os = HocmaiDataConst::ANOTHER;
         $list = HocmaiDeviceUser::where('user_id', $userId)->orderBy('id', 'DESC')->get();
         foreach ($list as $key => $hocmaiDeviceUser) {
-            $token = $hocmaiDeviceUser->device_token;
             $created_at = $hocmaiDeviceUser->created_at;
             $nameOs = '';
-            if ($hocmaiDeviceUser->os == HocmaiDataConst::IOS) {
+            if ($hocmaiDeviceUser->app_os == HocmaiDataConst::IOS) {
                 $nameOs = 'IOS';
             }
-            if ($hocmaiDeviceUser->os == HocmaiDataConst::ANDROID) {
+            if ($hocmaiDeviceUser->app_os == HocmaiDataConst::ANDROID) {
                 $nameOs = 'ANDROID';
             }
-            $user = HocmaiUser::find($userId);
-            $firstLogin = '';
-            if ($user) {
-                $firstLogin = $user->first_login;
-            }
-            $res[$key]['device_token'] = $token;
-            $res[$key]['app_os'] = $hocmaiDeviceUser->os;
+            $res[$key]['device_user_id'] = $hocmaiDeviceUser->id;
+            $res[$key]['device_token'] = $hocmaiDeviceUser->device_token;
+            $res[$key]['app_os'] = $hocmaiDeviceUser->app_os;
             $res[$key]['os_name'] = $nameOs;
             $res[$key]['token_created_at'] = $created_at->format('Y-m-d H:i:s');
-            $res[$key]['first_login'] = $firstLogin;
-            $res[$key]['id'] = $user->id;
+            $res[$key]['first_login'] = $user->first_login;
+            $res[$key]['user_id'] = $user->id;
             $res[$key]['phone'] = $user->phone;
             $res[$key]['birthday'] = $user->birthday;
             $res[$key]['username'] = $user->username;

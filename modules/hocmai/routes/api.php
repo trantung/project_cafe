@@ -45,6 +45,7 @@ Route::group([
     //dong bo chuong trinh da dang ky url: https://api-prod.hocmai.vn/notification/migration/programRegistered
     // Route::post('sync/program/regist', 'HocmaiController@postSyncProgramRegist');
 
+    Route::post('refactor', 'HocmaiController@postRefactor');
     
 
 });

@@ -112,5 +112,11 @@ class HocmaiController extends ApiBaseController
         $data = $this->getCommonDataSync('https://api-prod.hocmai.vn/notification/migration/IAPPurchased', 'GET');
     }
 
+    public function postRefactor(Request $request)
+    {
+        $input = $request->all();
+        $data = $this->hocmaiService->postRefactor($input);
+        return $this->sendSuccess($data, 'success');
+    }
 
 }

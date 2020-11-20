@@ -90,8 +90,14 @@ class HocmaiService extends BaseService
         $arrayField = [
             'user_id', 'hocmai_user_id', 'hocmai_app_id'
         ];
+        if (!$hocmaiAppId) {
+            //ghi vao log
+            return true;
+        }
         $input = $this->formatInput($input, $arrayField);
         $checkHocmaiUserApp = HocmaiUserApp::where('user_id', $hocmaiUserId)
+            ->where('hocmai_app_id', $hocmaiAppId)
+            ->orderBy('created_at', 'DESC')
             ->first();
         if (!$checkHocmaiUserApp) {
             HocmaiUserApp::create([
@@ -104,15 +110,20 @@ class HocmaiService extends BaseService
         return true;
     }
 
-    public function createNewUserLoginLog($input, $hocmaiUserId = null)
+    public function createNewUserLoginLog($input, $userId)
     {
         $now = date('Y-m-d H:i:s');
         $arrayField = [
             'hocmai_user_id'
         ];
         $input = $this->formatInput($input, $arrayField);
+        $check = HocmaiUserLoginLog::where('user_id', $userId)->first();
+        if ($check) {
+            $check->update(['login' => $now]);
+            return true;
+        }
         HocmaiUserLoginLog::create([
-            'user_id' => $hocmaiUserId,
+            'user_id' => $userId,
             'hocmai_user_id' => $input['hocmai_user_id'],
             'login' => $now,
         ]);
@@ -136,14 +147,14 @@ class HocmaiService extends BaseService
             ->where('device_token', $input['device_token'])
             ->first();
         $now = date('Y-m-d H:i:s');
-        HocmaiDeviceUser::create(['user_id' => $userId, 'device_token' => $input['device_token'], 'app_os' => $input['app_os']]);
-        // if (!$check) {
-        //     HocmaiDeviceUser::create(['user_id' => $userId, 'device_token' => $input['device_token'], 'app_os' => $input['app_os']]);
-        // } else {
-        //     $check->update([
-        //         'app_os' => $input['app_os'],
-        //     ]);
-        // }
+//        HocmaiDeviceUser::create(['user_id' => $userId, 'device_token' => $input['device_token'], 'app_os' => $input['app_os']]);
+         if (!$check) {
+             HocmaiDeviceUser::create(['user_id' => $userId, 'device_token' => $input['device_token'], 'app_os' => $input['app_os']]);
+         } else {
+             $check->update([
+                 'app_os' => $input['app_os'],
+             ]);
+         }
         return true;
     }
 
@@ -190,7 +201,6 @@ class HocmaiService extends BaseService
             'class_id' => $input['class_id'],
             'phone' => $input['phone'],
             'birthday' => $input['birthday'],
-            'register_time' => $input['register_time'],
             'first_login' => $now,
             'last_login' => $now,
             'last_session' => $now,
@@ -418,6 +428,7 @@ class HocmaiService extends BaseService
         $check->update(['last_session' => $now]);
         $res['user_id'] = $check->id;
         $res['hocmai_user_id'] = $hocmaiUserId;
+        $res['last_session'] = $now;
         return $res;
     }
 
@@ -473,5 +484,24 @@ class HocmaiService extends BaseService
             }
         }
         return true;
+    }
+
+    public function postRefactor($input)
+    {
+        $listUser = [];
+        $list = HocmaiUserApp::select('user_id','hocmai_app_id')
+            ->whereNotNull('hocmai_app_id')
+            ->whereNotNull('user_id')
+            ->whereNotNull('hocmai_user_id')
+            ->get();
+//        dd($list);
+        foreach ($list as $value)
+        {
+            $listUser[] = $value->id;
+        }
+//        dd(count($list));
+//        $test['count'] = count($data);
+//        $res['data'] = $data;
+        return $list;
     }
 }
