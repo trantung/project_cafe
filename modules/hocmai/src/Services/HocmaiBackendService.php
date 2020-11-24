@@ -1044,7 +1044,7 @@ class HocmaiBackendService
 
     public function formatDataNotify($notifyId, $title, $body, $import = null)
     {
-        $data = HocmaiNotifyContext::where('notify_id', $notifyId)->first();
+        $data = HocmaiNotifyContext::where('notify_id', $notifyId)->orderBy('id', 'DESC')->first();
 
         if (!$data) {
             dd('formatDataNotify sai notifyId = ' .  $notifyId);
