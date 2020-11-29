@@ -606,6 +606,7 @@ class HocmaiBackendService
             $this->contextLoginLivestreamDetail(),
             $this->contextCommon(17, 17, 'Truy cập ứng dụng'),
             $this->contextCommon(18, 18, 'Event'),
+            $this->contextCommon(19, 19, 'Truy cập gói'),
         ];
         return $data;
     }
