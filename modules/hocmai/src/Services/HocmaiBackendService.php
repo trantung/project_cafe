@@ -1062,14 +1062,11 @@ class HocmaiBackendService
             $res['lesson_id'] = $this->getInfoByActionTypeDetail($data->detail, 'lesson_id');
             $res['is_buy'] = $this->getIsBuyCourse($data->detail);
         }
-        if ($actionType == 14) {
-            $res['url'] = $this->getInfoByActionTypeDetail($data->detail, 'url');
-        }
-        if ($actionType == 9) {
-            $res['url'] = $this->getInfoByActionTypeDetail($data->detail, 'url');
-        }
         if ($actionType == 15) {
             $res['school_block_id'] = $this->getInfoByActionTypeDetail($data->detail, 'school_block_id');
+        }
+        if (in_array($actionType, [9,14,19])) {
+            $res['url'] = $this->getInfoByActionTypeDetail($data->detail, 'url');
         }
         return $res;
     }

@@ -201,28 +201,32 @@ class HocmaiBackendController extends ApiBaseController
         }
         $time_start = microtime(true);
         $notifyId = $input['notify_id'];
-        $listDevice = $this->backend->getListDeviceTokens($notifyId);
-        $number_device_tokens = count($listDevice);
-        $inputListDevice = array_chunk($listDevice, HocmaiDataConst::LIMIT_SENT_FIREBASE);
-        $input['title'] = $this->backend->getTitleNotify($notifyId);
-        $input['body'] = $this->backend->getBodyNotify($notifyId);
-        $input['icon'] = $this->backend->getIconNotify($notifyId);
-        $extraNotificationData = $this->backend->formatDataNotify($notifyId, $input['title'], $input['body']);
-        $successNotify = $failureNotify = 0;
-        foreach ($inputListDevice as $key => $listDevice) {
-            $response = $this->commonSendNotifyToFirebaseAll($listDevice, $input, $extraNotificationData);
-            $successNotify = $successNotify + $response['success'];
-            $failureNotify = $failureNotify + $response['failure'];
-        }
-//        $this->commonSendNotifyToFirebase($listDevice, $notifyId);
-        $this->backend->updateNotifySuccess($notifyId, $failureNotify, $successNotify);
-        $time_end = microtime(true);
-        $execution_time = $time_end - $time_start;
-        $data['number_device_tokens'] = $number_device_tokens;
+//        $listDevice = $this->backend->getListDeviceTokens($notifyId);
+//        $number_device_tokens = count($listDevice);
+//        $inputListDevice = array_chunk($listDevice, HocmaiDataConst::LIMIT_SENT_FIREBASE);
+//        $input['title'] = $this->backend->getTitleNotify($notifyId);
+//        $input['body'] = $this->backend->getBodyNotify($notifyId);
+//        $input['icon'] = $this->backend->getIconNotify($notifyId);
+//        $extraNotificationData = $this->backend->formatDataNotify($notifyId, $input['title'], $input['body']);
+//        $successNotify = $failureNotify = 0;
+//        foreach ($inputListDevice as $key => $listDevice) {
+//            $response = $this->commonSendNotifyToFirebaseAll($listDevice, $input, $extraNotificationData);
+//            $successNotify = $successNotify + $response['success'];
+//            $failureNotify = $failureNotify + $response['failure'];
+//        }
+////        $this->commonSendNotifyToFirebase($listDevice, $notifyId);
+//        $this->backend->updateNotifySuccess($notifyId, $failureNotify, $successNotify);
+
+        \Artisan::call('word', ['notifyId' => "{$notifyId}"]);
+
+
+//        $time_end = microtime(true);
+//        $execution_time = $time_end - $time_start;
+//        $data['number_device_tokens'] = $number_device_tokens;
         $data['notify_id'] = $notifyId;
-        $data['success'] = $successNotify;
-        $data['failure'] = $failureNotify;
-        $data['execution_time'] = $execution_time . 'giây';
+//        $data['success'] = $successNotify;
+//        $data['failure'] = $failureNotify;
+//        $data['execution_time'] = $execution_time . 'giây';
 //        $data['sent_error'] = count($this->backend->getListDeviceTokensError($notifyId));
 //        $data['sent_fail'] = count($this->backend->getListDeviceTokensSentFail($notifyId));
 //        $data['sent_success'] = count($this->backend->getListDeviceTokensSentSuccess($notifyId));

@@ -95,4 +95,6 @@ Route::group([
     //api lay thong tin user tu device_token
     Route::post('info_user_by_token', 'HocmaiBackendController@postInfoUserByToken')->middleware('cors');
 
+    Route::post('test_cron', 'HocmaiBackendController@postTestCron')->middleware('cors');
+
 });
