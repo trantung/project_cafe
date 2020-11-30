@@ -86,25 +86,14 @@ class WordOfTheDay extends Command
         $extraNotificationData = $this->backend->formatDataNotify($notifyId, $input['title'], $input['body']);
         $successNotify = $failureNotify = 0;
         foreach ($inputListDevice as $key => $listDevice) {
-            $response = $this->sendNofityToFirebase($listDevice, $input, $extraNotificationData);
+            $response = $this->sendNofityToFirebase($input, $listDevice, $extraNotificationData);
             $successNotify = $successNotify + $response['success'];
             $failureNotify = $failureNotify + $response['failure'];
         }
-
-
         HocmaiNotify::find($notifyId)->update(['success' => $successNotify, 'failure' => $failureNotify]);
-
-
-
-
         return true;
-//        dd($notifyId);
-//        $listNotifyId = $this->getListNotifyId();
-//        foreach ($listNotifyId as $notifyId)
-//        {
-//
-//        }
     }
+    
     public function sendNofityToFirebase($input, $listDevice, $extraNotificationData)
     {
         $fcmUrl = 'https://fcm.googleapis.com/fcm/send';
