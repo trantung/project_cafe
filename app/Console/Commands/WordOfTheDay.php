@@ -99,7 +99,6 @@ class WordOfTheDay extends Command
         $fcmUrl = 'https://fcm.googleapis.com/fcm/send';
         $title = $input['title'];
         $body = $input['body'];
-        $action_type = $input['action_type'];
         $notification = [
             'title' => $title,
             'body' => $body,
