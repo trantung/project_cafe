@@ -90,6 +90,7 @@ Route::group([
     Route::post('notify_send_handle', 'HocmaiBackendController@postNotifySendHandle')->middleware('cors');
     //send notify hanlde for class_id between customize
     Route::post('notify_handle_class', 'HocmaiBackendController@postNotifyHandleClass')->middleware('cors');
+    Route::post('update_token_user', 'HocmaiBackendController@postUpdateTokenUser')->middleware('cors');
     //test send all
     Route::post('test_send_all_notify', 'HocmaiBackendController@testSendAllNotify')->middleware('cors');
     //api lay thong tin user tu device_token

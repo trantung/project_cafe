@@ -758,10 +758,12 @@ class HocmaiBackendService
 
     public function postNotifyCreateStep4($input)
     {
+        $res = [];
         $upData['notify_id'] = $input['notify_id'];
         $upData['sound'] = $input['sound'];
         $upData['ios_badge'] = $input['ios_badge'];
         $upData['action_type'] = $upData['context_id'] = $input['context']['action_type'];
+        $upData['action_type'] = $upData['context_id'] = 5;
         $upData['expire'] = $this->setContextExpire($input['expire']);
         $upData['detail'] = $this->setContextDetail($input['context']);
         $notifyContext = HocmaiNotifyContext::create($upData)->id;
@@ -891,6 +893,7 @@ class HocmaiBackendService
             $data = $this->getInfoByFilter($data, $filterId, $condition, $conditionValue);
         }
         $data = $data->whereNull('hocmai_users.deleted_at')
+            ->whereNotNull('hocmai_users.device_token')
             ->select('hocmai_users.id')
             ->groupBy('hocmai_users.id')
 //            ->toSql();
@@ -948,6 +951,7 @@ class HocmaiBackendService
     {
         $listDevice = [];
         $res = [];
+//        dd(1);
         $notifyApps = HocmaiNotifyFilter::where('notify_id', $notifyId)->pluck('app_id');
         foreach ($notifyApps as $appId)
         {
@@ -955,12 +959,21 @@ class HocmaiBackendService
                 $res = array_unique (array_merge ($res, $this->getUserListByAppId($notifyId, $appId)));
             }
         }
-        foreach ($res as $userId) {
-            $deviceUser = HocmaiDeviceUser::where('user_id', $userId)->orderBy('created_at', 'DESC')->first();
-            if ($deviceUser) {
-                $listDevice[] = $deviceUser->device_token;
-            }
+//        dd($res);
+        $data = HocmaiUser::select('device_token')
+            ->whereIn('id', $res)
+            ->whereNotNull('device_token')
+            ->get();
+//        dd(count($data));
+        ini_set('max_execution_time', 120 ) ;
+
+        foreach ($data as $deviceUser) {
+//            $deviceUser = HocmaiDeviceUser::where('user_id', $userId)->orderBy('created_at', 'DESC')->first();
+//            if ($deviceUser) {
+            $listDevice[] = $deviceUser['device_token'];
+//            }
         }
+//        dd(count($listDevice));
         $this->saveDeviceBeforeSend($listDevice, $notifyId);
         return $listDevice;
     }
@@ -1065,7 +1078,7 @@ class HocmaiBackendService
         if ($actionType == 15) {
             $res['school_block_id'] = $this->getInfoByActionTypeDetail($data->detail, 'school_block_id');
         }
-        if (in_array($actionType, [9,14, 16, 19])) {
+        if (in_array($actionType, [9,14,19])) {
             $res['url'] = $this->getInfoByActionTypeDetail($data->detail, 'url');
         }
         return $res;
@@ -1098,7 +1111,7 @@ class HocmaiBackendService
                 ];
             }
         }
-
+//        dd(count($list));
         HocmaiNotifyDevice::insert($list);
         return true;
     }
@@ -1400,6 +1413,24 @@ class HocmaiBackendService
             $res['username'] = $value->username;
             $res['name'] = $value->name;
         }
+        return $res;
+    }
+    
+    public function postUpdateTokenUser($input)
+    {
+        $res = [];
+//        $data = HocmaiDeviceUser::selectDistinct('user_id')->toSql();
+        $data = HocmaiDeviceUser::select('user_id', 'device_token')
+            ->whereIn('user_id', [1,2,3,4])
+            ->get()
+            ->unique('user_id');
+
+//                ->keyBy(function ($user){
+//                
+//            });
+//            ->groupBy('user_id')
+//            ->toSql();
+        dd($data);
         return $res;
     }
 }

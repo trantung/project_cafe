@@ -170,8 +170,8 @@ class HocmaiBackendController extends ApiBaseController
             $input['ios_badge'] = 0;
         }
 
-        $data = $this->backend->postNotifyCreateStep4($input);
-        $notifyId = $data['notify_id'];
+//        $data = $this->backend->postNotifyCreateStep4($input);
+        $notifyId = $input['notify_id'];
         $import = null;
 
         //Lấy danh sách các device_token cần để gửi lên firebase
@@ -189,6 +189,7 @@ class HocmaiBackendController extends ApiBaseController
     {
         $input = $request->all();
         $notifyId = $input['notify_id'];
+        $this->backend->prepareData($notifyId);
         $this->backend->postNotifySaveNotSend($notifyId);
         return $this->sendSuccess([], 'success');
     }
@@ -475,6 +476,13 @@ class HocmaiBackendController extends ApiBaseController
     {
         $input = $request->all();
         $res = $this->backend->postInfoUserByToken($input);
+        return $this->sendSuccess($res, 'success');
+    }
+    
+    public function postUpdateTokenUser(Request $request)
+    {
+        $input = $request->all();
+        $res = $this->backend->postUpdateTokenUser($input);
         return $this->sendSuccess($res, 'success');
     }
 }

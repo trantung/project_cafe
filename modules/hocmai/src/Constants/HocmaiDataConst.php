@@ -53,6 +53,7 @@ class HocmaiDataConst extends BaseDataConst
     const BEFORE_SENT = 1;
     const SENT_FAIL = 2;
     const SENT_SUCCESS = 3;
+    const BEFORE_SENT_BIG_DATA = 4;
     const API_SYNC = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoiNDk5NDQwNyIsInVzZXJuYW1lIjoiMDk3OTMxMDIwNyIsImZpcnN0X25hbWUiOiIwOTc5MzEwMjA3IiwibGFzdF9uYW1lIjoiIiwiaWF0IjoxNjAyNjAyMDA5LCJleHAiOjE2MDMyMDY4MDl9.7W4BLcsNtXFxu1uxQeQLPMMuu-aL8oTKOdtiE1x4tZo';
     //define limit send notify
     const LIMIT_SENT_FIREBASE = 900;
