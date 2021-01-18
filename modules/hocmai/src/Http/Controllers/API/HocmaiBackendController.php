@@ -161,8 +161,8 @@ class HocmaiBackendController extends ApiBaseController
          $upData['sound'] = $input['sound'];
          $upData['ios_badge'] = $input['ios_badge'];
          $upData['action_type'] = $upData['context_id'] = $input['context']['action_type'];
-         $upData['expire'] = $this->setContextExpire($input['expire']);
-         $upData['detail'] = $this->setContextDetail($input['context']);
+         $upData['expire'] = $this->backend->setContextExpire($input['expire']);
+         $upData['detail'] = $this->backend->setContextDetail($input['context']);
         if (!isset($input['sound'])) {
             $input['sound'] = 0;
         }
@@ -200,6 +200,7 @@ class HocmaiBackendController extends ApiBaseController
         if (!isset($input['notify_id']) || empty($input['notify_id'])) {
             dd('thieu notify_id');
         }
+        dd(111);
         $time_start = microtime(true);
         $notifyId = $input['notify_id'];
 //        $listDevice = $this->backend->getListDeviceTokens($notifyId);
