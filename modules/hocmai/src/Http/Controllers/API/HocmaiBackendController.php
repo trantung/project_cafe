@@ -200,7 +200,6 @@ class HocmaiBackendController extends ApiBaseController
         if (!isset($input['notify_id']) || empty($input['notify_id'])) {
             dd('thieu notify_id');
         }
-        dd(111);
         $time_start = microtime(true);
         $notifyId = $input['notify_id'];
 //        $listDevice = $this->backend->getListDeviceTokens($notifyId);

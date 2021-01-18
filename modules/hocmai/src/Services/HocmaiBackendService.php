@@ -1025,6 +1025,7 @@ class HocmaiBackendService
 
     public function getInfoByActionTypeDetail($detail, $field)
     {
+        dd($detail);
         $result = [];
         $data = explode(',', $detail);
         foreach ($data as $value) {
@@ -1067,7 +1068,7 @@ class HocmaiBackendService
         $res['title'] = $title;
         $res['body'] = $body;
         // $res = $this->convertToObject()
-        // $this->action_type = $actionType;
+        // $this->action_type = $actionType;formatDataNotify
         // $res['data'] = $this->action_type;
         $res['action_type'] = $actionType;
         if ($actionType == 1) {
