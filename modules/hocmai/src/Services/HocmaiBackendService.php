@@ -1025,7 +1025,6 @@ class HocmaiBackendService
 
     public function getInfoByActionTypeDetail($detail, $field)
     {
-        dd($detail);
         $result = [];
         $data = explode(',', $detail);
         foreach ($data as $value) {

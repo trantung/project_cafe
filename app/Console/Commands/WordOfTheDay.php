@@ -204,7 +204,8 @@ class WordOfTheDay extends Command
         $failure = $oldFailure + $response->failure;
         $updata = [
             'success' => $success,
-            'failure' => $failure
+            'failure' => $failure,
+            'status' => HocmaiDataConst::SENT_SUCCESS,
         ];
         $res = HocmaiNotify::where('id', $notifyId)->update($updata);
         HocmaiNotifyDevice::whereIn('device_token', $listDevice)->delete();
