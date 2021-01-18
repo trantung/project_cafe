@@ -158,11 +158,11 @@ class HocmaiBackendController extends ApiBaseController
     public function postNotifyCreateStep4(Request $request)
     {
         $input = $request->all();
-        // $upData['sound'] = $input['sound'];
-        // $upData['ios_badge'] = $input['ios_badge'];
-        // $upData['action_type'] = $upData['context_id'] = $input['context']['action_type'];
-        // $upData['expire'] = $this->setContextExpire($input['expire']);
-        // $upData['detail'] = $this->setContextDetail($input['context']);
+         $upData['sound'] = $input['sound'];
+         $upData['ios_badge'] = $input['ios_badge'];
+         $upData['action_type'] = $upData['context_id'] = $input['context']['action_type'];
+         $upData['expire'] = $this->setContextExpire($input['expire']);
+         $upData['detail'] = $this->setContextDetail($input['context']);
         if (!isset($input['sound'])) {
             $input['sound'] = 0;
         }
@@ -170,7 +170,7 @@ class HocmaiBackendController extends ApiBaseController
             $input['ios_badge'] = 0;
         }
 
-//        $data = $this->backend->postNotifyCreateStep4($input);
+        $data = $this->backend->postNotifyCreateStep4($input);
         $notifyId = $input['notify_id'];
         $import = null;
 
