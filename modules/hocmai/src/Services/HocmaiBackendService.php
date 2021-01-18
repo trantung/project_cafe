@@ -763,7 +763,6 @@ class HocmaiBackendService
         $upData['sound'] = $input['sound'];
         $upData['ios_badge'] = $input['ios_badge'];
         $upData['action_type'] = $upData['context_id'] = $input['context']['action_type'];
-        $upData['action_type'] = $upData['context_id'] = 5;
         $upData['expire'] = $this->setContextExpire($input['expire']);
         $upData['detail'] = $this->setContextDetail($input['context']);
         $notifyContext = HocmaiNotifyContext::create($upData)->id;
