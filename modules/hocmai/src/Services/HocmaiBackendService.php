@@ -1078,7 +1078,7 @@ class HocmaiBackendService
         if ($actionType == 15) {
             $res['school_block_id'] = $this->getInfoByActionTypeDetail($data->detail, 'school_block_id');
         }
-        if (in_array($actionType, [9,14,19])) {
+        if (in_array($actionType, [9,14,19, 18])) {
             $res['url'] = $this->getInfoByActionTypeDetail($data->detail, 'url');
         }
         return $res;
