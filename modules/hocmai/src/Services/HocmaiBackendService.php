@@ -968,7 +968,7 @@ class HocmaiBackendService
             ini_set('max_execution_time', 0);
             ini_set('memory_limit', '-1');
             foreach ($data as $deviceUser) {
-                $listDevice = HocmaiNotifyDevice::create([
+                $listDevice[] = HocmaiNotifyDevice::create([
                     'notify_id' => $notifyId,
                     'device_token' => $deviceUser['device_token'],
                     'status' => HocmaiDataConst::BEFORE_SENT,
