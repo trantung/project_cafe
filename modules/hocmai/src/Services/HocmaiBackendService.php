@@ -963,17 +963,21 @@ class HocmaiBackendService
             ->whereIn('id', $res)
             ->whereNotNull('device_token')
             ->get();
-        dd(count($data));
-        ini_set('max_execution_time', 120 ) ;
-        foreach ($data as $deviceUser) {
-//            $deviceUser = HocmaiDeviceUser::where('user_id', $userId)->orderBy('created_at', 'DESC')->first();
-//            if ($deviceUser) {
-            $listDevice[] = $deviceUser['device_token'];
-//            }
+        try {
+            set_time_limit(0);
+            ini_set('max_execution_time', 0);
+            ini_set('memory_limit', '-1');
+            foreach ($data as $deviceUser) {
+                $listDevice[] = $deviceUser['device_token'];
+            }
+            $this->saveDeviceBeforeSend($listDevice, $notifyId);
+            return $listDevice;
+
+        } catch (\Exception $e) {
+            dd('Cannot reset max_execution_time: ' . $e->getMessage());
+            Log::channel('email')->info('Cannot reset max_execution_time: ' . $e->getMessage());
         }
-//        dd(count($listDevice));
-        $this->saveDeviceBeforeSend($listDevice, $notifyId);
-        return $listDevice;
+        
     }
 
     public function getNotifyDetail($notifyId)
