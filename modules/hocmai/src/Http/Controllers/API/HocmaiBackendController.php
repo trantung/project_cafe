@@ -155,8 +155,10 @@ class HocmaiBackendController extends ApiBaseController
         return $this->sendSuccess($data, 'success');
     }
 
-    public function postNotifyPrepare($notifyId)
+    public function postNotifyPrepare(Request $request)
     {
+        $input = $request->all();
+        $notifyId = $input['notify_id'];
         $listDevice = $this->backend->prepareData($notifyId);
         dd(count($listDevice));
     }
