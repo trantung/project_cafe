@@ -963,9 +963,8 @@ class HocmaiBackendService
             ->whereIn('id', $res)
             ->whereNotNull('device_token')
             ->get();
-//        dd(count($data));
+        dd(count($data));
         ini_set('max_execution_time', 120 ) ;
-
         foreach ($data as $deviceUser) {
 //            $deviceUser = HocmaiDeviceUser::where('user_id', $userId)->orderBy('created_at', 'DESC')->first();
 //            if ($deviceUser) {

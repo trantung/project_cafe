@@ -70,6 +70,7 @@ Route::group([
     Route::post('notify/create/step3', 'HocmaiBackendController@postNotifyCreateStep3')->middleware('cors');
     //Step4: trả về số lượng device_token sẽ được gửi
     Route::post('notify/create/step4', 'HocmaiBackendController@postNotifyCreateStep4')->middleware('cors');
+    Route::post('notify/prepare', 'HocmaiBackendController@postNotifyPrepare')->middleware('cors');
     //api lưu notify nhưng chưa gửi
     Route::post('notify/save_not_send', 'HocmaiBackendController@postNotifySaveNotSend')->middleware('cors');
     //Step5: api gửi notify tới firbase
