@@ -7,6 +7,8 @@ use Illuminate\Http\Request;
 use APV\Hocmai\Models\HocmaiLivestream;
 use APV\Hocmai\Models\HocmaiNotifyDevice;
 use APV\Hocmai\Models\HocmaiNotifyImport;
+use APV\Hocmai\Models\HocmaiExportUser;
+use APV\Hocmai\Models\HocmaiExportToken;
 use APV\Hocmai\Constants\HocmaiDataConst;
 use Maatwebsite\Excel\Facades\Excel;
 /**
@@ -158,7 +160,9 @@ class HocmaiBackendController extends ApiBaseController
     public function postNotifyPrepare(Request $request)
     {
         $input = $request->all();
+//        dd($input);
         $notifyId = $input['notify_id'];
+//        dd($notifyId);
         $listDevice = $this->backend->prepareData($notifyId);
         dd(count($listDevice));
     }
@@ -492,5 +496,31 @@ class HocmaiBackendController extends ApiBaseController
         $input = $request->all();
         $res = $this->backend->postUpdateTokenUser($input);
         return $this->sendSuccess($res, 'success');
+    }
+    
+    public function postNotifyImportUserId(Request $request)
+    {
+        $input = $request->all();
+        $listUser = [];
+        if($request->hasFile('file')) {
+            $data = Excel::toArray(new HocmaiExportUser, request()->file('file'));
+            foreach ($data[0] as $key => $value) {
+                if (isset($value[0])) {
+                    $listUser[] = $value[0];
+                }
+            }
+        }
+        $res = $this->backend->createTokenExport($listUser);
+        return $this->sendSuccess($res, 'success'); 
+//        $exportToken = new HocmaiExportToken();
+//        $exportToken->listUser = $listUser;
+////        $this->backend->getListDeviceByListUser($listUser);
+//        return Excel::download($exportToken, 'users.xlsx');
+////        return $this->sendSuccess(['notify_id' => $notifyId], 'success');
+    }
+    
+    public function getExportToken(Request $request)
+    {
+        return Excel::download(new HocmaiExportToken, 'token.xlsx');
     }
 }

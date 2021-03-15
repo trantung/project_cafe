@@ -98,5 +98,9 @@ Route::group([
     Route::post('info_user_by_token', 'HocmaiBackendController@postInfoUserByToken')->middleware('cors');
 
     Route::post('test_cron', 'HocmaiBackendController@postTestCron')->middleware('cors');
+    
+    //xuat file khi import hocmai_user_id
+    Route::post('notify/import_user_id', 'HocmaiBackendController@postNotifyImportUserId')->middleware('cors');
+    Route::get('export/token', 'HocmaiBackendController@getExportToken');
 
 });

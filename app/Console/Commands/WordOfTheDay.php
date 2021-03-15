@@ -98,34 +98,6 @@ class WordOfTheDay extends Command
             Log::channel('email')->info('Run in single-process mode');
             $this->sendNofityToFirebase($input, $listDevice, $extraNotificationData, $notify);
         }
-//        $campaign = MarketingCampaign::find($campaign->id);
-//        Log::channel('email')->info('Finish campaign `' . $campaign->name . '`');
-//        Log::channel('email')->info('campaign total sent `' . $campaign->total_sent . '` + total error ' . $campaign->total_error . ' = quantity ' . $campaign->quantity);
-////            $data->content = $content;
-//        if ($campaign->total_sent + $campaign->total_error == $campaign->quantity) {
-//            $item = Item::where(Item::TYPE, Item::TYPE_EMAIL)->orderBy('id', 'DESC')->first();
-//            $moneyUsed = $campaign->total_sent * $item->price;
-//            Log::channel('email')->info('Email Campaign Id: ' . $campaign->id . ' Đã sử dụng só tiền: ' . $moneyUsed);
-//            $campaign->status = MarketingCampaign::STATUS_SUCCESS;
-//            $campaign->money_used = $moneyUsed;
-//            $campaign->hold()->update([
-//                MarketingCampaignHold::STATUS => MarketingCampaignHold::STATUS_SUCCESS,
-//                MarketingCampaignHold::MONEY_USED => $moneyUsed
-//            ]);
-//            $campaign->createdBy->notify(new BasicNotification(
-//                NOTIFY_MARKETING_COMPLETE,
-//                'Chiến dịch email marketing ' . limitTo($campaign->name, 20) . ' hoàn tất',
-//                'Chiến dịch email marketing ' . $campaign->name . ' đã hoàn tất',
-//                $campaign,
-//                route('backend.marketing-campaign.detail', $campaign->id),
-//                'backend.mail.campaign-complete'
-//            ));
-//            if ($campaign->total_error > 0 && $campaign->hold->status == MarketingCampaignHold::STATUS_SUCCESS) {
-//                $moneyRefund = $campaign->total_error * $item->price;
-//                MoneyService::addMoney($campaign->created_by, $moneyRefund, 'Hoàn tiền email marketing không gửi được cho chiến dịch ' . $campaign->name);
-//            }
-//        }
-//        $campaign->save();
     }
     
     public function runMultiProcesses($input, $listDevice, $extraNotificationData, $processes, $notifyId)
@@ -204,8 +176,7 @@ class WordOfTheDay extends Command
         $failure = $oldFailure + $response->failure;
         $updata = [
             'success' => $success,
-            'failure' => $failure,
-            'status' => HocmaiDataConst::SENT_SUCCESS,
+            'failure' => $failure
         ];
         $res = HocmaiNotify::where('id', $notifyId)->update($updata);
         HocmaiNotifyDevice::whereIn('device_token', $listDevice)->delete();

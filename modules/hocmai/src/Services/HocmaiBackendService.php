@@ -11,6 +11,7 @@ use APV\Hocmai\Models\HocmaiNotify;
 use APV\Hocmai\Models\HocmaiNotifyFilter;
 use APV\Hocmai\Models\HocmaiLivestream;
 use APV\Hocmai\Models\HocmaiNotifyProfile;
+use APV\Hocmai\Models\HocmaiTokenExport;
 use APV\Hocmai\Models\HocmaiUser;
 use APV\Hocmai\Models\HocmaiApp;
 use APV\Hocmai\Models\HocmaiCity;
@@ -883,6 +884,7 @@ class HocmaiBackendService
         $notifyFilters = HocmaiNotifyFilter::where('notify_id', $notifyId)->where('app_id', $appId)->get();
         $operator = $this->commonService->getOperator();
         $data = DB::table('hocmai_users');
+//        dd($notifyFilters->toArray());
         foreach ($notifyFilters as $value)
         {
             $filterId = $value->filter_id;
@@ -893,8 +895,8 @@ class HocmaiBackendService
         }
         $data = $data->whereNull('hocmai_users.deleted_at')
             ->whereNotNull('hocmai_users.device_token')
-            ->select('hocmai_users.id')
-            ->groupBy('hocmai_users.id')
+            ->select('hocmai_users.device_token')
+            ->groupBy('hocmai_users.device_token')
 //            ->toSql();
              ->get();
 //            dd($data);
@@ -905,7 +907,11 @@ class HocmaiBackendService
     {
         $res = [];
         foreach ($data as $v) {
-            $res[] = $v->id;
+//            if ($token) {
+                $res[] = $v->device_token;
+//            } else {
+//                $res[] = $v->id;
+//            }
         }
         return $res;
 //        $context = HocmaiNotifyContext::where('notify_id', $notifyId)->first();
@@ -950,7 +956,6 @@ class HocmaiBackendService
     {
         $listDevice = [];
         $res = [];
-//        dd(1);
         $notifyApps = HocmaiNotifyFilter::where('notify_id', $notifyId)->pluck('app_id');
         foreach ($notifyApps as $appId)
         {
@@ -959,18 +964,18 @@ class HocmaiBackendService
             }
         }
 //        dd($res);
-        $data = HocmaiUser::select('device_token')
-            ->whereIn('id', $res)
-            ->whereNotNull('device_token')
-            ->get();
+//        $data = HocmaiUser::select('device_token')
+//            ->whereIn('id', $res)
+//            ->whereNotNull('device_token')
+//            ->get();
         try {
             set_time_limit(0);
             ini_set('max_execution_time', 0);
             ini_set('memory_limit', '-1');
-            foreach ($data as $deviceUser) {
+            foreach ($res as $deviceToken) {
                 $listDevice[] = HocmaiNotifyDevice::create([
                     'notify_id' => $notifyId,
-                    'device_token' => $deviceUser['device_token'],
+                    'device_token' => $deviceToken,
                     'status' => HocmaiDataConst::BEFORE_SENT,
                 ])->id;
                 // $listDevice[] = $deviceUser['device_token'];
@@ -979,7 +984,7 @@ class HocmaiBackendService
             return $listDevice;
 
         } catch (\Exception $e) {
-            dd('Cannot reset max_execution_time: ' . $e->getMessage());
+//            dd('Cannot reset max_execution_time: ' . $e->getMessage());
             Log::channel('email')->info('Cannot reset max_execution_time: ' . $e->getMessage());
         }
         
@@ -1174,24 +1179,26 @@ class HocmaiBackendService
         $listUser = $listDevice = [];
         foreach ($list as $item)
         {
-            $deviceToken = $item->device_token;
-            $deviceUser = HocmaiDeviceUser::where('device_token', $deviceToken)
-                ->orderBy('id', 'DESC')
-                ->first();
-            if ($deviceUser) {
-                $listUser[] = $deviceUser->user_id;
-            }
+            $listDevice[] = $item->device_token;
+
+//            $deviceToken = $item->device_token;
+//            $deviceUser = HocmaiDeviceUser::where('device_token', $deviceToken)
+//                ->orderBy('id', 'DESC')
+//                ->first();
+//            if ($deviceUser) {
+//                $listUser[] = $deviceUser->user_id;
+//            }
         }
-        $data = HocmaiUser::whereIn('id', $listUser)->get();
-        //lấy danh sách user kết hợp thêm điều kiện ngữ cảnh
-        $res = $this->getUserListByContext($notifyId, $data);
-        //Lấy danh sách device_token đúng theo danh sách import kết hợp ngữ cảnh là $res
-        foreach ($res as $userId) {
-            $deviceUser = HocmaiDeviceUser::where('user_id', $userId)->orderBy('created_at', 'DESC')->first();
-            if ($deviceUser) {
-                $listDevice[] = $deviceUser->device_token;
-            }
-        }
+//        $data = HocmaiUser::whereIn('id', $listUser)->get();
+//        //lấy danh sách user kết hợp thêm điều kiện ngữ cảnh
+//        $res = $this->getUserListByContext($notifyId, $data);
+//        //Lấy danh sách device_token đúng theo danh sách import kết hợp ngữ cảnh là $res
+//        foreach ($res as $userId) {
+//            $deviceUser = HocmaiDeviceUser::where('user_id', $userId)->orderBy('created_at', 'DESC')->first();
+//            if ($deviceUser) {
+//                $listDevice[] = $deviceUser->device_token;
+//            }
+//        }
         return $listDevice;
     }
 
@@ -1439,5 +1446,24 @@ class HocmaiBackendService
 //            ->toSql();
         dd($data);
         return $res;
+    }
+    
+    public function createTokenExport($input)
+    {
+        HocmaiTokenExport::truncate();
+//        dd(1);
+        set_time_limit(0);
+        ini_set('max_execution_time', 0);
+        ini_set('memory_limit', '-1');
+        foreach ($input as $value)
+        {
+            $user = HocmaiUser::where('hocmai_user_id',$value)
+                ->whereNotNull('device_token')
+                ->first();
+            if ($user) {
+                HocmaiTokenExport::create(['token' => $user->device_token]);
+            }
+        }
+        return true;
     }
 }
