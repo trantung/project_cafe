@@ -8,16 +8,13 @@
     ],
     "license": "MIT",
     "require": {
-        "php": "^7.3",
+        "php": ">=7.3",
         "barryvdh/laravel-debugbar": "^3.2",
-        "cloudcreativity/laravel-json-api": "^3.1",
         "doctrine/dbal": "^2.11",
         "fideloper/proxy": "^4.0",
-        "kreait/firebase-php": "4.0",
         "laravel/framework": "5.7.*",
         "laravel/passport": "^7.3",
         "laravel/tinker": "^1.0",
-        "laravelcollective/html": "5.7.*",
         "maatwebsite/excel": "^3.1"
     },
     "require-dev": {
